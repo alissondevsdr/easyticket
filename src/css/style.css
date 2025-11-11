@@ -1,0 +1,64 @@
+:root {
+  --bulma-primary-h: 81deg;
+  --bulma-primary-l: 50%;
+  --bulma-link-h: 81deg;
+  --bulma-link-l: 0%;
+  --bulma-info-s: 80%;
+  --bulma-info-l: 53%;
+  --bulma-success-h: 130deg;
+  --bulma-success-s: 80%;
+  --bulma-warning-h: 44deg;
+  --bulma-warning-s: 80%;
+  --bulma-danger-s: 80%;
+  --bulma-danger-l: 53%;
+  --bulma-family-primary: Elms Sans, Inter, SF Pro, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Helvetica Neue, Helvetica, Arial, sans-serif;
+  --bulma-family-secondary: Elms Sans, Inter, SF Pro, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Helvetica Neue, Helvetica, Arial, sans-serif;
+  --bulma-family-code: Elms Sans, Inconsolata, Hack, SF Mono, Roboto Mono,
+    Source Code Pro, Ubuntu Mono, monospace;
+}
+
+.table {
+  --bulma-table-cell-padding: 0.5em 3.75em;
+  width: 100%;
+  --bulma-table-background-color: hsl(0deg 0% 20%);
+  --bulma-table-cell-border-color: hsl(0deg 0% 20%);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Poppins;
+  overflow: hidden;
+}
+
+ul,
+li,
+a {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  width: 100%;
+}
+
+.button {
+  color: black;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.input:focus {
+  --bulma-input-icon-focus-color: #a5ff01;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.none {
+  display: none;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+  <link rel="stylesheet" href="src/css/login.css">
+  <link rel="stylesheet" href="src/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a1729d9d21.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>Zoom Login</title>
+</head>
+
+
+
+<body>
+  <div class="bg">
+    <div class="img-login">
+      <img src="assets/back1.png" id="back1" alt="">
+      <img src="assets/back2.png" id="back2" class="none" alt="">
+      <img src="assets/back3.png" id="back3" class="none" alt="">
+    </div>
+    <div class="form-login">
+      <div class="modal-login">
+        <div class="text-login">
+          <img src="assets/easyticket2.png" alt="logo">
+          <p class="subtitle-login">Painel de controle para gestão das ferramentas dos eventos.</p>
+        </div>
+
+        <form class="card-content" autocomplete="off" id="loginForm">
+          <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input required class="input is-normal" type="email" placeholder="Email" id="email">
+              <span class="icon is-small is-left">
+                <i class="fas fa-solid fa-at"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input required class="input is-normal" type="password" placeholder="Senha" id="password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-solid fa-lock"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control">
+              <button type="submit" class="button is-primary" id="loginButton">
+                Entrar
+              </button>
+            </p>
+          </div>
+        </form>
+        <div class="notification is-danger invisible" id="notification">
+          <span class="icon is-small is-left">
+            <i class="fas fa-solid fa-xmark"></i>
+          </span>
+          <p id="errorMessage"></p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="src/js/utils/carrousel.js"></script>
+    <script type="module" src="src/js/pages/login.js"></script>
+
+</body>
+
+</html>

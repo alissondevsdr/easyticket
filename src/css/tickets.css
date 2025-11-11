@@ -1,0 +1,74 @@
+.modal-sales {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-sales input {
+  width: 60%;
+}
+.modal-sales button {
+  width: 60%;
+}
+
+.dashboard-sales {
+  display: flex;
+  gap: 10px;
+  margin-top: 100px;
+}
+
+.item-dashboard {
+  border: 1px solid #cccccc5e;
+  border-radius: 10px;
+  padding: 5px 43px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.value {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+.pdv {
+  background-color: #333333;
+  width: 550px;
+  height: 360px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.pdv h1 {
+  font-size: 20px;
+  color: white;
+  font-weight: 600;
+}
+
+.size2 {
+  font-size: 30px;
+  color: white;
+}
+
+.payments {
+  display: flex;
+  gap: 10px;
+}
+
+.flex-column {
+  cursor: pointer;
+  border: 1px solid #cccccc5e;
+  border-radius: 10px;
+  display: flex;
+  padding: 10px 20px;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}

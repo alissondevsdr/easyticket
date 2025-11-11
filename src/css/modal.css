@@ -1,0 +1,26 @@
+.modal-content {
+  background-color: #14161a;
+  padding: 30px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.buttons-modal {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.modal-close {
+  position: relative;
+  top: -20px;
+  inset-inline-end: 0rem;
+  left: 280px;
+}
+
+.message {
+  font-size: 25px;
+}

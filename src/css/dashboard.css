@@ -1,0 +1,27 @@
+.dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+.tabs {
+  margin: 20px;
+  position: absolute;
+  top: 20px;
+  --bulma-tabs-link-color: #fff;
+}
+
+.is-active {
+  --bulma-tabs-toggle-link-active-background-color: #a5ff01;
+  --bulma-tabs-toggle-link-active-border-color: #a5ff01;
+}
+
+.tabs.is-toggle li.is-active a {
+  color: hsl(0deg 0% 0%);
+}
+
+.input {
+  --bulma-input-icon-focus-color: hsl(0deg 71.85% 42.95%);
+}

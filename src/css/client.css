@@ -1,0 +1,34 @@
+.modal-list-client {
+  border-radius: 10px;
+  padding: 30px;
+  background-color: #333333;
+  height: 480px;
+  position: absolute;
+  top: 100px;
+  overflow-y: auto;
+  overflow-x: auto;
+  margin: 0px 200px;
+  width: 85%;
+}
+
+.modal-list-client table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.icons {
+  display: flex;
+  font-size: 20px;
+  gap: 20px;
+  cursor: pointer;
+}
+
+#tabelClient th:nth-child(3),
+#tabelClient td:nth-child(3),
+#tabelClient th:nth-child(4),
+#tabelClient td:nth-child(4) {
+  /* Define uma largura mínima maior */
+  min-width: 150px; /* Você pode ajustar este valor (ex: 120px, 180px) */
+  /* Garante que o texto seja mantido em uma única linha se a largura for suficiente */
+  white-space: nowrap;
+}

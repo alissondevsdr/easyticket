@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zoom Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+  <link rel="stylesheet" href="../css/client.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/login.css">
+  <link rel="stylesheet" href="../css/modal.css">
+  <link rel="stylesheet" href="../css/register.css">
+  <link rel="stylesheet" href="../css/tickets.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://kit.fontawesome.com/a1729d9d21.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+
+<body>
+  <div class="modal" id="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content" id="modalContentContainer">
+
+    </div>
+  </div>
+  <div class="dashboard">
+    <div class="tabs is-toggle is-toggle-rounded is-centered">
+      <ul id="menu">
+        <li><a>Cadastro</a></li>
+        <li><a>Clientes</a></li>
+        <li><a>Ingressos</a></li>
+        <li> <a class="fa-solid fa-right-from-bracket size"></a></li>
+      </ul>
+    </div>
+    <h1 class="welcome" id="welcome">Bem vindo a <span class="detail">easy ticket</span>.</h1>
+    <div class="modal-client none" id="createModal">
+      <div class="title-client">Cadastro de clientes</div>
+      <form class="card-content" id="clientForm">
+        <div class="field">
+          <p class="control has-icons-left has-icons-right">
+            <input class="input" type="text" placeholder="Nome" id="client" required>
+            <span class="icon is-small is-left">
+              <i class="fas fa-solid fa-user"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control has-icons-left has-icons-right">
+            <input class="input" type="text" placeholder="Telefone" id="phone" required>
+            <span class="icon is-small is-left">
+              <i class="fas fa-solid fa-phone"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control has-icons-left has-icons-right">
+            <input class="input" type="text" placeholder="CPF" id="cpf" required>
+            <span class="icon is-small is-left">
+              <i class="fas fa-solid fa-address-card"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <button type="submit" class="button is-primary" id="createButton">
+              Cadastrar
+            </button>
+          </p>
+        </div>
+      </form>
+    </div>
+    <div class="modal-list-client none" id="listModal">
+      <table class="table" id="tabelClient">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>CPF</th>
+            <th>Funções</th>
+          </tr>
+        </thead>
+        <tbody id="list">
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-sales none" id="saleModal">
+      <div class="dashboard-sales">
+        <div class="item-dashboard">
+          <span>Faturamento</span>
+          <div class="value">R$100</div>
+        </div>
+        <div class="item-dashboard">
+          <span>Vendas</span>
+          <div class="value">45</div>
+        </div>
+        <div class="item-dashboard">
+          <span>Ticket Médio</span>
+          <div class="value">R$30</div>
+        </div>
+      </div>
+      <div class="pdv">
+        <h1>PDV</h1>
+        <input class="input" type="text" placeholder="VALOR DO INGRESSO">
+        <div class="payments">
+          <div class="credit flex-column">
+            <i class="size2 fa-solid fa-credit-card"></i>
+            <span>Crédito</span>
+          </div>
+          <div class="debit flex-column">
+            <i class="size2 fa-solid fa-credit-card"></i>
+            <span>Débito</span>
+          </div>
+          <div class="cash flex-column">
+            <i class="size2 fa-regular fa-money-bill-1"></i>
+            <span>Dinheiro</span>
+          </div>
+          <div class="pix flex-column">
+            <i class="size2 fa-solid fa-qrcode"></i>
+            <span>PIX</span>
+          </div>
+        </div>
+        <select class="js-example-basic-multiple select" name="states[]" multiple="multiple">
+          <option></option>
+          <option value="AL">Alabama</option>
+          <option value="WY">Wyoming</option>
+        </select>
+        <button class="button">Finalizar</button>
+      </div>
+    </div>
+  </div>
+  <div class="notification adjust-notification invisible" id="notificationClient">
+    <span class="icon is-small is-left" id="notificationIcon">
+    </span>
+    <p id="notificationMessage"></p>
+  </div>
+  </div>
+
+  <script type="module" src="../js/pages/menus.js"></script>
+  <script type="module" src="../js/pages/createClient.js"></script>
+  <script type="module" src="../js/utils/format.js"></script>
+  <script type="module" src="../js/pages/listClient.js"></script>
+  <script type="module" src="../js/utils/trigger.js"></script>
+  <script type="module" src="../js/pages/alterClient.js"></script>
+  <script type="module" src="../js/utils/search.js"></script>
+</body>
+
+</html>
