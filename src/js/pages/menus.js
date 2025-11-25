@@ -6,6 +6,15 @@ const createModal = document.getElementById("createModal")
 const listModal = document.getElementById("listModal")
 const saleModal = document.getElementById("saleModal")
 const welcome = document.getElementById("welcome")
+const create = document.getElementById('create');
+
+create.addEventListener('click', function () {
+  links.forEach(l => l.classList.remove("is-active"));
+  links[0].classList.add("is-active")
+  createModal.classList.remove("none")
+  listModal.classList.add("none")
+  saleModal.classList.add("none")
+});
 
 links.forEach(link => {
   link.addEventListener("click", function (event) {
@@ -22,21 +31,12 @@ links.forEach(link => {
     this.classList.add("is-active")
 
     const modal = this.innerText
-    if (modal === 'Cadastro') {
-      createModal.classList.remove("none")
-      listModal.classList.add("none")
-      saleModal.classList.add("none")
-    } else if (modal === 'Clientes') {
-      createModal.classList.add("none")
-      listModal.classList.remove("none")
-      saleModal.classList.add("none")
-    } else if (modal === 'Ingressos') {
-      createModal.classList.add("none")
-      listModal.classList.add("none")
-      saleModal.classList.remove("none")
-    } else if (modal === '') {
-      logout()
-    }
+
+    createModal.classList[modal === 'Cadastro' ? 'remove' : 'add']("none")
+    listModal.classList[modal === 'Clientes' ? 'remove' : 'add']("none")
+    saleModal.classList[modal === 'Ingressos' ? 'remove' : 'add']("none")
+
+    modal === '' ? logout() : null
   })
 })
 

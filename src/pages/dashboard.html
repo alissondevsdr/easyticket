@@ -27,7 +27,6 @@
   <div class="modal" id="modal">
     <div class="modal-background"></div>
     <div class="modal-content" id="modalContentContainer">
-
     </div>
   </div>
   <div class="dashboard">
@@ -77,19 +76,27 @@
       </form>
     </div>
     <div class="modal-list-client none" id="listModal">
-      <table class="table" id="tabelClient">
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Nome</th>
-            <th>Telefone</th>
-            <th>CPF</th>
-            <th>Funções</th>
-          </tr>
-        </thead>
-        <tbody id="list">
-        </tbody>
-      </table>
+      <div class="toolbar">
+        <input type="text" class="input search-input" id="searchClient" placeholder="Buscar cliente por nome ou CPF">
+        <button class="adjust is-primary button-list" id="create">
+          Cadastrar
+        </button>
+      </div>
+      <div class="adjust-table">
+        <table class="table" id="tabelClient">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nome</th>
+              <th>Telefone</th>
+              <th>CPF</th>
+              <th>Funções</th>
+            </tr>
+          </thead>
+          <tbody id="list">
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="modal-sales none" id="saleModal">
       <div class="dashboard-sales">
@@ -107,40 +114,34 @@
         </div>
       </div>
       <div class="pdv">
-        <h1>PDV</h1>
-        <input class="input" type="text" placeholder="VALOR DO INGRESSO">
-        <div class="payments">
-          <div class="credit flex-column">
-            <i class="size2 fa-solid fa-credit-card"></i>
-            <span>Crédito</span>
+        <h1>Venda</h1>
+        <div class="inputs-sale">
+          <input class="input client" type="text" placeholder="CLIENTE">
+          <input class="input value-ticket" type="text" placeholder="INGRESSO" id="valueInput">
+        </div>
+        <div class="payments" id="payments">
+          <div class="cash flex-column payments-items" id="cash">
+            <i class="size2 cash fa-regular fa-money-bill-1"></i>
+            <span class="cash">Dinheiro</span>
           </div>
-          <div class="debit flex-column">
-            <i class="size2 fa-solid fa-credit-card"></i>
-            <span>Débito</span>
+          <div class="credit flex-column payments-items" id="credit">
+            <i class="size2 fa-solid fa-credit-card credit"></i>
+            <span class="credit">Crédito</span>
           </div>
-          <div class="cash flex-column">
-            <i class="size2 fa-regular fa-money-bill-1"></i>
-            <span>Dinheiro</span>
+          <div class="debit flex-column payments-items" id="debit">
+            <i class="size2 fa-solid fa-credit-card debit"></i>
+            <span class="debit">Débito</span>
           </div>
-          <div class="pix flex-column">
-            <i class="size2 fa-solid fa-qrcode"></i>
-            <span>PIX</span>
+
+          <div class="pix flex-column payments-items" id="pix">
+            <i class="size2 fa-solid fa-qrcode pix"></i>
+            <span class="pix">PIX</span>
           </div>
         </div>
-        <select class="js-example-basic-multiple select" name="states[]" multiple="multiple">
-          <option></option>
-          <option value="AL">Alabama</option>
-          <option value="WY">Wyoming</option>
-        </select>
-        <button class="button">Finalizar</button>
+
+        <button class="button is-primary">Finalizar</button>
       </div>
     </div>
-  </div>
-  <div class="notification adjust-notification invisible" id="notificationClient">
-    <span class="icon is-small is-left" id="notificationIcon">
-    </span>
-    <p id="notificationMessage"></p>
-  </div>
   </div>
 
   <script type="module" src="../js/pages/menus.js"></script>
@@ -150,6 +151,7 @@
   <script type="module" src="../js/utils/trigger.js"></script>
   <script type="module" src="../js/pages/alterClient.js"></script>
   <script type="module" src="../js/utils/search.js"></script>
+  <script type="module" src="../js/pages/sales.js"></script>
 </body>
 
 </html>

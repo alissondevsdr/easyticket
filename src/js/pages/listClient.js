@@ -2,6 +2,12 @@ import { auth } from "../services/auth.js"
 import { alterClient } from "./alterClient.js"
 import { deletClient } from "./deleteClient.js"
 
+let clients = []
+
+export function getClients() {
+  return clients
+}
+
 export async function loadingClients() {
   const token = localStorage.getItem("authToken")
 
@@ -15,7 +21,7 @@ export async function loadingClients() {
       }
     })
 
-    const clients = response.data
+    clients = response.data
 
     listClients(clients)
   } catch (erro) {
@@ -24,7 +30,7 @@ export async function loadingClients() {
 
 }
 
-function listClients(clients) {
+export function listClients(clients) {
   const list = document.getElementById('list')
 
   list.innerHTML = ''

@@ -1,24 +1,42 @@
 .modal-list-client {
-  border-radius: 10px;
-  padding: 30px;
-  background-color: #333333;
-  height: 480px;
-  position: absolute;
-  top: 100px;
-  overflow-y: auto;
-  overflow-x: auto;
-  margin: 0px 200px;
-  width: 85%;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
 }
 
 .modal-list-client table {
-  width: 100%;
+  padding: 30px;
   table-layout: fixed;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  /* position: relative; */
+}
+
+thead {
+  position: sticky;
+  top: 0;
+}
+
+thead tr {
+  background-color: #333333;
+}
+
+.adjust-table {
+  padding: 20px;
+  max-height: 600px;
+  height: 600px;
+  overflow-y: auto;
+  width: 100%;
+  background-color: #333333;
+  border-radius: 10px;
 }
 
 .icons {
   display: flex;
-  font-size: 20px;
+  font-size: 1.25rem;
   gap: 20px;
   cursor: pointer;
 }
@@ -27,8 +45,43 @@
 #tabelClient td:nth-child(3),
 #tabelClient th:nth-child(4),
 #tabelClient td:nth-child(4) {
-  /* Define uma largura mínima maior */
-  min-width: 150px; /* Você pode ajustar este valor (ex: 120px, 180px) */
-  /* Garante que o texto seja mantido em uma única linha se a largura for suficiente */
+  min-width: 150px;
   white-space: nowrap;
+}
+
+.search-input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.button {
+  width: auto;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.button-list {
+  background-color: #a5ff01;
+  color: #333333;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+@media (max-width: 1400px) {
+  .adjust-table {
+    height: 400px;
+  }
+
+  .modal-list-client {
+    margin-top: 70px;
+  }
 }

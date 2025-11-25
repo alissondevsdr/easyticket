@@ -2,10 +2,8 @@ import { showLoading, hideLoading } from "../services/loading.js";
 import { loadingClients } from "./listClient.js";
 
 const clientForm = document.getElementById('clientForm')
-const notificationClient = document.getElementById('notificationClient')
-const notificationIcon = document.getElementById('notificationIcon')
-const notificationMessage = document.getElementById('notificationMessage')
 const createButton = document.getElementById('createButton')
+
 
 
 clientForm.addEventListener('submit', function (event) {
@@ -39,33 +37,30 @@ async function handleClient(client, cpf, phone) {
     console.log(response)
     console.log('Cliente cadastrado com sucesso!', response.data);
 
-    notificationClient.classList.remove('invisible')
-    notificationClient.classList.remove('is-danger')
-    notificationClient.classList.add('is-primary')
-    notificationIcon.innerHTML = '<i class="fa-solid fa-check"></i>'
-    notificationMessage.innerText = 'Cadastrado com sucesso.'
-
     loadingClients()
-
-    setTimeout(() => {
-      notificationClient.classList.add('invisible')
-    }, 3000)
 
     reset();
     hideLoading(createButton)
 
+    createButton.innerHTML = 'Sucesso!'
+
+    setTimeout(() => {
+      createButton.innerHTML = 'Cadastrar'
+    }, 2000);
+
   } catch (error) {
 
     hideLoading(createButton)
-    notificationClient.classList.remove('invisible')
-    notificationClient.classList.remove('is-primary')
-    notificationClient.classList.add('is-danger')
-    notificationIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>'
-    notificationMessage.innerText = 'Erro ao cadastrar o cliente.'
+
+    createButton.innerHTML = 'Erro!'
+    createButton.classList.add('is-danger')
+
 
     setTimeout(() => {
-      notificationClient.classList.add('invisible')
-    }, 3000)
+      createButton.innerHTML = 'Cadastrar'
+      createButton.classList.remove('is-danger')
+    }, 3000);
+
 
     if (error.response) {
 

@@ -19,6 +19,18 @@
     Source Code Pro, Ubuntu Mono, monospace;
 }
 
+html {
+  overflow: hidden;
+}
+
+a {
+  color: #a5ff01;
+}
+
+/* * {
+  outline: 1px solid red;
+} */
+
 .table {
   --bulma-table-cell-padding: 0.5em 3.75em;
   width: 100%;
@@ -46,8 +58,6 @@ img {
 }
 
 .button {
-  color: black;
-  margin-top: 20px;
   width: 100%;
 }
 
