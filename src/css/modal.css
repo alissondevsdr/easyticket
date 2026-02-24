@@ -1,3 +1,7 @@
+/* ════════════════════════════════════════════════════════════
+   MODAL — Responsivo
+════════════════════════════════════════════════════════════ */
+
 .modal-content {
   background-color: #14161a;
   padding: 30px;
@@ -6,6 +10,9 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width: 100%;
+  max-width: 480px;
+  box-sizing: border-box;
 }
 
 .buttons-modal {
@@ -23,4 +30,47 @@
 
 .message {
   font-size: 2rem;
+  text-align: center;
+}
+
+/* ── Notebook (769px – 1280px) ─────────────────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1280px) {
+  .modal-content {
+    max-width: 440px;
+    padding: 24px;
+  }
+
+  .message {
+    font-size: 1.7rem;
+  }
+}
+
+/* ── Mobile (≤ 768px) ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: calc(100vw - 32px);
+    padding: 20px 16px;
+    margin: 0 16px;
+    border-radius: 8px;
+  }
+
+  .message {
+    font-size: 1.3rem;
+  }
+
+  .modal-close {
+    left: auto;
+    right: 0;
+    top: -16px;
+  }
+
+  .buttons-modal {
+    gap: 12px;
+  }
+
+  /* Form dentro do modal de edição */
+  .modal-content .card-content {
+    padding: 12px 0;
+    width: 100%;
+  }
 }

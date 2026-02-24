@@ -11,12 +11,9 @@
   --bulma-warning-s: 80%;
   --bulma-danger-s: 80%;
   --bulma-danger-l: 53%;
-  --bulma-family-primary: Elms Sans, Inter, SF Pro, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Helvetica Neue, Helvetica, Arial, sans-serif;
-  --bulma-family-secondary: Elms Sans, Inter, SF Pro, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Helvetica Neue, Helvetica, Arial, sans-serif;
-  --bulma-family-code: Elms Sans, Inconsolata, Hack, SF Mono, Roboto Mono,
-    Source Code Pro, Ubuntu Mono, monospace;
+  --bulma-family-primary: Poppins, Inter, SF Pro, Segoe UI, Roboto, sans-serif;
+  --bulma-family-secondary: Poppins, Inter, SF Pro, Segoe UI, Roboto, sans-serif;
+  --bulma-family-code: Inconsolata, Hack, SF Mono, Roboto Mono, monospace;
 }
 
 html {
@@ -26,10 +23,6 @@ html {
 a {
   color: #a5ff01;
 }
-
-/* * {
-  outline: 1px solid red;
-} */
 
 .table {
   --bulma-table-cell-padding: 0.5em 3.75em;
@@ -41,13 +34,11 @@ a {
 body {
   margin: 0;
   padding: 0;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   overflow: hidden;
 }
 
-ul,
-li,
-a {
+ul, li, a {
   text-decoration: none;
   margin: 0;
   padding: 0;
@@ -70,5 +61,13 @@ img {
 }
 
 .none {
-  display: none;
+  display: none !important;
+}
+
+/* ── Mobile: permitir scroll vertical ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  html, body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
 }

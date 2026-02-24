@@ -4,8 +4,6 @@ import { loadingClients } from "./listClient.js";
 const clientForm = document.getElementById('clientForm')
 const createButton = document.getElementById('createButton')
 
-
-
 clientForm.addEventListener('submit', function (event) {
   event.preventDefault()
 
@@ -25,7 +23,6 @@ async function handleClient(client, cpf, phone) {
   const infosClient = { client, cpf, phone }
 
   try {
-
     const config = {
       headers: {
         'Authorization': token
@@ -38,8 +35,7 @@ async function handleClient(client, cpf, phone) {
     console.log('Cliente cadastrado com sucesso!', response.data);
 
     loadingClients()
-
-    reset();
+    reset()
     hideLoading(createButton)
 
     createButton.innerHTML = 'Sucesso!'
@@ -55,15 +51,12 @@ async function handleClient(client, cpf, phone) {
     createButton.innerHTML = 'Erro!'
     createButton.classList.add('is-danger')
 
-
     setTimeout(() => {
       createButton.innerHTML = 'Cadastrar'
       createButton.classList.remove('is-danger')
     }, 3000);
 
-
     if (error.response) {
-
       if (error.response.status === 401 || error.response.status === 403) {
         console.error('Falha na autenticação. Por favor, faça login novamente.');
       }
@@ -76,8 +69,9 @@ async function handleClient(client, cpf, phone) {
   }
 }
 
+// CORRIGIDO: referenciar os inputs via getElementById em vez de variáveis globais implícitas
 function reset() {
-  client.value = ''
-  cpf.value = ''
-  phone.value = ''
+  document.getElementById('client').value = ''
+  document.getElementById('cpf').value = ''
+  document.getElementById('phone').value = ''
 }

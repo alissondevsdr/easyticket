@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zoom Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>EasyTicket Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
   <link rel="stylesheet" href="../css/client.css">
   <link rel="stylesheet" href="../css/dashboard.css">
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/a1729d9d21.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -24,63 +24,66 @@
 </head>
 
 <body>
+
+  <!-- Modal global (confirmação / edição) -->
   <div class="modal" id="modal">
     <div class="modal-background"></div>
-    <div class="modal-content" id="modalContentContainer">
-    </div>
+    <div class="modal-content" id="modalContentContainer"></div>
   </div>
+
   <div class="dashboard">
+
+    <!-- ── Menu ──────────────────────────────────────────────────────────── -->
     <div class="tabs is-toggle is-toggle-rounded is-centered">
       <ul id="menu">
         <li><a>Cadastro</a></li>
         <li><a>Clientes</a></li>
         <li><a>Ingressos</a></li>
-        <li> <a class="fa-solid fa-right-from-bracket size"></a></li>
+        <li><a class="fa-solid fa-right-from-bracket size"></a></li>
       </ul>
     </div>
-    <h1 class="welcome" id="welcome">Bem vindo a <span class="detail">easy ticket</span>.</h1>
+
+    <!-- ── Boas-vindas ────────────────────────────────────────────────────── -->
+    <h1 class="welcome" id="welcome">
+      Bem vindo à <span class="detail">easy ticket</span>.
+    </h1>
+
+    <!-- ── Cadastro ───────────────────────────────────────────────────────── -->
     <div class="modal-client none" id="createModal">
       <div class="title-client">Cadastro de clientes</div>
       <form class="card-content" id="clientForm">
         <div class="field">
-          <p class="control has-icons-left has-icons-right">
+          <p class="control has-icons-left">
             <input class="input" type="text" placeholder="Nome" id="client" required>
-            <span class="icon is-small is-left">
-              <i class="fas fa-solid fa-user"></i>
-            </span>
+            <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
           </p>
         </div>
         <div class="field">
-          <p class="control has-icons-left has-icons-right">
+          <p class="control has-icons-left">
             <input class="input" type="text" placeholder="Telefone" id="phone" required>
-            <span class="icon is-small is-left">
-              <i class="fas fa-solid fa-phone"></i>
-            </span>
+            <span class="icon is-small is-left"><i class="fas fa-phone"></i></span>
           </p>
         </div>
         <div class="field">
-          <p class="control has-icons-left has-icons-right">
+          <p class="control has-icons-left">
             <input class="input" type="text" placeholder="CPF" id="cpf" required>
-            <span class="icon is-small is-left">
-              <i class="fas fa-solid fa-address-card"></i>
-            </span>
+            <span class="icon is-small is-left"><i class="fas fa-address-card"></i></span>
           </p>
         </div>
         <div class="field">
           <p class="control">
-            <button type="submit" class="button is-primary" id="createButton">
-              Cadastrar
-            </button>
+            <button type="submit" class="button is-primary" id="createButton">Cadastrar</button>
           </p>
         </div>
       </form>
     </div>
+
+    <!-- ── Clientes ───────────────────────────────────────────────────────── -->
     <div class="modal-list-client none" id="listModal">
       <div class="toolbar">
-        <input type="text" class="input search-input" id="searchClient" placeholder="Buscar cliente por nome ou CPF">
-        <button class="adjust is-primary button-list" id="create">
-          Cadastrar
-        </button>
+        <input type="text" class="input search-input" id="searchClient"
+          placeholder="Buscar cliente por nome ou CPF">
+        <button class="adjust is-primary button-list" id="create">Cadastrar</button>
       </div>
       <div class="adjust-table">
         <table class="table" id="tabelClient">
@@ -93,32 +96,37 @@
               <th>Funções</th>
             </tr>
           </thead>
-          <tbody id="list">
-          </tbody>
+          <tbody id="list"></tbody>
         </table>
       </div>
     </div>
+
+    <!-- ── Ingressos / PDV ────────────────────────────────────────────────── -->
     <div class="modal-sales none" id="saleModal">
+
       <div class="dashboard-sales">
         <div class="item-dashboard">
           <span>Faturamento</span>
-          <div class="value">R$100</div>
+          <div class="value" id="metricRevenue">R$ 0,00</div>
         </div>
         <div class="item-dashboard">
           <span>Vendas</span>
-          <div class="value">45</div>
+          <div class="value" id="metricSales">0</div>
         </div>
         <div class="item-dashboard">
           <span>Ticket Médio</span>
-          <div class="value">R$30</div>
+          <div class="value" id="metricAvg">R$ 0,00</div>
         </div>
       </div>
+
       <div class="pdv">
         <h1>Venda</h1>
+
         <div class="inputs-sale">
-          <input class="input client" type="text" placeholder="CLIENTE">
-          <input class="input value-ticket" type="text" placeholder="INGRESSO" id="valueInput">
+          <select id="clientSelect" style="width:100%"></select>
+          <input class="input value-ticket" type="text" placeholder="R$ 0,00" id="valueInput">
         </div>
+
         <div class="payments" id="payments">
           <div class="cash flex-column payments-items" id="cash">
             <i class="size2 cash fa-regular fa-money-bill-1"></i>
@@ -132,7 +140,6 @@
             <i class="size2 fa-solid fa-credit-card debit"></i>
             <span class="debit">Débito</span>
           </div>
-
           <div class="pix flex-column payments-items" id="pix">
             <i class="size2 fa-solid fa-qrcode pix"></i>
             <span class="pix">PIX</span>
@@ -141,8 +148,9 @@
 
         <button class="button is-primary">Finalizar</button>
       </div>
+
     </div>
-  </div>
+  </div><!-- /.dashboard -->
 
   <script type="module" src="../js/pages/menus.js"></script>
   <script type="module" src="../js/pages/createClient.js"></script>

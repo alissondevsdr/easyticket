@@ -1,9 +1,16 @@
+/* ════════════════════════════════════════════════════════════
+   CLIENTES — Responsivo
+════════════════════════════════════════════════════════════ */
+
 .modal-list-client {
-  margin-top: 40px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   align-items: center;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .modal-list-client table {
@@ -12,12 +19,12 @@
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  /* position: relative; */
 }
 
 thead {
   position: sticky;
   top: 0;
+  z-index: 10;
 }
 
 thead tr {
@@ -26,12 +33,14 @@ thead tr {
 
 .adjust-table {
   padding: 20px;
-  max-height: 600px;
-  height: 600px;
+  max-height: 580px;
+  height: 580px;
   overflow-y: auto;
   width: 100%;
+  max-width: 1100px;
   background-color: #333333;
   border-radius: 10px;
+  box-sizing: border-box;
 }
 
 .icons {
@@ -53,6 +62,8 @@ thead tr {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  flex: 1;
+  min-width: 0;
 }
 
 .button {
@@ -65,23 +76,100 @@ thead tr {
   justify-content: center;
   gap: 15px;
   width: 100%;
+  max-width: 1100px;
 }
 
 .button-list {
   background-color: #a5ff01;
   color: #333333;
-  padding: 5px 10px;
+  padding: 8px 16px;
   border-radius: 6px;
   font-weight: 500;
   font-size: 1rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-@media (max-width: 1400px) {
+/* ── Full HD+ (> 1920px) ───────────────────────────────────────────────────── */
+@media (min-width: 1921px) {
   .adjust-table {
-    height: 400px;
+    max-height: 700px;
+    height: 700px;
+  }
+}
+
+/* ── Notebook (769px – 1280px) ─────────────────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1280px) {
+  .adjust-table {
+    max-height: 460px;
+    height: 460px;
+    padding: 14px;
   }
 
   .modal-list-client {
-    margin-top: 70px;
+    margin-top: 10px;
+  }
+
+  /* Esconde CPF em telas menores para ganhar espaço */
+  #tabelClient th:nth-child(4),
+  #tabelClient td:nth-child(4) {
+    display: none;
+  }
+}
+
+/* ── Mobile (≤ 768px) ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .modal-list-client {
+    margin-top: 8px;
+    padding: 0 8px;
+    gap: 10px;
+  }
+
+  .toolbar {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .search-input {
+    font-size: 0.9rem;
+  }
+
+  .button-list {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .adjust-table {
+    height: auto;
+    max-height: 55vh;
+    padding: 10px 6px;
+  }
+
+  /* Tabela rolável horizontalmente no mobile */
+  .modal-list-client .adjust-table {
+    overflow-x: auto;
+  }
+
+  .modal-list-client table {
+    padding: 0;
+    min-width: 500px;
+  }
+
+  /* Esconde Telefone e CPF no mobile — exibe só código, nome e ações */
+  #tabelClient th:nth-child(3),
+  #tabelClient td:nth-child(3),
+  #tabelClient th:nth-child(4),
+  #tabelClient td:nth-child(4) {
+    display: none;
+  }
+
+  .icons {
+    font-size: 1rem;
+    gap: 14px;
+  }
+
+  /* Ajusta padding das células */
+  .table {
+    --bulma-table-cell-padding: 0.4em 0.75em;
   }
 }

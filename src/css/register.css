@@ -1,13 +1,18 @@
+/* ════════════════════════════════════════════════════════════
+   CADASTRO — Responsivo
+════════════════════════════════════════════════════════════ */
+
 .modal-client {
   border: solid 1px #353a46;
   border-radius: 5px;
   width: 500px;
-  margin: 100px;
+  margin: 40px auto;
   padding: 50px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   background-color: #333333;
+  box-sizing: border-box;
 }
 
 .title-client {
@@ -19,6 +24,7 @@
 .welcome {
   font-size: 4rem;
   color: white;
+  text-align: center;
 }
 
 .detail {
@@ -35,8 +41,46 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 700px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 1rem;
   height: 40px;
+}
+
+/* ── Notebook (769px – 1280px) ─────────────────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1280px) {
+  .modal-client {
+    width: 440px;
+    padding: 36px;
+  }
+
+  .title-client {
+    font-size: 1.7rem;
+  }
+
+  .welcome {
+    font-size: 3rem;
+  }
+}
+
+/* ── Mobile (≤ 768px) ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .modal-client {
+    width: calc(100% - 32px);
+    max-width: 480px;
+    margin: 16px auto;
+    padding: 24px 20px;
+  }
+
+  .title-client {
+    font-size: 1.5rem;
+  }
+
+  .welcome {
+    font-size: 2rem;
+    padding: 0 16px;
+    text-align: center;
+  }
 }

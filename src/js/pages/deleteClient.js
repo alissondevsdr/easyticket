@@ -9,7 +9,17 @@ export async function deletClient(id) {
 
   dynamicModal.classList.add("is-active")
 
-  modalContentContainer.innerHTML = `
+  if (id === 0) {
+    modalContentContainer.innerHTML = `
+      <button class="modal-close is-large" aria-label="close"></button>
+      <div class="message">
+        <div>Exclusão não permitida.</div>
+      </div>
+      <div class="buttons-modal">
+        <button class="button is-primary no-delete">Ok</button>
+      </div>`
+  } else {
+    modalContentContainer.innerHTML = `
       <button class="modal-close is-large" aria-label="close"></button>
       <div class="message">
         <div>Deseja excluir o cliente?</div>
@@ -18,6 +28,9 @@ export async function deletClient(id) {
         <button class="button is-primary" id="delete">Sim</button>
         <button class="button is-danger no-delete">Não</button>
       </div>`
+  }
+
+
 
   const buttonDelete = document.getElementById('delete')
 

@@ -4,9 +4,7 @@ const loginForm = document.getElementById("loginForm");
 const loginButton = document.getElementById("loginButton");
 
 loginForm.addEventListener('submit', function (event) {
-
   event.preventDefault()
-
   showLoading(loginButton)
 
   const email = document.getElementById('email').value
@@ -17,12 +15,10 @@ loginForm.addEventListener('submit', function (event) {
 
 async function handleLogin(email, password) {
   const URL_LOGIN = 'http://localhost:3001/login';
-
   const infosLogin = { email, password };
 
   try {
     const response = await axios.post(URL_LOGIN, infosLogin)
-
     const token = response.data.token
 
     localStorage.setItem('authToken', token)
@@ -33,26 +29,30 @@ async function handleLogin(email, password) {
     hideLoading(loginButton)
 
   } catch (error) {
-
     hideLoading(loginButton)
 
-    loginButton.innerHTML = 'Erro'
-    loginButton.classList.add('is-danger')
-
-    setTimeout(() => {
-      loginButton.innerHTML = 'Login'
-      loginButton.classList.remove('is-danger')
-    }, 3000);
+    // CORRIGIDO: mensagens de erro mais descritivas por tipo de falha
+    let mensagem = 'Erro'
 
     if (error.response) {
-      console.error('Erro de autentição:', error.response.data)
-
+      const status = error.response.status
+      if (status === 401) mensagem = 'Senha incorreta'
+      else if (status === 404) mensagem = 'Usuário não encontrado'
+      else mensagem = 'Erro no servidor'
+      console.error('Erro de autenticação:', error.response.data)
     } else if (error.request) {
+      mensagem = 'Sem conexão'
       console.error('Erro de Rede:', error.request);
-
     } else {
       console.error('Erro geral:', error.message);
     }
-  }
 
+    loginButton.innerHTML = mensagem
+    loginButton.classList.add('is-danger')
+
+    setTimeout(() => {
+      loginButton.innerHTML = 'Entrar'
+      loginButton.classList.remove('is-danger')
+    }, 3000);
+  }
 }

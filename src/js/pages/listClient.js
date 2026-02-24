@@ -4,7 +4,7 @@ import { deletClient } from "./deleteClient.js"
 
 let clients = []
 
-export function getClients() {
+export async function getClients() {
   return clients
 }
 
@@ -12,7 +12,6 @@ export async function loadingClients() {
   const token = localStorage.getItem("authToken")
 
   auth(token)
-  console.log(token)
 
   try {
     const response = await axios.get("http://localhost:3001/clients", {

@@ -17,7 +17,7 @@ export function maskCPF(value) {
 }
 
 export function maskPhone(value) {
-  let digits = onlyDigits(value).slice(0, 11); // DDD + número (até 11 dígitos)
+  let digits = onlyDigits(value).slice(0, 11);
   if (digits.length <= 2) {
     return digits ? `(${digits}` : '';
   }
@@ -33,7 +33,8 @@ export function maskPhone(value) {
   return `(${ddd}) ${rest.slice(0, 5)}-${rest.slice(5, 9)}`;
 }
 
-function setSelectionEndToInputEl(el) {
+// CORRIGIDO: exportar a função para que alterClient.js possa importá-la
+export function setSelectionEndToInputEl(el) {
   el.selectionStart = el.selectionEnd = el.value.length;
 }
 
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.target.value = maskCPF(text);
     setSelectionEndToInputEl(e.target);
   });
+
   phoneInput.addEventListener('paste', (e) => {
     e.preventDefault();
     const text = (e.clipboardData || window.clipboardData).getData('text');

@@ -1,36 +1,39 @@
+/* ════════════════════════════════════════════════════════════
+   INGRESSOS / PDV — Responsivo
+════════════════════════════════════════════════════════════ */
+
 .modal-sales {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
-.client {
-  width: 60%;
-}
-
-.value-ticket {
-  width: 40%;
-}
-
-.modal-sales button {
+.modal-sales > .button.is-primary {
   width: 480px;
 }
 
+/* ── Métricas ─────────────────────────────────────────────────────────────── */
 .dashboard-sales {
   display: flex;
-  gap: 30px;
-  margin-top: 100px;
+  gap: 24px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .item-dashboard {
   border: 1px solid #cccccc5e;
   border-radius: 10px;
-  padding: 5px 30px;
+  padding: 10px 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 140px;
 }
 
 .value {
@@ -39,16 +42,19 @@
   color: #a5ff01;
 }
 
+/* ── PDV ──────────────────────────────────────────────────────────────────── */
 .pdv {
   background-color: #333333;
   width: 750px;
-  height: 550px;
+  min-height: 520px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 30px;
+  gap: 28px;
+  padding: 40px 30px;
+  box-sizing: border-box;
 }
 
 .pdv h1 {
@@ -62,9 +68,31 @@
   color: white;
 }
 
+/* ── Inputs da venda ─────────────────────────────────────────────────────── */
+.inputs-sale {
+  display: flex;
+  flex-direction: row;
+  width: 480px;
+  gap: 12px;
+  align-items: center;
+}
+
+.inputs-sale .select2-container {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.value-ticket {
+  flex: 0 0 140px !important;
+  width: 140px !important;
+}
+
+/* ── Métodos de pagamento ────────────────────────────────────────────────── */
 .payments {
   display: flex;
-  gap: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .flex-column {
@@ -74,8 +102,9 @@
   display: flex;
   padding: 10px 20px;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   align-items: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .active {
@@ -87,17 +116,9 @@
   color: black;
 }
 
-.inputs-sale {
-  display: flex;
-  flex-direction: row;
-  width: 480px;
-  gap: 20px;
-  align-items: center;
-}
-
 .payments-items {
   cursor: pointer;
-  padding: 20px 30px;
+  padding: 16px 24px;
 }
 
 .payments-items:hover {
@@ -107,4 +128,222 @@
 
 .payments-items:hover i {
   color: black;
+}
+
+/* ── Notebook (769px – 1280px) ─────────────────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1280px) {
+  .pdv {
+    width: 620px;
+    min-height: 480px;
+    gap: 22px;
+    padding: 32px 24px;
+  }
+
+  .inputs-sale {
+    width: 420px;
+  }
+
+  .value-ticket {
+    flex: 0 0 120px !important;
+    width: 120px !important;
+  }
+
+  .modal-sales > .button.is-primary {
+    width: 420px;
+  }
+
+  .payments-items {
+    padding: 14px 18px;
+  }
+
+  .size2 {
+    font-size: 1.6rem;
+  }
+}
+
+/* ── Mobile (≤ 768px) ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .modal-sales {
+    gap: 16px;
+    padding: 0 8px;
+  }
+
+  .dashboard-sales {
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .item-dashboard {
+    padding: 8px 18px;
+    min-width: 100px;
+    flex: 1;
+  }
+
+  .value {
+    font-size: 1.2rem;
+  }
+
+  .pdv {
+    width: 100%;
+    max-width: 480px;
+    min-height: unset;
+    gap: 20px;
+    padding: 24px 16px;
+    border-radius: 10px;
+  }
+
+  .pdv h1 {
+    font-size: 1.5rem;
+  }
+
+  /* Inputs empilhados verticalmente no mobile */
+  .inputs-sale {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .inputs-sale .select2-container {
+    width: 100% !important;
+  }
+
+  .value-ticket {
+    flex: unset !important;
+    width: 100% !important;
+  }
+
+  /* Pagamentos em grid 2x2 */
+  .payments {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .flex-column {
+    padding: 12px 10px;
+    gap: 10px;
+  }
+
+  .size2 {
+    font-size: 1.4rem;
+  }
+
+  .payments-items {
+    padding: 12px 10px;
+  }
+
+  .modal-sales > .button.is-primary,
+  .pdv .button.is-primary {
+    width: 100%;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   SELECT2 — TEMA ESCURO COMPLETO
+════════════════════════════════════════════════════════════ */
+
+.select2-container--default .select2-selection--single {
+  background-color: #1e1e1e !important;
+  border: 1px solid #555 !important;
+  border-radius: 6px !important;
+  height: 40px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #ffffff !important;
+  line-height: 40px !important;
+  padding-left: 12px !important;
+  padding-right: 30px !important;
+  font-family: Poppins, sans-serif !important;
+  font-size: 0.88rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: #888 !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 40px !important;
+  width: 28px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+  border-color: #aaa transparent transparent transparent !important;
+}
+
+.select2-container--default.select2-container--open
+  .select2-selection--single
+  .select2-selection__arrow b {
+  border-color: transparent transparent #aaa transparent !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__clear {
+  color: #aaa !important;
+  font-size: 1.1rem !important;
+  margin-right: 6px !important;
+  line-height: 40px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__clear:hover {
+  color: #ff4d4d !important;
+}
+
+.select2-dropdown {
+  background-color: #1e1e1e !important;
+  border: 1px solid #555 !important;
+  border-radius: 6px !important;
+  font-family: Poppins, sans-serif !important;
+  z-index: 9999 !important;
+}
+
+.select2-container--default .select2-search--dropdown {
+  background-color: #1e1e1e !important;
+  padding: 8px !important;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  background-color: #111 !important;
+  border: 1px solid #555 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  padding: 6px 10px !important;
+  font-family: Poppins, sans-serif !important;
+  font-size: 0.88rem !important;
+  outline: none !important;
+}
+
+.select2-container--default .select2-results {
+  background-color: #1e1e1e !important;
+}
+
+.select2-container--default .select2-results__option {
+  color: #ddd !important;
+  background-color: #1e1e1e !important;
+  padding: 8px 12px !important;
+  font-size: 0.88rem !important;
+  font-family: Poppins, sans-serif !important;
+}
+
+.select2-container--default
+  .select2-results__option--highlighted[aria-selected],
+.select2-container--default
+  .select2-results__option--highlighted.select2-results__option--selectable {
+  background-color: #a5ff01 !important;
+  color: #000 !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected="true"] {
+  background-color: #2a2a2a !important;
+  color: #a5ff01 !important;
+}
+
+.select2-container--default .select2-results__option--disabled,
+.select2-results__message {
+  color: #888 !important;
+  font-style: italic !important;
+  background-color: #1e1e1e !important;
 }

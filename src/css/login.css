@@ -1,6 +1,15 @@
+/* ════════════════════════════════════════════════════════════
+   LOGIN — Responsivo
+   Breakpoints:
+   - Mobile:       ≤ 768px
+   - Notebook:     769px – 1280px
+   - HD:           1281px – 1920px
+   - Full HD+:     > 1920px
+════════════════════════════════════════════════════════════ */
+
 .bg {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-content: center;
@@ -8,10 +17,16 @@
   position: relative;
 }
 
+.form-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .modal-login {
   border-radius: 5px;
-  width: 500px;
-  margin: 100px;
+  width: 460px;
+  padding: 40px;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -21,6 +36,23 @@
   font-size: 3rem;
   color: white;
   font-weight: bold;
+}
+
+.text-login {
+  padding-bottom: 20px;
+  text-align: start;
+  width: 100%;
+}
+
+.text-login img {
+  max-width: 220px;
+  width: 100%;
+}
+
+.subtitle-login {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-top: 8px;
 }
 
 .notification {
@@ -36,20 +68,82 @@
   align-self: center;
 }
 
-.text-login {
-  padding-bottom: 20px;
-  text-align: start;
-  width: 100%;
-}
-
 .img-login {
-  height: 100vh; /* <<< isso é o principal! */
-  background-image: url("assets/back1.png");
+  height: 100vh;
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
+  overflow: hidden;
+  position: relative;
+}
+
+.img-login img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .control {
   --bulma-input-icon-focus-color: #a5ff01;
+}
+
+/* ── Notebook (769px – 1280px) ─────────────────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1280px) {
+  .modal-login {
+    width: 380px;
+    padding: 30px;
+  }
+
+  .title-login {
+    font-size: 2.4rem;
+  }
+
+  .text-login img {
+    max-width: 180px;
+  }
+}
+
+/* ── Mobile (≤ 768px) ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .bg {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
+
+  /* Imagem vira banner no topo */
+  .img-login {
+    height: 220px;
+    width: 100%;
+  }
+
+  .form-login {
+    padding: 24px 16px 40px;
+  }
+
+  .modal-login {
+    width: 100%;
+    max-width: 440px;
+    padding: 0;
+    margin: 0;
+  }
+
+  .text-login {
+    text-align: center;
+  }
+
+  .text-login img {
+    max-width: 160px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .subtitle-login {
+    text-align: center;
+  }
+
+  .title-login {
+    font-size: 2rem;
+    text-align: center;
+  }
 }

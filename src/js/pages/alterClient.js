@@ -1,6 +1,7 @@
 import { showLoading, hideLoading } from "../services/loading.js"
 import { loadingClients } from "./listClient.js"
-import { maskPhone, maskCPF } from "../utils/format.js"
+// CORRIGIDO: importar setSelectionEndToInputEl que estava sendo usada sem importação
+import { maskPhone, maskCPF, setSelectionEndToInputEl } from "../utils/format.js"
 
 export async function alterClient(id) {
   const token = localStorage.getItem("authToken")
@@ -18,21 +19,17 @@ export async function alterClient(id) {
   } catch (error) {
     console.error("Erro ao buscar cliente para alteração:", error.response?.data || error);
     alert("Erro ao carregar dados do cliente. Veja o console.");
-    hideLoading();
-    return; // Sair se não conseguir buscar os dados
-  } finally {
-    console.log(clientData)
+    return;
   }
 
   dynamicModal.classList.add("is-active")
-
 
   modalContentContainer.innerHTML = `
       <button class="modal-close is-large" aria-label="close"></button>
       <div class="message">
         <div>Alterar o cliente: ${clientData.client}</div>
       </div>
-           <form class="card-content" id="alterForm">
+      <form class="card-content" id="alterForm">
         <div class="field">
           <p class="control has-icons-left has-icons-right">
             <input class="input" type="text" placeholder="Nome" id="clientInput" required value="${clientData.client}">
@@ -68,7 +65,6 @@ export async function alterClient(id) {
   const cpfInput = document.getElementById('cpfInput')
   const buttonAlter = document.getElementById('save')
 
-
   phoneInput.addEventListener('input', (e) => {
     const old = e.target.value;
     e.target.value = maskPhone(old);
@@ -81,9 +77,7 @@ export async function alterClient(id) {
     setSelectionEndToInputEl(e.target);
   });
 
-
   const handleAlter = async () => {
-
     const form = document.getElementById('alterForm');
 
     if (!form.reportValidity()) {

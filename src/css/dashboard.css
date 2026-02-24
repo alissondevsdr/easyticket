@@ -1,15 +1,28 @@
+/* ════════════════════════════════════════════════════════════
+   DASHBOARD — Responsivo
+════════════════════════════════════════════════════════════ */
+
 .dashboard {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
+  padding-top: 80px;
+  box-sizing: border-box;
 }
+
 .tabs {
-  margin: 20px;
-  position: absolute;
-  top: 20px;
+  margin: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: #14161a;
+  padding: 12px 0;
+  border-bottom: 1px solid #333;
   --bulma-tabs-link-color: #fff;
 }
 
@@ -24,4 +37,35 @@
 
 .input {
   --bulma-input-icon-focus-color: hsl(0deg 71.85% 42.95%);
+}
+
+/* ── Notebook (769px – 1280px) ─────────────────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1280px) {
+  .dashboard {
+    padding-top: 72px;
+  }
+}
+
+/* ── Mobile (≤ 768px) ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  html, body {
+    overflow-y: auto !important;
+  }
+
+  .dashboard {
+    min-height: 100vh;
+    padding-top: 70px;
+    padding-bottom: 30px;
+    justify-content: flex-start;
+  }
+
+  .tabs {
+    padding: 8px 0;
+  }
+
+  /* Reduz tamanho do texto das abas no mobile */
+  .tabs ul li a {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
 }
