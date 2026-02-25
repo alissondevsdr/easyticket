@@ -5,18 +5,17 @@ import { getClients } from "./listClient.js";
 let selectedPayment = null;
 
 // ─── Elementos do DOM ─────────────────────────────────────────────────────────
-const payments      = document.getElementById("payments");
-const cash          = document.getElementById("cash");
-const credit        = document.getElementById("credit");
-const debit         = document.getElementById("debit");
-const pix           = document.getElementById("pix");
-const valueInput    = document.getElementById("valueInput");
-const finalizeBtn   = document.querySelector(".pdv .button.is-primary");
-const metricRevenue = document.getElementById("metricRevenue");
-const metricSales   = document.getElementById("metricSales");
-const metricAvg     = document.getElementById("metricAvg");
+const payments       = document.getElementById("payments");
+const valueInput     = document.getElementById("valueInput");
+const finalizeBtn    = document.querySelector(".btn-finalize");
+const metricRevenue  = document.getElementById("metricRevenue");
+const metricSales    = document.getElementById("metricSales");
+const metricAvg      = document.getElementById("metricAvg");
+const summaryValue   = document.getElementById("pdv-summary-value");
 
-// ─── Select2: usa clientes já carregados em memória ───────────────────────────
+const paymentIds = ["cash", "credit", "debit", "pix"];
+
+// ─── Select2 ──────────────────────────────────────────────────────────────────
 function initSelect2() {
   if ($("#clientSelect").data("select2")) {
     $("#clientSelect").select2("destroy");
@@ -30,7 +29,7 @@ function initSelect2() {
   }));
 
   $("#clientSelect").select2({
-    placeholder: "Buscar cliente...",
+    placeholder: "Buscar cliente pelo nome ou CPF...",
     allowClear: true,
     width: "100%",
     dropdownParent: $(".pdv"),
@@ -51,48 +50,58 @@ document.addEventListener("saleModalOpened", () => {
 });
 
 // ─── Seleção de método de pagamento ──────────────────────────────────────────
-const paymentMap = { cash, credit, debit, pix };
-
 payments.addEventListener("click", function (event) {
-  const clicked = Object.keys(paymentMap).find((key) =>
-    event.target.classList.contains(key)
+  const clickedId = paymentIds.find(
+    (id) => event.target.closest(`#${id}`) !== null
   );
-  if (!clicked) return;
+  if (!clickedId) return;
 
-  const wasActive = paymentMap[clicked].classList.contains("active");
-  Object.values(paymentMap).forEach((el) => el.classList.remove("active"));
+  const clickedEl = document.getElementById(clickedId);
+  const wasActive = clickedEl.classList.contains("active");
+
+  // Remove active de todos
+  paymentIds.forEach((id) => document.getElementById(id).classList.remove("active"));
 
   if (!wasActive) {
-    paymentMap[clicked].classList.add("active");
-    selectedPayment = clicked;
+    clickedEl.classList.add("active");
+    selectedPayment = clickedId;
   } else {
     selectedPayment = null;
   }
 });
 
+// Remove seleção ao clicar fora
 document.addEventListener("click", function (event) {
   if (!payments.contains(event.target)) {
-    Object.values(paymentMap).forEach((el) => el.classList.remove("active"));
+    paymentIds.forEach((id) => document.getElementById(id)?.classList.remove("active"));
+    selectedPayment = null;
   }
 });
 
 // ─── Máscara de valor monetário ───────────────────────────────────────────────
 valueInput.addEventListener("input", function (e) {
-  let value = e.target.value.replace(/\D/g, "");
-  value = value.replace(/(\d)(\d{2})$/, "$1,$2");
-  value = value.replace(/(?=(\d{3})+(?!\d))/g, ".");
-  e.target.value = value ? "R$ " + value : "";
+  let raw = e.target.value.replace(/\D/g, "");
+  if (!raw) { e.target.value = ""; updateSummary(""); return; }
+  raw = raw.replace(/(\d)(\d{2})$/, "$1,$2");
+  raw = raw.replace(/(?=(\d{3})+(?!\d))/g, ".");
+  e.target.value = "R$ " + raw;
+  updateSummary(e.target.value);
 });
 
+function updateSummary(val) {
+  if (!summaryValue) return;
+  summaryValue.textContent = val || "R$ 0,00";
+}
+
 // ─── Finalizar venda ──────────────────────────────────────────────────────────
-finalizeBtn.addEventListener("click", async function () {
+finalizeBtn?.addEventListener("click", async function () {
   const clientId = $("#clientSelect").val();
   const rawValue = valueInput.value.replace(/\D/g, "");
   const value    = rawValue ? (parseInt(rawValue) / 100).toFixed(2) : null;
 
-  if (!clientId) { showToast("Selecione um cliente.", "warning"); return; }
+  if (!clientId)                   { showToast("Selecione um cliente.", "warning"); return; }
   if (!value || parseFloat(value) <= 0) { showToast("Informe um valor válido.", "warning"); return; }
-  if (!selectedPayment) { showToast("Selecione um método de pagamento.", "warning"); return; }
+  if (!selectedPayment)            { showToast("Selecione um método de pagamento.", "warning"); return; }
 
   const token = localStorage.getItem("authToken");
 
@@ -120,7 +129,8 @@ function resetPDV() {
   $("#clientSelect").val(null).trigger("change");
   valueInput.value = "";
   selectedPayment = null;
-  Object.values(paymentMap).forEach((el) => el.classList.remove("active"));
+  paymentIds.forEach((id) => document.getElementById(id)?.classList.remove("active"));
+  updateSummary("");
 }
 
 // ─── Métricas ─────────────────────────────────────────────────────────────────
@@ -139,28 +149,32 @@ export async function loadMetrics() {
 }
 
 function formatCurrency(value) {
-  return Number(value).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return Number(value)
+    .toFixed(2)
+    .replace(".", ",")
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function showToast(message, type = "success") {
-  const existing = document.getElementById("pdv-toast");
-  if (existing) existing.remove();
+  let toast = document.getElementById("et-toast-el");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "et-toast-el";
+    toast.className = "et-toast";
+    document.body.appendChild(toast);
+  }
 
-  const colors = { success: "#a5ff01", warning: "#f5a623", error: "#ff4d4d" };
-  const toast = document.createElement("div");
-  toast.id = "pdv-toast";
-  toast.textContent = message;
+  const icons = { success: "✓", warning: "⚠", error: "✕" };
+  toast.innerHTML = `<span>${icons[type] || "✓"}</span> ${message}`;
+  toast.className = `et-toast ${type}`;
 
-  Object.assign(toast.style, {
-    position: "fixed", bottom: "30px", left: "50%", transform: "translateX(-50%)",
-    background: colors[type] || colors.success,
-    color: type === "success" ? "#000" : "#fff",
-    padding: "12px 28px", borderRadius: "8px", fontWeight: "600",
-    fontSize: "0.95rem", zIndex: "9999", boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-    transition: "opacity 0.4s ease", opacity: "1",
+  requestAnimationFrame(() => {
+    toast.classList.add("show");
   });
 
-  document.body.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
 }

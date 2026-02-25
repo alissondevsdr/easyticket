@@ -4,22 +4,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>EasyTicket Dashboard</title>
+  <title>EasyTicket</title>
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
-  <link rel="stylesheet" href="../css/client.css">
-  <link rel="stylesheet" href="../css/dashboard.css">
-  <link rel="stylesheet" href="../css/login.css">
-  <link rel="stylesheet" href="../css/modal.css">
-  <link rel="stylesheet" href="../css/register.css">
-  <link rel="stylesheet" href="../css/tickets.css">
-  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/login.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/client.css">
+  <link rel="stylesheet" href="../css/modal.css">
+  <link rel="stylesheet" href="../css/register.css">
+  <link rel="stylesheet" href="../css/tickets.css">
+  <!-- Electron titlebar (só carrega se for Electron) -->
+  <link rel="stylesheet" href="../css/titlebar.css">
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/a1729d9d21.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 
@@ -48,13 +54,15 @@
       Bem vindo à <span class="detail">easy ticket</span>.
     </h1>
 
-    <!-- ── Cadastro ───────────────────────────────────────────────────────── -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- CADASTRO                                                           -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="modal-client none" id="createModal">
       <div class="title-client">Cadastro de clientes</div>
       <form class="card-content" id="clientForm">
         <div class="field">
           <p class="control has-icons-left">
-            <input class="input" type="text" placeholder="Nome" id="client" required>
+            <input class="input" type="text" placeholder="Nome completo" id="client" required>
             <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
           </p>
         </div>
@@ -78,22 +86,24 @@
       </form>
     </div>
 
-    <!-- ── Clientes ───────────────────────────────────────────────────────── -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- CLIENTES                                                           -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="modal-list-client none" id="listModal">
       <div class="toolbar">
         <input type="text" class="input search-input" id="searchClient"
-          placeholder="Buscar cliente por nome ou CPF">
-        <button class="adjust is-primary button-list" id="create">Cadastrar</button>
+          placeholder="Buscar por nome, CPF ou telefone...">
+        <button class="adjust is-primary button-list" id="create">+ Cadastrar</button>
       </div>
       <div class="adjust-table">
         <table class="table" id="tabelClient">
           <thead>
             <tr>
-              <th>Código</th>
+              <th>#</th>
               <th>Nome</th>
               <th>Telefone</th>
               <th>CPF</th>
-              <th>Funções</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody id="list"></tbody>
@@ -101,9 +111,12 @@
       </div>
     </div>
 
-    <!-- ── Ingressos / PDV ────────────────────────────────────────────────── -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- INGRESSOS / PDV                                                    -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="modal-sales none" id="saleModal">
 
+      <!-- Métricas -->
       <div class="dashboard-sales">
         <div class="item-dashboard">
           <span>Faturamento</span>
@@ -119,39 +132,71 @@
         </div>
       </div>
 
+      <!-- PDV -->
       <div class="pdv">
-        <h1>Venda</h1>
 
-        <div class="inputs-sale">
-          <select id="clientSelect" style="width:100%"></select>
-          <input class="input value-ticket" type="text" placeholder="R$ 0,00" id="valueInput">
+        <div class="pdv-header">
+          <h1>Ponto de Venda</h1>
+          <span class="pdv-badge">PDV</span>
         </div>
 
-        <div class="payments" id="payments">
-          <div class="cash flex-column payments-items" id="cash">
-            <i class="size2 cash fa-regular fa-money-bill-1"></i>
-            <span class="cash">Dinheiro</span>
+        <div class="pdv-body">
+
+          <!-- Cliente + Valor -->
+          <div class="pdv-row">
+            <div class="pdv-field">
+              <span class="pdv-label">Cliente</span>
+              <select id="clientSelect" style="width:100%"></select>
+            </div>
+            <div class="pdv-field">
+              <span class="pdv-label">Valor</span>
+              <input class="value-ticket" type="text" placeholder="R$ 0,00" id="valueInput" autocomplete="off">
+            </div>
           </div>
-          <div class="credit flex-column payments-items" id="credit">
-            <i class="size2 fa-solid fa-credit-card credit"></i>
-            <span class="credit">Crédito</span>
+
+          <!-- Método de pagamento -->
+          <div class="pdv-payments-section">
+            <span class="pdv-label">Forma de Pagamento</span>
+            <div class="payments" id="payments">
+              <div class="payments-items" id="cash">
+                <i class="size2 fa-regular fa-money-bill-1"></i>
+                <span>Dinheiro</span>
+              </div>
+              <div class="payments-items" id="credit">
+                <i class="size2 fa-solid fa-credit-card"></i>
+                <span>Crédito</span>
+              </div>
+              <div class="payments-items" id="debit">
+                <i class="size2 fa-solid fa-credit-card"></i>
+                <span>Débito</span>
+              </div>
+              <div class="payments-items" id="pix">
+                <i class="size2 fa-solid fa-qrcode"></i>
+                <span>PIX</span>
+              </div>
+            </div>
           </div>
-          <div class="debit flex-column payments-items" id="debit">
-            <i class="size2 fa-solid fa-credit-card debit"></i>
-            <span class="debit">Débito</span>
+
+        </div><!-- /.pdv-body -->
+
+        <div class="pdv-footer">
+          <div class="pdv-summary">
+            <span class="pdv-summary-label">Total da venda</span>
+            <div class="pdv-summary-value" id="pdv-summary-value">R$ 0,00</div>
           </div>
-          <div class="pix flex-column payments-items" id="pix">
-            <i class="size2 fa-solid fa-qrcode pix"></i>
-            <span class="pix">PIX</span>
-          </div>
+          <button class="btn-finalize" id="finalizeBtn">
+            <i class="fa-solid fa-bolt"></i>
+            Finalizar Venda
+          </button>
         </div>
 
-        <button class="button is-primary">Finalizar</button>
-      </div>
+      </div><!-- /.pdv -->
+    </div><!-- /.modal-sales -->
 
-    </div>
   </div><!-- /.dashboard -->
 
+  <!-- Scripts -->
+  <script type="module" src="../js/utils/titlebar.js"></script>
   <script type="module" src="../js/pages/menus.js"></script>
   <script type="module" src="../js/pages/createClient.js"></script>
   <script type="module" src="../js/utils/format.js"></script>
@@ -160,6 +205,6 @@
   <script type="module" src="../js/pages/alterClient.js"></script>
   <script type="module" src="../js/utils/search.js"></script>
   <script type="module" src="../js/pages/sales.js"></script>
-</body>
 
+</body>
 </html>

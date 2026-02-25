@@ -22,16 +22,24 @@ async function handleLogin(email, password) {
     const token = response.data.token
 
     localStorage.setItem('authToken', token)
-    console.log("Token armazenado com Axios:", token)
+    console.log("Token armazenado:", token)
 
-    window.location.href = '../src/pages/dashboard.html'
+    // Detecta se está rodando no Electron ou no browser
+    const isElectron = typeof window.electronAPI !== 'undefined';
+
+    if (isElectron) {
+      // No Electron: caminho absoluto a partir da raiz do projeto
+      window.location.href = './src/pages/dashboard.html';
+    } else {
+      // No browser normal
+      window.location.href = '../src/pages/dashboard.html';
+    }
 
     hideLoading(loginButton)
 
   } catch (error) {
     hideLoading(loginButton)
 
-    // CORRIGIDO: mensagens de erro mais descritivas por tipo de falha
     let mensagem = 'Erro'
 
     if (error.response) {

@@ -1,0 +1,87 @@
+/* ════════════════════════════════════════════════════════════
+   ELECTRON TITLEBAR CUSTOMIZADA
+════════════════════════════════════════════════════════════ */
+
+#et-titlebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  background: #0d0f14;
+  border-bottom: 1px solid #1e2230;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 9999;
+  -webkit-app-region: drag;   /* arrasta a janela */
+  user-select: none;
+}
+
+.et-tb-drag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 14px;
+  flex: 1;
+}
+
+.et-tb-logo {
+  width: auto !important;
+  height: 20px;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+.et-tb-title {
+  font-family: Poppins, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #5a6380;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.et-tb-controls {
+  display: flex;
+  -webkit-app-region: no-drag;  /* botões precisam de clique */
+}
+
+.et-tb-controls button {
+  width: 46px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  color: #8892a4;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.et-tb-controls button:hover {
+  background: #1e2230;
+  color: #fff;
+}
+
+#et-close:hover {
+  background: #c0392b !important;
+  color: #fff !important;
+}
+
+/* Empurra o conteúdo quando a titlebar está presente */
+body.has-electron-titlebar .tabs {
+  top: 36px !important;
+}
+
+body.has-electron-titlebar .dashboard {
+  padding-top: calc(80px + 36px);
+}
+
+@media (max-width: 768px) {
+  body.has-electron-titlebar .dashboard {
+    padding-top: calc(70px + 36px);
+  }
+}
