@@ -168,7 +168,21 @@
   box-shadow: 0 4px 20px #a5ff0140 !important;
 }
 
-/* Botão cancelar (is-danger) */
+/* Botão confirmar exclusão — vermelho */
+.buttons-modal .button.is-danger-confirm {
+  background: linear-gradient(135deg, #e03131, #c92a2a) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 4px 16px #e0313125 !important;
+}
+
+.buttons-modal .button.is-danger-confirm:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px #e0313145 !important;
+}
+
+/* Botão cancelar */
 .buttons-modal .button.is-danger,
 .buttons-modal .button.cancel {
   background: #1e2230 !important;

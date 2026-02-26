@@ -388,12 +388,6 @@
 }
 
 /* ── Globals mantidos ────────────────────────────────────── */
-.welcome {
-  font-size: 4rem;
-  color: white;
-  text-align: center;
-}
-.detail { color: #a5ff01; font-weight: bold; }
 .size   { font-size: 1.25rem; }
 
 /* ════════════════════════════════════════════════════════════

@@ -4,16 +4,17 @@ document.addEventListener('DOMContentLoaded', function () {
   const inputSearch = document.getElementById('searchClient');
   if (!inputSearch) return;
 
-  inputSearch.addEventListener('input', function (e) {
+  inputSearch.addEventListener('input', async function (e) {
     const value = e.target.value;
+
+    // getClients() é async — precisa de await
+    const clients = await getClients();
 
     // Campo vazio: exibe todos
     if (!value.trim()) {
-      listClients(getClients());
+      listClients(clients);
       return;
     }
-
-    const clients = getClients();
 
     // Lista ainda não carregou: ignora
     if (!clients || clients.length === 0) return;

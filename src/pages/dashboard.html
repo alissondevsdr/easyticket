@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="../css/tickets.css">
   <link rel="stylesheet" href="../css/dashboard-report.css">
   <link rel="stylesheet" href="../css/titlebar.css">
+  <link rel="stylesheet" href="../css/home.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/a1729d9d21.js" crossorigin="anonymous"></script>
@@ -44,6 +45,7 @@
     <!-- ── Menu ──────────────────────────────────────────────────────────── -->
     <div class="tabs is-toggle is-toggle-rounded is-centered">
       <ul id="menu">
+        <li class="is-active"><a>Início</a></li>
         <li><a>Cadastro</a></li>
         <li><a>Clientes</a></li>
         <li><a>Ingressos</a></li>
@@ -52,10 +54,99 @@
       </ul>
     </div>
 
-    <!-- ── Boas-vindas ───────────────────────────────────────────────────── -->
-    <h1 class="welcome" id="welcome">
-      Bem vindo à <span class="detail">easy ticket</span>.
-    </h1>
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- INÍCIO / HOME                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="modal-home" id="homeModal">
+
+      <!-- Hero -->
+      <div class="home-hero">
+        <div class="home-hero-text">
+          <span class="home-hero-label">Painel de controle</span>
+          <h1 class="home-hero-title">
+            Bem vindo à <span class="home-hero-accent">Easy Ticket</span>
+          </h1>
+          <p class="home-hero-sub">Gerencie cadastros, vendas e relatórios do seu evento em um só lugar.</p>
+        </div>
+        <div class="home-hero-badge">
+          <i class="fa-solid fa-ticket"></i>
+        </div>
+      </div>
+
+      <!-- KPIs rápidos -->
+      <div class="home-kpi-row">
+        <div class="home-kpi">
+          <div class="home-kpi-icon"><i class="fa-solid fa-users"></i></div>
+          <span class="home-kpi-label">Clientes cadastrados</span>
+          <div class="home-kpi-value" id="homeKpiClients">0</div>
+        </div>
+        <div class="home-kpi">
+          <div class="home-kpi-icon"><i class="fa-solid fa-bolt"></i></div>
+          <span class="home-kpi-label">Vendas realizadas</span>
+          <div class="home-kpi-value" id="homeKpiSales">0</div>
+        </div>
+        <div class="home-kpi">
+          <div class="home-kpi-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+          <span class="home-kpi-label">Faturamento total</span>
+          <div class="home-kpi-value" id="homeKpiRevenue">R$ 0,00</div>
+        </div>
+        <div class="home-kpi">
+          <div class="home-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+          <span class="home-kpi-label">Ticket médio</span>
+          <div class="home-kpi-value" id="homeKpiAvg">R$ 0,00</div>
+        </div>
+      </div>
+
+      <!-- Atalhos -->
+      <div class="home-shortcuts">
+
+        <div class="home-shortcut" data-target="Cadastro">
+          <div class="home-shortcut-icon">
+            <i class="fa-solid fa-user-plus"></i>
+          </div>
+          <div class="home-shortcut-info">
+            <span class="home-shortcut-title">Cadastro</span>
+            <span class="home-shortcut-desc">Registre novos participantes no evento</span>
+          </div>
+          <i class="fa-solid fa-chevron-right home-shortcut-arrow"></i>
+        </div>
+
+        <div class="home-shortcut" data-target="Clientes">
+          <div class="home-shortcut-icon">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <div class="home-shortcut-info">
+            <span class="home-shortcut-title">Clientes</span>
+            <span class="home-shortcut-desc">Consulte e gerencie a base de participantes</span>
+          </div>
+          <i class="fa-solid fa-chevron-right home-shortcut-arrow"></i>
+        </div>
+
+        <div class="home-shortcut" data-target="Ingressos">
+          <div class="home-shortcut-icon">
+            <i class="fa-solid fa-ticket"></i>
+          </div>
+          <div class="home-shortcut-info">
+            <span class="home-shortcut-title">Ingressos</span>
+            <span class="home-shortcut-desc">Ponto de venda — registre novas vendas</span>
+          </div>
+          <i class="fa-solid fa-chevron-right home-shortcut-arrow"></i>
+        </div>
+
+        <div class="home-shortcut" data-target="Relatórios">
+          <div class="home-shortcut-icon">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div class="home-shortcut-info">
+            <span class="home-shortcut-title">Relatórios</span>
+            <span class="home-shortcut-desc">Métricas, gráficos e análise de desempenho</span>
+          </div>
+          <i class="fa-solid fa-chevron-right home-shortcut-arrow"></i>
+        </div>
+
+      </div><!-- /.home-shortcuts -->
+
+    </div><!-- /.modal-home -->
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- CADASTRO                                                           -->
@@ -157,13 +248,21 @@
     <!-- CLIENTES                                                           -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="modal-list-client none" id="listModal">
+
       <div class="toolbar">
-        <input type="text" class="input search-input" id="searchClient"
-          placeholder="Buscar por nome, CPF ou telefone...">
-        <button class="adjust is-primary button-list" id="create">+ Cadastrar</button>
+        <div class="search-wrap">
+          <input type="text" class="search-input" id="searchClient"
+            placeholder="Buscar por nome, CPF ou telefone...">
+          <i class="search-icon fas fa-magnifying-glass"></i>
+        </div>
+        <button class="button-list" id="create">
+          <i class="fas fa-user-plus"></i>
+          Cadastrar
+        </button>
       </div>
+
       <div class="adjust-table">
-        <table class="table" id="tabelClient">
+        <table id="tabelClient">
           <thead>
             <tr>
               <th>#</th>
@@ -176,6 +275,7 @@
           <tbody id="list"></tbody>
         </table>
       </div>
+
     </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -399,6 +499,7 @@
 
   <!-- Scripts -->
   <script type="module" src="../js/utils/titlebar.js"></script>
+  <script type="module" src="../js/pages/home.js"></script>
   <script type="module" src="../js/pages/menus.js"></script>
   <script type="module" src="../js/pages/createClient.js"></script>
   <script type="module" src="../js/utils/format.js"></script>

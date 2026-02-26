@@ -4,35 +4,37 @@ import { showLoading, hideLoading } from "../services/loading.js";
 export async function deletClient(id) {
   const token = localStorage.getItem("authToken")
 
-  const dynamicModal = document.getElementById('modal')
+  const dynamicModal          = document.getElementById('modal')
   const modalContentContainer = document.getElementById('modalContentContainer')
 
   dynamicModal.classList.add("is-active")
 
   if (id === 0) {
     modalContentContainer.innerHTML = `
-      <button class="modal-close is-large" aria-label="close"></button>
-      <div class="message">
-        <div>Exclusão não permitida.</div>
+      <div class="modal-header">
+        <div class="message">Ação não permitida</div>
+        <button class="modal-close is-large" aria-label="close"></button>
       </div>
       <div class="buttons-modal">
         <button class="button is-primary no-delete">Ok</button>
       </div>`
   } else {
     modalContentContainer.innerHTML = `
-      <button class="modal-close is-large" aria-label="close"></button>
-      <div class="message">
-        <div>Deseja excluir o cliente?</div>
+      <div class="modal-header">
+        <div class="message">Deseja excluir o cliente?</div>
+        <button class="modal-close is-large" aria-label="close"></button>
       </div>
       <div class="buttons-modal">
-        <button class="button is-primary" id="delete">Sim</button>
-        <button class="button is-danger no-delete">Não</button>
+        <button class="button is-danger-confirm" id="delete">
+          <i class="fa-solid fa-trash" style="margin-right:6px"></i>
+          Sim, excluir
+        </button>
+        <button class="button no-delete cancel">Cancelar</button>
       </div>`
   }
 
-
-
   const buttonDelete = document.getElementById('delete')
+  if (!buttonDelete) return
 
   const handleDelete = async () => {
     try {
@@ -40,10 +42,8 @@ export async function deletClient(id) {
       await axios.delete(`http://localhost:3001/clients/${id}`, {
         headers: { Authorization: token }
       });
-
       loadingClients();
-
-      modal.classList.remove("is-active");
+      dynamicModal.classList.remove("is-active");
     } catch (error) {
       console.error("Erro ao deletar cliente:", error.response?.data || error);
       alert("Erro ao deletar cliente. Veja o console.");
@@ -54,5 +54,4 @@ export async function deletClient(id) {
   };
 
   buttonDelete.addEventListener("click", handleDelete);
-
 }
