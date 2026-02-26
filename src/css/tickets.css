@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════
-   INGRESSOS / PDV — Redesign v2
+   INGRESSOS / PDV
 ════════════════════════════════════════════════════════════ */
 
 /* ── Layout geral ────────────────────────────────────────── */
@@ -15,7 +15,9 @@
   min-height: calc(100vh - 140px);
 }
 
-/* ── Métricas ─────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   MÉTRICAS
+════════════════════════════════════════════════════════════ */
 .dashboard-sales {
   display: flex;
   gap: 16px;
@@ -50,9 +52,7 @@
   opacity: 0.6;
 }
 
-.item-dashboard:hover {
-  border-color: #a5ff0140;
-}
+.item-dashboard:hover { border-color: #a5ff0140; }
 
 .item-dashboard span {
   font-size: 0.7rem;
@@ -70,7 +70,9 @@
   line-height: 1;
 }
 
-/* ── PDV container ────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   PDV CONTAINER
+════════════════════════════════════════════════════════════ */
 .pdv {
   background: linear-gradient(160deg, #1a1d27 0%, #14161e 100%);
   width: 100%;
@@ -79,18 +81,19 @@
   border: 1px solid #252836;
   display: flex;
   flex-direction: column;
-  gap: 0;
-  padding: 0;
   box-sizing: border-box;
-  overflow: hidden;
+  /* overflow: hidden REMOVIDO — estava cortando o dropdown do Select2 */
 }
 
+/* ── Header ──────────────────────────────────────────────── */
 .pdv-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 24px 32px 20px;
   border-bottom: 1px solid #1e2230;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
 }
 
 .pdv-header h1 {
@@ -102,6 +105,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  margin: 0;
 }
 
 .pdv-header h1::before {
@@ -126,6 +130,7 @@
   text-transform: uppercase;
 }
 
+/* ── Body ────────────────────────────────────────────────── */
 .pdv-body {
   padding: 28px 32px;
   display: flex;
@@ -133,7 +138,7 @@
   gap: 24px;
 }
 
-/* ── Linha cliente + valor ────────────────────────────────── */
+/* ── Linha cliente + valor ───────────────────────────────── */
 .pdv-row {
   display: grid;
   grid-template-columns: 1fr 200px;
@@ -155,31 +160,177 @@
   color: #5a6380;
 }
 
-.pdv-field .input,
-.pdv-field .select2-container {
-  width: 100% !important;
-}
-
+/* ── Input de valor ──────────────────────────────────────── */
 .value-ticket {
   width: 100% !important;
   background: #0d0f14 !important;
   border: 1px solid #252836 !important;
   border-radius: 10px !important;
   color: #fff !important;
+  font-family: 'Poppins', sans-serif !important;
   font-size: 1.05rem !important;
   font-weight: 600 !important;
   height: 42px !important;
   padding: 0 14px !important;
-  transition: border-color 0.2s !important;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+  outline: none !important;
 }
 
+.value-ticket::placeholder { color: #5a6380 !important; }
+
 .value-ticket:focus {
-  outline: none !important;
   border-color: #a5ff0160 !important;
   box-shadow: 0 0 0 3px #a5ff0115 !important;
 }
 
-/* ── Pagamentos ───────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   SELECT2 — TEMA ESCURO ALINHADO AO PDV
+   dropdownParent agora é #saleModal, não .pdv
+════════════════════════════════════════════════════════════ */
+
+/* ── Caixa selecionada (fechada) ─────────────────────────── */
+.select2-container--default .select2-selection--single {
+  background-color: #0d0f14 !important;
+  border: 1px solid #252836 !important;
+  border-radius: 10px !important;
+  height: 42px !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+  outline: none !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--open  .select2-selection--single {
+  border-color: #a5ff0160 !important;
+  box-shadow: 0 0 0 3px #a5ff0115 !important;
+}
+
+/* Texto renderizado dentro da caixa */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #ffffff !important;
+  line-height: 42px !important;
+  padding-left: 14px !important;
+  padding-right: 36px !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.88rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Placeholder */
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: #5a6380 !important;
+  font-weight: 400 !important;
+}
+
+/* Seta */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 42px !important;
+  width: 32px !important;
+  right: 4px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+  border-color: #5a6380 transparent transparent transparent !important;
+  transition: border-color 0.2s !important;
+}
+
+.select2-container--default.select2-container--open
+  .select2-selection--single .select2-selection__arrow b {
+  border-color: transparent transparent #a5ff01 transparent !important;
+}
+
+/* Botão X de limpar */
+.select2-container--default .select2-selection--single .select2-selection__clear {
+  color: #5a6380 !important;
+  font-size: 1.1rem !important;
+  line-height: 42px !important;
+  margin-right: 6px !important;
+  transition: color 0.15s !important;
+  float: right !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__clear:hover {
+  color: #e03131 !important;
+}
+
+/* ── Dropdown (lista aberta) ─────────────────────────────── */
+.select2-dropdown {
+  background-color: #161924 !important;
+  border: 1px solid #252836 !important;
+  border-radius: 12px !important;
+  font-family: 'Poppins', sans-serif !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6) !important;
+  margin-top: 4px !important;
+  overflow: hidden;
+  z-index: 9999 !important;
+}
+
+/* Campo de busca dentro do dropdown */
+.select2-container--default .select2-search--dropdown {
+  padding: 10px !important;
+  background-color: #161924 !important;
+  border-bottom: 1px solid #1e2230 !important;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  background-color: #0d0f14 !important;
+  border: 1px solid #252836 !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.85rem !important;
+  padding: 8px 12px !important;
+  outline: none !important;
+  width: 100% !important;
+  box-sizing: border-box;
+  transition: border-color 0.2s !important;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+  border-color: #a5ff0160 !important;
+  box-shadow: 0 0 0 2px #a5ff0115 !important;
+}
+
+/* Lista de resultados */
+.select2-container--default .select2-results {
+  background-color: #161924 !important;
+}
+
+.select2-container--default .select2-results__option {
+  color: #c5cce0 !important;
+  background-color: #161924 !important;
+  padding: 10px 14px !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.85rem !important;
+  transition: background 0.12s !important;
+}
+
+/* Hover / destacado */
+.select2-container--default .select2-results__option--highlighted[aria-selected],
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+  background-color: #a5ff0118 !important;
+  color: #a5ff01 !important;
+}
+
+/* Selecionado */
+.select2-container--default .select2-results__option[aria-selected="true"] {
+  background-color: #1e2230 !important;
+  color: #a5ff01 !important;
+}
+
+/* Sem resultados / pesquisando */
+.select2-container--default .select2-results__option--disabled,
+.select2-results__message {
+  color: #5a6380 !important;
+  font-style: italic !important;
+  background-color: #161924 !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   PAGAMENTOS
+════════════════════════════════════════════════════════════ */
 .pdv-payments-section {
   display: flex;
   flex-direction: column;
@@ -206,6 +357,7 @@
   transition: all 0.18s ease;
   position: relative;
   overflow: hidden;
+  user-select: none;
 }
 
 .payments-items::after {
@@ -223,9 +375,7 @@
   box-shadow: 0 4px 20px #a5ff0115;
 }
 
-.payments-items:hover::after {
-  opacity: 1;
-}
+.payments-items:hover::after { opacity: 1; }
 
 .payments-items span {
   font-size: 0.72rem;
@@ -248,25 +398,20 @@
   box-shadow: 0 0 20px #a5ff0120, inset 0 0 20px #a5ff0108;
 }
 
-.payments-items.active::after {
-  opacity: 1;
-}
+.payments-items.active::after      { opacity: 1; }
+.payments-items.active span,
+.payments-items.active .size2,
+.payments-items:hover span,
+.payments-items:hover .size2       { color: #a5ff01; }
 
-.payments-items.active span {
-  color: #a5ff01;
-}
-
-.payments-items.active .size2 {
-  color: #a5ff01;
-}
-
-.payments-items:hover span { color: #a5ff01; }
-.payments-items:hover .size2 { color: #a5ff01; }
-
-/* ── Footer do PDV ────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   FOOTER DO PDV
+════════════════════════════════════════════════════════════ */
 .pdv-footer {
   padding: 20px 32px 28px;
   border-top: 1px solid #1e2230;
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -303,6 +448,7 @@
   border-radius: 12px !important;
   padding: 0 36px !important;
   height: 50px !important;
+  font-family: 'Poppins', sans-serif !important;
   font-size: 0.9rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.08em !important;
@@ -313,141 +459,16 @@
   display: flex !important;
   align-items: center !important;
   gap: 8px !important;
-  width: auto !important;
+  white-space: nowrap;
 }
 
-.btn-finalize:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 30px #a5ff0150 !important;
-}
+.btn-finalize:hover  { transform: translateY(-2px) !important; box-shadow: 0 8px 30px #a5ff0150 !important; }
+.btn-finalize:active { transform: translateY(0) !important; }
+.btn-finalize.is-loading { opacity: 0.7 !important; }
 
-.btn-finalize:active {
-  transform: translateY(0) !important;
-}
-
-.btn-finalize.is-loading {
-  opacity: 0.7 !important;
-}
-
-/* ── SELECT2 TEMA ESCURO (dentro do PDV) ─────────────────── */
-.select2-container--default .select2-selection--single {
-  background-color: #0d0f14 !important;
-  border: 1px solid #252836 !important;
-  border-radius: 10px !important;
-  height: 42px !important;
-  transition: border-color 0.2s !important;
-}
-
-.select2-container--default.select2-container--focus .select2-selection--single,
-.select2-container--default.select2-container--open .select2-selection--single {
-  border-color: #a5ff0160 !important;
-  box-shadow: 0 0 0 3px #a5ff0115 !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__rendered {
-  color: #ffffff !important;
-  line-height: 42px !important;
-  padding-left: 14px !important;
-  padding-right: 32px !important;
-  font-family: Poppins, sans-serif !important;
-  font-size: 0.88rem !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__placeholder {
-  color: #5a6380 !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-  height: 42px !important;
-  width: 30px !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__arrow b {
-  border-color: #5a6380 transparent transparent transparent !important;
-}
-
-.select2-container--default.select2-container--open
-  .select2-selection--single
-  .select2-selection__arrow b {
-  border-color: transparent transparent #a5ff01 transparent !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__clear {
-  color: #5a6380 !important;
-  font-size: 1.1rem !important;
-  margin-right: 8px !important;
-  line-height: 42px !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__clear:hover {
-  color: #ff4d4d !important;
-}
-
-.select2-dropdown {
-  background-color: #161924 !important;
-  border: 1px solid #252836 !important;
-  border-radius: 12px !important;
-  font-family: Poppins, sans-serif !important;
-  z-index: 9999 !important;
-  box-shadow: 0 20px 60px #00000060 !important;
-  margin-top: 4px !important;
-}
-
-.select2-container--default .select2-search--dropdown {
-  background-color: #161924 !important;
-  padding: 10px !important;
-  border-bottom: 1px solid #1e2230 !important;
-}
-
-.select2-container--default .select2-search--dropdown .select2-search__field {
-  background-color: #0d0f14 !important;
-  border: 1px solid #252836 !important;
-  color: #fff !important;
-  border-radius: 8px !important;
-  padding: 8px 12px !important;
-  font-family: Poppins, sans-serif !important;
-  font-size: 0.85rem !important;
-  outline: none !important;
-}
-
-.select2-container--default .select2-results {
-  background-color: #161924 !important;
-  border-radius: 0 0 12px 12px !important;
-}
-
-.select2-container--default .select2-results__option {
-  color: #c5cce0 !important;
-  background-color: #161924 !important;
-  padding: 10px 14px !important;
-  font-size: 0.85rem !important;
-  font-family: Poppins, sans-serif !important;
-  transition: background 0.1s !important;
-}
-
-.select2-container--default
-  .select2-results__option--highlighted[aria-selected],
-.select2-container--default
-  .select2-results__option--highlighted.select2-results__option--selectable {
-  background-color: #a5ff0118 !important;
-  color: #a5ff01 !important;
-}
-
-.select2-container--default .select2-results__option[aria-selected="true"] {
-  background-color: #1e2230 !important;
-  color: #a5ff01 !important;
-}
-
-.select2-container--default .select2-results__option--disabled,
-.select2-results__message {
-  color: #5a6380 !important;
-  font-style: italic !important;
-  background-color: #161924 !important;
-}
-
-/* ── Toast ────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   TOAST
+════════════════════════════════════════════════════════════ */
 .et-toast {
   position: fixed;
   bottom: 30px;
@@ -455,7 +476,7 @@
   transform: translateX(-50%) translateY(10px);
   padding: 13px 28px;
   border-radius: 12px;
-  font-family: Poppins, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: 0.88rem;
   z-index: 9999;
@@ -468,37 +489,34 @@
   gap: 10px;
 }
 
-.et-toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
+.et-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .et-toast.success { background: #a5ff01; color: #0d0f14; }
 .et-toast.warning { background: #f59f00; color: #0d0f14; }
-.et-toast.error   { background: #e03131; color: #fff; }
+.et-toast.error   { background: #e03131; color: #fff;    }
 
-/* ── Responsivo Notebook ──────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVO
+════════════════════════════════════════════════════════════ */
 @media (min-width: 769px) and (max-width: 1280px) {
-  .pdv { max-width: 720px; }
+  .pdv             { max-width: 720px; }
   .dashboard-sales { max-width: 720px; }
-  .payments { grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .pdv-body { padding: 22px 26px; gap: 20px; }
-  .pdv-footer { padding: 18px 26px 24px; }
-  .pdv-header { padding: 20px 26px 16px; }
+  .payments        { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .pdv-body        { padding: 22px 26px; gap: 20px; }
+  .pdv-footer      { padding: 18px 26px 24px; }
+  .pdv-header      { padding: 20px 26px 16px; }
 }
 
-/* ── Responsivo Mobile ────────────────────────────────────── */
 @media (max-width: 768px) {
-  .modal-sales { padding: 16px 12px 32px; gap: 16px; }
-  .pdv-row { grid-template-columns: 1fr; }
-  .payments { grid-template-columns: repeat(2, 1fr); }
-  .pdv-body { padding: 18px 18px; gap: 18px; }
-  .pdv-header { padding: 16px 18px; }
-  .pdv-footer {
+  .modal-sales   { padding: 16px 12px 32px; gap: 16px; }
+  .pdv-row       { grid-template-columns: 1fr; }
+  .payments      { grid-template-columns: repeat(2, 1fr); }
+  .pdv-body      { padding: 18px; gap: 18px; }
+  .pdv-header    { padding: 16px 18px; }
+  .pdv-footer    {
     flex-direction: column;
     align-items: stretch;
     padding: 16px 18px 20px;
   }
-  .btn-finalize { width: 100% !important; justify-content: center !important; }
-  .item-dashboard { min-width: 120px; }
+  .btn-finalize  { width: 100% !important; justify-content: center !important; }
+  .item-dashboard{ min-width: 120px; }
 }

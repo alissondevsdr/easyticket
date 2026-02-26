@@ -1,26 +1,143 @@
 /* ════════════════════════════════════════════════════════════
-   CLIENTES — Responsivo
+   CLIENTES — Redesign v2 (alinhado ao PDV)
 ════════════════════════════════════════════════════════════ */
 
+/* ── Layout geral ────────────────────────────────────────── */
 .modal-list-client {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   align-items: center;
+  gap: 20px;
   width: 100%;
-  padding: 0 16px;
+  padding: 24px 24px 40px;
   box-sizing: border-box;
+  min-height: calc(100vh - 140px);
 }
 
-.modal-list-client table {
-  padding: 30px;
-  table-layout: fixed;
+/* ── Toolbar (busca + botão) ─────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   width: 100%;
   max-width: 1100px;
-  margin: 0 auto;
 }
 
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.search-wrap .search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #5a6380;
+  font-size: 0.85rem;
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+.search-input {
+  width: 100%;
+  background: #0d0f14 !important;
+  border: 1px solid #252836 !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.9rem !important;
+  height: 44px !important;
+  padding: 0 14px 0 40px !important;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+  outline: none !important;
+}
+
+.search-input::placeholder {
+  color: #5a6380 !important;
+}
+
+.search-input:focus {
+  border-color: #a5ff0160 !important;
+  box-shadow: 0 0 0 3px #a5ff0115 !important;
+}
+
+.search-input:focus ~ .search-icon {
+  color: #a5ff01;
+}
+
+.button-list {
+  background: linear-gradient(135deg, #a5ff01, #7acc00) !important;
+  color: #0d0f14 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  height: 44px !important;
+  padding: 0 20px !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.button-list:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px #a5ff0140 !important;
+}
+
+.button-list:active {
+  transform: translateY(0);
+}
+
+/* ── Container da tabela ─────────────────────────────────── */
+.adjust-table {
+  width: 100%;
+  max-width: 1100px;
+  max-height: 580px;
+  height: 580px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  border-radius: 16px;
+  border: 1px solid #252836;
+  background: linear-gradient(160deg, #1a1d27 0%, #14161e 100%);
+
+  /* Scrollbar customizada */
+  scrollbar-width: thin;
+  scrollbar-color: #252836 transparent;
+}
+
+.adjust-table::-webkit-scrollbar {
+  width: 6px;
+}
+.adjust-table::-webkit-scrollbar-track {
+  background: transparent;
+}
+.adjust-table::-webkit-scrollbar-thumb {
+  background: #252836;
+  border-radius: 4px;
+}
+.adjust-table::-webkit-scrollbar-thumb:hover {
+  background: #a5ff0140;
+}
+
+/* ── Tabela ──────────────────────────────────────────────── */
+.modal-list-client table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* ── Cabeçalho ───────────────────────────────────────────── */
 thead {
   position: sticky;
   top: 0;
@@ -28,69 +145,122 @@ thead {
 }
 
 thead tr {
-  background-color: #333333;
+  background: #0d0f14;
+  border-bottom: 1px solid #252836;
 }
 
-.adjust-table {
-  padding: 20px;
-  max-height: 580px;
-  height: 580px;
-  overflow-y: auto;
-  width: 100%;
-  max-width: 1100px;
-  background-color: #333333;
-  border-radius: 10px;
-  box-sizing: border-box;
+thead th {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: #5a6380 !important;
+  padding: 14px 18px !important;
+  background: #0d0f14 !important;
+  border: none !important;
+  white-space: nowrap;
 }
 
+/* ── Linhas do body ──────────────────────────────────────── */
+tbody tr {
+  border-bottom: 1px solid #1e2230;
+  transition: background 0.15s;
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: #a5ff0106;
+}
+
+tbody td {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.88rem !important;
+  font-weight: 400 !important;
+  color: #c8cdd8 !important;
+  padding: 14px 18px !important;
+  background: transparent !important;
+  border: none !important;
+  vertical-align: middle !important;
+}
+
+/* Coluna # menor */
+thead th:first-child,
+tbody td:first-child {
+  width: 52px;
+  color: #5a6380 !important;
+  font-size: 0.8rem !important;
+}
+
+/* ── Ícones de ação ──────────────────────────────────────── */
 .icons {
   display: flex;
-  font-size: 1.25rem;
-  gap: 20px;
+  align-items: center;
+  gap: 16px;
   cursor: pointer;
 }
 
+.icon-edit,
+.icon-delete {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+
+.icon-edit {
+  color: #5a6380;
+  background: #1e2230;
+}
+
+.icon-edit:hover {
+  color: #a5ff01;
+  background: #a5ff0115;
+  transform: translateY(-1px);
+}
+
+.icon-delete {
+  color: #5a6380;
+  background: #1e2230;
+}
+
+.icon-delete:hover {
+  color: #e03131;
+  background: #e0313115;
+  transform: translateY(-1px);
+}
+
+/* ── Colunas com nowrap ──────────────────────────────────── */
 #tabelClient th:nth-child(3),
 #tabelClient td:nth-child(3),
 #tabelClient th:nth-child(4),
 #tabelClient td:nth-child(4) {
-  min-width: 150px;
   white-space: nowrap;
 }
 
-.search-input {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  flex: 1;
-  min-width: 0;
+/* ── Estado vazio ────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #5a6380;
+  font-size: 0.9rem;
 }
 
-.button {
-  width: auto;
+.empty-state i {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  display: block;
+  color: #252836;
 }
 
-.toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  width: 100%;
-  max-width: 1100px;
-}
-
-.button-list {
-  background-color: #a5ff01;
-  color: #333333;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 1rem;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* ── Full HD+ (> 1920px) ───────────────────────────────────────────────────── */
+/* ── Full HD+ (> 1920px) ─────────────────────────────────── */
 @media (min-width: 1921px) {
   .adjust-table {
     max-height: 700px;
@@ -98,31 +268,34 @@ thead tr {
   }
 }
 
-/* ── Notebook (769px – 1280px) ─────────────────────────────────────────────── */
+/* ── Notebook (769px – 1280px) ───────────────────────────── */
 @media (min-width: 769px) and (max-width: 1280px) {
+  .modal-list-client {
+    padding: 16px 16px 32px;
+    gap: 14px;
+  }
+
   .adjust-table {
     max-height: 460px;
     height: 460px;
-    padding: 14px;
   }
 
-  .modal-list-client {
-    margin-top: 10px;
+  thead th,
+  tbody td {
+    padding: 12px 14px !important;
   }
 
-  /* Esconde CPF em telas menores para ganhar espaço */
   #tabelClient th:nth-child(4),
   #tabelClient td:nth-child(4) {
     display: none;
   }
 }
 
-/* ── Mobile (≤ 768px) ──────────────────────────────────────────────────────── */
+/* ── Mobile (≤ 768px) ────────────────────────────────────── */
 @media (max-width: 768px) {
   .modal-list-client {
-    margin-top: 8px;
-    padding: 0 8px;
-    gap: 10px;
+    padding: 16px 12px 32px;
+    gap: 12px;
   }
 
   .toolbar {
@@ -130,46 +303,31 @@ thead tr {
     gap: 8px;
   }
 
-  .search-input {
-    font-size: 0.9rem;
-  }
-
   .button-list {
-    font-size: 0.85rem;
-    padding: 8px 12px;
+    font-size: 0.78rem !important;
+    padding: 0 14px !important;
   }
 
   .adjust-table {
     height: auto;
     max-height: 55vh;
-    padding: 10px 6px;
-  }
-
-  /* Tabela rolável horizontalmente no mobile */
-  .modal-list-client .adjust-table {
     overflow-x: auto;
+    border-radius: 12px;
   }
 
   .modal-list-client table {
-    padding: 0;
     min-width: 500px;
   }
 
-  /* Esconde Telefone e CPF no mobile — exibe só código, nome e ações */
+  thead th,
+  tbody td {
+    padding: 10px 12px !important;
+  }
+
   #tabelClient th:nth-child(3),
   #tabelClient td:nth-child(3),
   #tabelClient th:nth-child(4),
   #tabelClient td:nth-child(4) {
     display: none;
-  }
-
-  .icons {
-    font-size: 1rem;
-    gap: 14px;
-  }
-
-  /* Ajusta padding das células */
-  .table {
-    --bulma-table-cell-padding: 0.4em 0.75em;
   }
 }

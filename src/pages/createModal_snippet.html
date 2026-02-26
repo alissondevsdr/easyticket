@@ -1,0 +1,104 @@
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- CADASTRO                                                           -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="modal-client none" id="createModal">
+
+  <!-- ── Métricas ────────────────────────────────────────────────────── -->
+  <div class="dashboard-register">
+    <div class="register-metric">
+      <span class="metric-label">Clientes hoje</span>
+      <div class="metric-value" id="metricToday">0</div>
+    </div>
+    <div class="register-metric">
+      <span class="metric-label">Total cadastrado</span>
+      <div class="metric-value" id="metricTotal">0</div>
+    </div>
+    <div class="register-metric">
+      <span class="metric-label">Último cadastro</span>
+      <div class="metric-value" id="metricLast" style="font-size:1rem; padding-top:4px">—</div>
+    </div>
+  </div>
+
+  <!-- ── Card do formulário ───────────────────────────────────────────── -->
+  <div class="register-card">
+
+    <div class="register-header">
+      <h1>Cadastro de Clientes</h1>
+      <span class="register-badge">Novo</span>
+    </div>
+
+    <form id="clientForm">
+      <div class="register-body">
+
+        <!-- Tipo de cliente -->
+        <div class="reg-field">
+          <span class="reg-label">Tipo de cliente</span>
+          <div class="reg-type-grid" id="clientTypeGrid">
+            <div class="reg-type-item active" data-type="geral">
+              <i class="type-icon fa-solid fa-users"></i>
+              <span class="type-label">Geral</span>
+            </div>
+            <div class="reg-type-item" data-type="vip">
+              <i class="type-icon fa-solid fa-star"></i>
+              <span class="type-label">VIP</span>
+            </div>
+            <div class="reg-type-item" data-type="cortesia">
+              <i class="type-icon fa-solid fa-ticket"></i>
+              <span class="type-label">Cortesia</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reg-divider"><span>Dados pessoais</span></div>
+
+        <!-- Nome + Telefone -->
+        <div class="register-row">
+          <div class="reg-field">
+            <label class="reg-label" for="client">Nome completo</label>
+            <div class="reg-input-wrap">
+              <input type="text" id="client" placeholder="Ex: João da Silva" required autocomplete="off">
+              <i class="reg-icon fas fa-user"></i>
+            </div>
+            <span class="reg-hint" id="hintClient"></span>
+          </div>
+
+          <div class="reg-field">
+            <label class="reg-label" for="phone">Telefone</label>
+            <div class="reg-input-wrap">
+              <input type="text" id="phone" placeholder="(00) 00000-0000" required autocomplete="off">
+              <i class="reg-icon fas fa-phone"></i>
+            </div>
+            <span class="reg-hint" id="hintPhone"></span>
+          </div>
+        </div>
+
+        <!-- CPF (linha inteira) -->
+        <div class="register-row full">
+          <div class="reg-field">
+            <label class="reg-label" for="cpf">CPF</label>
+            <div class="reg-input-wrap">
+              <input type="text" id="cpf" placeholder="000.000.000-00" required autocomplete="off">
+              <i class="reg-icon fas fa-address-card"></i>
+            </div>
+            <span class="reg-hint" id="hintCpf"></span>
+          </div>
+        </div>
+
+      </div><!-- /.register-body -->
+
+      <!-- Footer com preview + botão -->
+      <div class="register-footer">
+        <div class="reg-preview">
+          <span class="reg-preview-label">Cadastrando</span>
+          <div class="reg-preview-name" id="regPreviewName">Aguardando nome...</div>
+        </div>
+        <button type="submit" class="btn-register" id="createButton">
+          <i class="fa-solid fa-user-plus"></i>
+          Cadastrar
+        </button>
+      </div>
+
+    </form>
+  </div><!-- /.register-card -->
+
+</div><!-- /.modal-client -->

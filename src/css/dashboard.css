@@ -1,18 +1,19 @@
 /* ════════════════════════════════════════════════════════════
-   DASHBOARD — Responsivo
+   DASHBOARD — Layout e scroll
 ════════════════════════════════════════════════════════════ */
 
 .dashboard {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;   /* era center — empurrava conteúdo para cima */
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
-  position: relative;
-  padding-top: 80px;
+  padding-top: 80px;             /* espaço para a tab bar fixa */
+  padding-bottom: 40px;
   box-sizing: border-box;
 }
 
+/* ── Tab bar fixa ────────────────────────────────────────── */
 .tabs {
   margin: 0;
   position: fixed;
@@ -39,33 +40,43 @@
   --bulma-input-icon-focus-color: hsl(0deg 71.85% 42.95%);
 }
 
-/* ── Notebook (769px – 1280px) ─────────────────────────────────────────────── */
+/* ── Electron titlebar ───────────────────────────────────── */
+body.has-electron-titlebar .tabs {
+  top: 36px !important;
+}
+
+body.has-electron-titlebar .dashboard {
+  padding-top: calc(80px + 36px);
+}
+
+/* ── Notebook (769px – 1280px) ───────────────────────────── */
 @media (min-width: 769px) and (max-width: 1280px) {
   .dashboard {
     padding-top: 72px;
   }
+
+  body.has-electron-titlebar .dashboard {
+    padding-top: calc(72px + 36px);
+  }
 }
 
-/* ── Mobile (≤ 768px) ──────────────────────────────────────────────────────── */
+/* ── Mobile (≤ 768px) ────────────────────────────────────── */
 @media (max-width: 768px) {
-  html, body {
-    overflow-y: auto !important;
-  }
-
   .dashboard {
-    min-height: 100vh;
     padding-top: 70px;
     padding-bottom: 30px;
-    justify-content: flex-start;
   }
 
   .tabs {
     padding: 8px 0;
   }
 
-  /* Reduz tamanho do texto das abas no mobile */
   .tabs ul li a {
     font-size: 0.75rem;
     padding: 6px 10px;
+  }
+
+  body.has-electron-titlebar .dashboard {
+    padding-top: calc(70px + 36px);
   }
 }

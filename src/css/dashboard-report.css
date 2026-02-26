@@ -1,0 +1,402 @@
+/* ════════════════════════════════════════════════════════════
+   RELATÓRIOS / DASHBOARD — mesmo padrão visual do PDV
+════════════════════════════════════════════════════════════ */
+
+/* ── Layout geral ─────────────────────────────────────────── */
+.modal-report {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 24px 24px 48px;
+  box-sizing: border-box;
+  min-height: calc(100vh - 140px);
+}
+
+/* ── Grade principal (max 1100px igual à tabela de clientes) */
+.report-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   KPI CARDS — linha de 4 métricas grandes
+════════════════════════════════════════════════════════════ */
+.report-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.report-kpi {
+  background: linear-gradient(135deg, #1a1d27 0%, #161924 100%);
+  border: 1px solid #252836;
+  border-radius: 14px;
+  padding: 20px 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.report-kpi::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #a5ff01, transparent);
+  opacity: 0.6;
+}
+
+.report-kpi:hover { border-color: #a5ff0140; }
+
+.report-kpi-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #a5ff0115;
+  border: 1px solid #a5ff0130;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: #a5ff01;
+  margin-bottom: 2px;
+}
+
+.report-kpi-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a6380;
+}
+
+.report-kpi-value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #a5ff01;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.report-kpi-sub {
+  font-size: 0.72rem;
+  color: #5a6380;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.report-kpi-sub .up   { color: #a5ff01; }
+.report-kpi-sub .down { color: #e03131; }
+
+/* ════════════════════════════════════════════════════════════
+   LINHA DE GRÁFICOS (2 colunas)
+════════════════════════════════════════════════════════════ */
+.report-charts-row {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── Card base reutilizável ───────────────────────────────── */
+.report-card {
+  background: linear-gradient(160deg, #1a1d27 0%, #14161e 100%);
+  border: 1px solid #252836;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.report-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px 16px;
+  border-bottom: 1px solid #1e2230;
+}
+
+.report-card-header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.report-card-header h2::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #a5ff01;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #a5ff0180;
+  flex-shrink: 0;
+}
+
+.report-card-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  background: #a5ff0115;
+  color: #a5ff01;
+  border: 1px solid #a5ff0130;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.report-card-body {
+  padding: 24px 28px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   GRÁFICO DE LINHA — Vendas por dia (canvas)
+════════════════════════════════════════════════════════════ */
+.chart-line-wrap {
+  position: relative;
+  width: 100%;
+  height: 220px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   GRÁFICO DE PIZZA — Pagamentos (canvas)
+════════════════════════════════════════════════════════════ */
+.chart-donut-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Legenda customizada do donut */
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 28px 24px;
+}
+
+.donut-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.donut-legend-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.donut-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.donut-legend-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #8892a4;
+}
+
+.donut-legend-pct {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ════════════════════════════════════════════════════════════
+   LINHA INFERIOR (tabela recentes + barras de tipo)
+════════════════════════════════════════════════════════════ */
+.report-bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── Gráfico de barras horizontais ───────────────────────── */
+.bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 28px 24px;
+}
+
+.bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bar-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bar-item-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #8892a4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bar-item-label i {
+  font-size: 0.8rem;
+  color: #5a6380;
+}
+
+.bar-item-value {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.bar-track {
+  width: 100%;
+  height: 6px;
+  background: #0d0f14;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #a5ff01, #7acc00);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Tabela de vendas recentes ───────────────────────────── */
+.report-table-wrap {
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #252836 transparent;
+}
+
+.report-table-wrap::-webkit-scrollbar { width: 4px; }
+.report-table-wrap::-webkit-scrollbar-track { background: transparent; }
+.report-table-wrap::-webkit-scrollbar-thumb { background: #252836; border-radius: 4px; }
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.report-table thead th {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a6380;
+  padding: 0 18px 12px;
+  text-align: left;
+  background: transparent;
+  border-bottom: 1px solid #1e2230;
+  white-space: nowrap;
+}
+
+.report-table tbody tr {
+  border-bottom: 1px solid #1e2230;
+  transition: background 0.15s;
+}
+
+.report-table tbody tr:last-child { border-bottom: none; }
+.report-table tbody tr:hover { background: #a5ff0106; }
+
+.report-table tbody td {
+  font-size: 0.82rem;
+  color: #c8cdd8;
+  padding: 12px 18px;
+  vertical-align: middle;
+  white-space: nowrap;
+  background: transparent;
+  border: none;
+}
+
+.report-table tbody td:first-child { color: #5a6380; font-size: 0.75rem; }
+
+/* Badge de método de pagamento */
+.pay-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.pay-badge.cash    { background: #a5ff0115; color: #a5ff01; border: 1px solid #a5ff0130; }
+.pay-badge.pix     { background: #00c8ff15; color: #00c8ff; border: 1px solid #00c8ff30; }
+.pay-badge.credit  { background: #bf5aff15; color: #bf5aff; border: 1px solid #bf5aff30; }
+.pay-badge.debit   { background: #f59f0015; color: #f59f00; border: 1px solid #f59f0030; }
+
+/* ── Estado vazio ────────────────────────────────────────── */
+.report-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 20px;
+  color: #5a6380;
+}
+
+.report-empty i { font-size: 2rem; color: #252836; }
+.report-empty p { font-size: 0.85rem; margin: 0; }
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVO
+════════════════════════════════════════════════════════════ */
+@media (min-width: 769px) and (max-width: 1280px) {
+  .report-wrapper      { max-width: 960px; }
+  .report-kpi-row      { grid-template-columns: repeat(2, 1fr); }
+  .report-charts-row   { grid-template-columns: 1fr 320px; }
+  .report-bottom-row   { grid-template-columns: 1fr 320px; }
+  .report-card-body    { padding: 20px 22px; }
+  .report-card-header  { padding: 18px 22px 14px; }
+}
+
+@media (max-width: 1024px) {
+  .report-charts-row { grid-template-columns: 1fr; }
+  .report-bottom-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .modal-report     { padding: 16px 12px 40px; gap: 14px; }
+  .report-kpi-row   { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .report-kpi-value { font-size: 1.35rem; }
+  .report-card-header { padding: 16px 18px; }
+  .report-card-body   { padding: 16px 18px; }
+  .bar-list           { padding: 0 18px 18px; }
+  .donut-legend       { padding: 0 18px 18px; }
+}

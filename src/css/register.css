@@ -1,86 +1,424 @@
 /* ════════════════════════════════════════════════════════════
-   CADASTRO — Responsivo
+   CADASTRO — Redesign v3 · Complexidade visual igual ao PDV
 ════════════════════════════════════════════════════════════ */
 
+/* ── Layout geral ────────────────────────────────────────── */
 .modal-client {
-  border: solid 1px #353a46;
-  border-radius: 5px;
-  width: 500px;
-  margin: 40px auto;
-  padding: 50px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
   flex-direction: column;
-  background-color: #333333;
+  gap: 28px;
+  width: 100%;
+  padding: 24px 24px 40px;
   box-sizing: border-box;
+  min-height: calc(100vh - 140px);
 }
 
-.title-client {
-  padding-bottom: 20px;
-  align-self: center;
-  font-size: 2rem;
+/* ════════════════════════════════════════════════════════════
+   MÉTRICAS DO CADASTRO
+════════════════════════════════════════════════════════════ */
+.dashboard-register {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  max-width: 860px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
+.register-metric {
+  background: linear-gradient(135deg, #1a1d27 0%, #161924 100%);
+  border: 1px solid #252836;
+  border-radius: 14px;
+  padding: 18px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 180px;
+  flex: 1;
+  gap: 6px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  cursor: default;
+}
+
+.register-metric::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #a5ff01, transparent);
+  opacity: 0.6;
+}
+
+.register-metric:hover { border-color: #a5ff0140; }
+
+.register-metric .metric-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a6380;
+}
+
+.register-metric .metric-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #a5ff01;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* ════════════════════════════════════════════════════════════
+   CARD PRINCIPAL
+════════════════════════════════════════════════════════════ */
+.register-card {
+  background: linear-gradient(160deg, #1a1d27 0%, #14161e 100%);
+  width: 100%;
+  max-width: 860px;
+  border-radius: 20px;
+  border: 1px solid #252836;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.register-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px 20px;
+  border-bottom: 1px solid #1e2230;
+}
+
+.register-header h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.register-header h1::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #a5ff01;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #a5ff0180;
+  flex-shrink: 0;
+}
+
+.register-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: #a5ff0115;
+  color: #a5ff01;
+  border: 1px solid #a5ff0130;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Body ────────────────────────────────────────────────── */
+.register-body {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Grade 2 colunas ─────────────────────────────────────── */
+.register-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.register-row.full {
+  grid-template-columns: 1fr;
+}
+
+/* ── Campo ───────────────────────────────────────────────── */
+.reg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reg-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a6380;
+}
+
+.reg-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.reg-input-wrap .reg-icon {
+  position: absolute;
+  left: 14px;
+  color: #5a6380;
+  font-size: 0.88rem;
+  pointer-events: none;
+  transition: color 0.2s;
+  z-index: 1;
+}
+
+.reg-input-wrap input {
+  width: 100%;
+  background: #0d0f14;
+  border: 1px solid #252836;
+  border-radius: 10px;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  height: 46px;
+  padding: 0 14px 0 42px;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.reg-input-wrap input::placeholder { color: #5a6380; }
+
+.reg-input-wrap input:focus {
+  border-color: #a5ff0160;
+  box-shadow: 0 0 0 3px #a5ff0115;
+}
+
+.reg-input-wrap:focus-within .reg-icon { color: #a5ff01; }
+
+/* Hint de validação sob o campo */
+.reg-hint {
+  font-size: 0.68rem;
+  color: #5a6380;
+  padding-left: 2px;
+  min-height: 14px;
+  transition: color 0.2s;
+}
+.reg-hint.valid   { color: #a5ff01; }
+.reg-hint.invalid { color: #e03131; }
+
+/* ── Divisor ─────────────────────────────────────────────── */
+.reg-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reg-divider span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a6380;
+  white-space: nowrap;
+}
+
+.reg-divider::before,
+.reg-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #1e2230;
+}
+
+/* ── Cards de tipo de cliente ────────────────────────────── */
+.reg-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.reg-type-item {
+  cursor: pointer;
+  background: #0d0f14;
+  border: 1px solid #252836;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 12px;
+  transition: all 0.18s ease;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.reg-type-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #a5ff0108, transparent);
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+
+.reg-type-item:hover {
+  border-color: #a5ff0150;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px #a5ff0115;
+}
+
+.reg-type-item:hover::after { opacity: 1; }
+
+.reg-type-item .type-icon {
+  font-size: 1.4rem;
+  color: #5a6380;
+  transition: color 0.18s;
+}
+
+.reg-type-item .type-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8892a4;
+  transition: color 0.18s;
+}
+
+.reg-type-item.active {
+  background: #a5ff0112;
+  border-color: #a5ff01;
+  box-shadow: 0 0 20px #a5ff0120, inset 0 0 20px #a5ff0108;
+}
+
+.reg-type-item.active::after { opacity: 1; }
+.reg-type-item.active .type-icon,
+.reg-type-item.active .type-label,
+.reg-type-item:hover .type-icon,
+.reg-type-item:hover .type-label { color: #a5ff01; }
+
+/* ════════════════════════════════════════════════════════════
+   FOOTER — preview do nome + botão
+════════════════════════════════════════════════════════════ */
+.register-footer {
+  padding: 20px 32px 28px;
+  border-top: 1px solid #1e2230;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.reg-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.reg-preview-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a6380;
+}
+
+.reg-preview-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #5a6380;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+  transition: color 0.2s, font-size 0.2s;
+}
+
+.reg-preview-name.filled { color: #fff; }
+
+/* ── Botão cadastrar ─────────────────────────────────────── */
+.btn-register {
+  background: linear-gradient(135deg, #a5ff01, #7acc00) !important;
+  color: #0d0f14 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 0 36px !important;
+  height: 50px !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.9rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+  box-shadow: 0 4px 20px #a5ff0130 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-register:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 30px #a5ff0150 !important;
+}
+
+.btn-register:active  { transform: translateY(0) !important; }
+.btn-register.is-loading { opacity: 0.7 !important; }
+
+.btn-register.is-danger {
+  background: linear-gradient(135deg, #e03131, #c92a2a) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+/* ── Globals mantidos ────────────────────────────────────── */
 .welcome {
   font-size: 4rem;
   color: white;
   text-align: center;
 }
+.detail { color: #a5ff01; font-weight: bold; }
+.size   { font-size: 1.25rem; }
 
-.detail {
-  color: #a5ff01;
-  font-weight: bold;
-}
-
-.size {
-  font-size: 1.25rem;
-}
-
-.adjust-notification {
-  gap: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1rem;
-  height: 40px;
-}
-
-/* ── Notebook (769px – 1280px) ─────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVO
+════════════════════════════════════════════════════════════ */
 @media (min-width: 769px) and (max-width: 1280px) {
-  .modal-client {
-    width: 440px;
-    padding: 36px;
-  }
-
-  .title-client {
-    font-size: 1.7rem;
-  }
-
-  .welcome {
-    font-size: 3rem;
-  }
+  .register-card      { max-width: 720px; }
+  .dashboard-register { max-width: 720px; }
+  .register-header    { padding: 20px 26px 16px; }
+  .register-body      { padding: 22px 26px; gap: 20px; }
+  .register-footer    { padding: 18px 26px 24px; }
+  .welcome            { font-size: 3rem; }
 }
 
-/* ── Mobile (≤ 768px) ──────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .modal-client {
-    width: calc(100% - 32px);
-    max-width: 480px;
-    margin: 16px auto;
-    padding: 24px 20px;
+  .modal-client    { padding: 16px 12px 32px; gap: 16px; }
+  .register-header { padding: 16px 18px; }
+  .register-body   { padding: 18px 18px; gap: 18px; }
+  .register-footer {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px 18px 20px;
   }
-
-  .title-client {
-    font-size: 1.5rem;
-  }
-
-  .welcome {
-    font-size: 2rem;
-    padding: 0 16px;
-    text-align: center;
-  }
+  .btn-register    { width: 100% !important; justify-content: center !important; }
+  .register-row    { grid-template-columns: 1fr; }
+  .register-metric { min-width: 120px; }
+  .welcome         { font-size: 2rem; padding: 0 16px; }
 }

@@ -20,13 +20,15 @@
   <link rel="stylesheet" href="../css/modal.css">
   <link rel="stylesheet" href="../css/register.css">
   <link rel="stylesheet" href="../css/tickets.css">
-  <!-- Electron titlebar (só carrega se for Electron) -->
+  <link rel="stylesheet" href="../css/dashboard-report.css">
   <link rel="stylesheet" href="../css/titlebar.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/a1729d9d21.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
@@ -45,11 +47,12 @@
         <li><a>Cadastro</a></li>
         <li><a>Clientes</a></li>
         <li><a>Ingressos</a></li>
+        <li><a>Relatórios</a></li>
         <li><a class="fa-solid fa-right-from-bracket size"></a></li>
       </ul>
     </div>
 
-    <!-- ── Boas-vindas ────────────────────────────────────────────────────── -->
+    <!-- ── Boas-vindas ───────────────────────────────────────────────────── -->
     <h1 class="welcome" id="welcome">
       Bem vindo à <span class="detail">easy ticket</span>.
     </h1>
@@ -58,33 +61,97 @@
     <!-- CADASTRO                                                           -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="modal-client none" id="createModal">
-      <div class="title-client">Cadastro de clientes</div>
-      <form class="card-content" id="clientForm">
-        <div class="field">
-          <p class="control has-icons-left">
-            <input class="input" type="text" placeholder="Nome completo" id="client" required>
-            <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
-          </p>
+
+      <div class="dashboard-register">
+        <div class="register-metric">
+          <span class="metric-label">Clientes hoje</span>
+          <div class="metric-value" id="metricToday">0</div>
         </div>
-        <div class="field">
-          <p class="control has-icons-left">
-            <input class="input" type="text" placeholder="Telefone" id="phone" required>
-            <span class="icon is-small is-left"><i class="fas fa-phone"></i></span>
-          </p>
+        <div class="register-metric">
+          <span class="metric-label">Total cadastrado</span>
+          <div class="metric-value" id="metricTotal">0</div>
         </div>
-        <div class="field">
-          <p class="control has-icons-left">
-            <input class="input" type="text" placeholder="CPF" id="cpf" required>
-            <span class="icon is-small is-left"><i class="fas fa-address-card"></i></span>
-          </p>
+        <div class="register-metric">
+          <span class="metric-label">Último cadastro</span>
+          <div class="metric-value" id="metricLast" style="font-size:1rem;padding-top:4px">—</div>
         </div>
-        <div class="field">
-          <p class="control">
-            <button type="submit" class="button is-primary" id="createButton">Cadastrar</button>
-          </p>
+      </div>
+
+      <div class="register-card">
+        <div class="register-header">
+          <h1>Cadastro de Clientes</h1>
+          <span class="register-badge">Novo</span>
         </div>
-      </form>
-    </div>
+
+        <form id="clientForm">
+          <div class="register-body">
+
+            <div class="reg-field">
+              <span class="reg-label">Tipo de cliente</span>
+              <div class="reg-type-grid" id="clientTypeGrid">
+                <div class="reg-type-item active" data-type="geral">
+                  <i class="type-icon fa-solid fa-users"></i>
+                  <span class="type-label">Geral</span>
+                </div>
+                <div class="reg-type-item" data-type="vip">
+                  <i class="type-icon fa-solid fa-star"></i>
+                  <span class="type-label">VIP</span>
+                </div>
+                <div class="reg-type-item" data-type="cortesia">
+                  <i class="type-icon fa-solid fa-ticket"></i>
+                  <span class="type-label">Cortesia</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="reg-divider"><span>Dados pessoais</span></div>
+
+            <div class="register-row">
+              <div class="reg-field">
+                <label class="reg-label" for="client">Nome completo</label>
+                <div class="reg-input-wrap">
+                  <input type="text" id="client" placeholder="Ex: João da Silva" required autocomplete="off">
+                  <i class="reg-icon fas fa-user"></i>
+                </div>
+                <span class="reg-hint" id="hintClient"></span>
+              </div>
+              <div class="reg-field">
+                <label class="reg-label" for="phone">Telefone</label>
+                <div class="reg-input-wrap">
+                  <input type="text" id="phone" placeholder="(00) 00000-0000" required autocomplete="off">
+                  <i class="reg-icon fas fa-phone"></i>
+                </div>
+                <span class="reg-hint" id="hintPhone"></span>
+              </div>
+            </div>
+
+            <div class="register-row full">
+              <div class="reg-field">
+                <label class="reg-label" for="cpf">CPF</label>
+                <div class="reg-input-wrap">
+                  <input type="text" id="cpf" placeholder="000.000.000-00" required autocomplete="off">
+                  <i class="reg-icon fas fa-address-card"></i>
+                </div>
+                <span class="reg-hint" id="hintCpf"></span>
+              </div>
+            </div>
+
+          </div><!-- /.register-body -->
+
+          <div class="register-footer">
+            <div class="reg-preview">
+              <span class="reg-preview-label">Cadastrando</span>
+              <div class="reg-preview-name" id="regPreviewName">Aguardando nome...</div>
+            </div>
+            <button type="submit" class="btn-register" id="createButton">
+              <i class="fa-solid fa-user-plus"></i>
+              Cadastrar
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div><!-- /.modal-client -->
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- CLIENTES                                                           -->
@@ -116,7 +183,6 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="modal-sales none" id="saleModal">
 
-      <!-- Métricas -->
       <div class="dashboard-sales">
         <div class="item-dashboard">
           <span>Faturamento</span>
@@ -132,17 +198,13 @@
         </div>
       </div>
 
-      <!-- PDV -->
       <div class="pdv">
-
         <div class="pdv-header">
           <h1>Ponto de Venda</h1>
           <span class="pdv-badge">PDV</span>
         </div>
 
         <div class="pdv-body">
-
-          <!-- Cliente + Valor -->
           <div class="pdv-row">
             <div class="pdv-field">
               <span class="pdv-label">Cliente</span>
@@ -154,7 +216,6 @@
             </div>
           </div>
 
-          <!-- Método de pagamento -->
           <div class="pdv-payments-section">
             <span class="pdv-label">Forma de Pagamento</span>
             <div class="payments" id="payments">
@@ -176,8 +237,7 @@
               </div>
             </div>
           </div>
-
-        </div><!-- /.pdv-body -->
+        </div>
 
         <div class="pdv-footer">
           <div class="pdv-summary">
@@ -189,9 +249,151 @@
             Finalizar Venda
           </button>
         </div>
-
-      </div><!-- /.pdv -->
+      </div>
     </div><!-- /.modal-sales -->
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- RELATÓRIOS                                                         -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="modal-report none" id="reportModal">
+      <div class="report-wrapper">
+
+        <!-- ── KPIs ─────────────────────────────────────────────────────── -->
+        <div class="report-kpi-row">
+
+          <div class="report-kpi">
+            <div class="report-kpi-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+            <span class="report-kpi-label">Faturamento total</span>
+            <div class="report-kpi-value" id="rptRevenue">R$ 0,00</div>
+            <span class="report-kpi-sub">
+              <i class="fa-solid fa-chart-line up"></i>
+              <span class="up">Acumulado</span>
+            </span>
+          </div>
+
+          <div class="report-kpi">
+            <div class="report-kpi-icon"><i class="fa-solid fa-bolt"></i></div>
+            <span class="report-kpi-label">Total de vendas</span>
+            <div class="report-kpi-value" id="rptSales">0</div>
+            <span class="report-kpi-sub">
+              <i class="fa-solid fa-ticket"></i>
+              ingressos emitidos
+            </span>
+          </div>
+
+          <div class="report-kpi">
+            <div class="report-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+            <span class="report-kpi-label">Ticket médio</span>
+            <div class="report-kpi-value" id="rptAvg">R$ 0,00</div>
+            <span class="report-kpi-sub">
+              <i class="fa-solid fa-divide"></i>
+              por ingresso
+            </span>
+          </div>
+
+          <div class="report-kpi">
+            <div class="report-kpi-icon"><i class="fa-solid fa-users"></i></div>
+            <span class="report-kpi-label">Clientes cadastrados</span>
+            <div class="report-kpi-value" id="rptClients">0</div>
+            <span class="report-kpi-sub">
+              <i class="fa-solid fa-database"></i>
+              na base
+            </span>
+          </div>
+
+        </div><!-- /.report-kpi-row -->
+
+        <!-- ── Gráficos: linha + donut ───────────────────────────────────── -->
+        <div class="report-charts-row">
+
+          <!-- Gráfico de linha -->
+          <div class="report-card">
+            <div class="report-card-header">
+              <h2>Faturamento por dia</h2>
+              <span class="report-card-badge">7 dias</span>
+            </div>
+            <div class="report-card-body">
+              <div class="chart-line-wrap">
+                <canvas id="chartLine"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Donut de pagamentos -->
+          <div class="report-card">
+            <div class="report-card-header">
+              <h2>Formas de pagamento</h2>
+              <span class="report-card-badge">Total</span>
+            </div>
+            <div class="report-card-body">
+              <div class="chart-donut-wrap">
+                <canvas id="chartDonut"></canvas>
+              </div>
+            </div>
+            <div class="donut-legend" id="donutLegend"></div>
+          </div>
+
+        </div><!-- /.report-charts-row -->
+
+        <!-- ── Linha inferior: tabela + barras ──────────────────────────── -->
+        <div class="report-bottom-row">
+
+          <!-- Tabela de vendas recentes -->
+          <div class="report-card">
+            <div class="report-card-header">
+              <h2>Vendas recentes</h2>
+              <span class="report-card-badge">Últimas 8</span>
+            </div>
+            <div class="report-card-body" style="padding:0">
+              <div class="report-table-wrap">
+                <table class="report-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Cliente</th>
+                      <th>Pagamento</th>
+                      <th>Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentSalesBody">
+                    <tr>
+                      <td colspan="4">
+                        <div class="report-empty">
+                          <i class="fa-solid fa-chart-bar"></i>
+                          <p>Carregando...</p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Barras de tipo de cliente -->
+          <div class="report-card">
+            <div class="report-card-header">
+              <h2>Tipo de clientes</h2>
+              <span class="report-card-badge">Base</span>
+            </div>
+            <div class="report-card-body" style="padding-bottom:0">
+              <!-- espaço vazio intencional para o padding do bar-list abaixo funcionar -->
+            </div>
+            <div class="bar-list" id="barList">
+              <div class="bar-item">
+                <div class="bar-item-top">
+                  <span class="bar-item-label"><i class="fa-solid fa-users"></i>Geral</span>
+                  <span class="bar-item-value">—</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.report-bottom-row -->
+
+      </div><!-- /.report-wrapper -->
+    </div><!-- /.modal-report -->
 
   </div><!-- /.dashboard -->
 
@@ -205,6 +407,7 @@
   <script type="module" src="../js/pages/alterClient.js"></script>
   <script type="module" src="../js/utils/search.js"></script>
   <script type="module" src="../js/pages/sales.js"></script>
+  <script type="module" src="../js/pages/reports.js"></script>
 
 </body>
 </html>

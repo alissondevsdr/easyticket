@@ -16,8 +16,18 @@
   --bulma-family-code: Inconsolata, Hack, SF Mono, Roboto Mono, monospace;
 }
 
+/* ── Scroll liberado globalmente ─────────────────────────── */
 html {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;        /* era hidden — causava o corte de conteúdo */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Poppins, sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;        /* era hidden — causava o corte de conteúdo */
 }
 
 a {
@@ -29,13 +39,6 @@ a {
   width: 100%;
   --bulma-table-background-color: hsl(0deg 0% 20%);
   --bulma-table-cell-border-color: hsl(0deg 0% 20%);
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Poppins, sans-serif;
-  overflow: hidden;
 }
 
 ul, li, a {
@@ -62,12 +65,4 @@ img {
 
 .none {
   display: none !important;
-}
-
-/* ── Mobile: permitir scroll vertical ──────────────────────────────────────── */
-@media (max-width: 768px) {
-  html, body {
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-  }
 }

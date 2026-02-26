@@ -1,76 +1,236 @@
 /* ════════════════════════════════════════════════════════════
-   MODAL — Responsivo
+   MODAL (Edição de clientes) — Redesign v2 (alinhado ao PDV)
 ════════════════════════════════════════════════════════════ */
 
+/* ── Overlay ─────────────────────────────────────────────── */
+.modal-background {
+  background: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* ── Container do modal ──────────────────────────────────── */
 .modal-content {
-  background-color: #14161a;
-  padding: 30px;
-  border-radius: 10px;
+  background: linear-gradient(160deg, #1a1d27 0%, #14161e 100%);
+  border: 1px solid #252836;
+  border-radius: 20px;
+  padding: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
   width: 100%;
   max-width: 480px;
   box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 24px 80px #00000070;
 }
 
-.buttons-modal {
+/* ── Header do modal ─────────────────────────────────────── */
+.modal-header {
   display: flex;
-  gap: 20px;
-  width: 100%;
-}
-
-.modal-close {
-  position: relative;
-  top: -20px;
-  inset-inline-end: 0rem;
-  left: 280px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid #1e2230;
 }
 
 .message {
-  font-size: 2rem;
-  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.03em;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* ── Notebook (769px – 1280px) ─────────────────────────────────────────────── */
+.message::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #a5ff01;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #a5ff0180;
+  flex-shrink: 0;
+}
+
+/* ── Botão fechar ────────────────────────────────────────── */
+.modal-close {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  inset-inline-end: auto !important;
+  width: 32px !important;
+  height: 32px !important;
+  background: #1e2230 !important;
+  border-radius: 8px !important;
+  flex-shrink: 0;
+  transition: background 0.15s !important;
+}
+
+.modal-close:hover {
+  background: #e0313120 !important;
+}
+
+.modal-close::before,
+.modal-close::after {
+  background: #8892a4 !important;
+}
+
+/* ── Body do modal (form) ────────────────────────────────── */
+.modal-content .card-content {
+  padding: 24px 28px 8px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Campos do form ──────────────────────────────────────── */
+.modal-content .field {
+  margin-bottom: 0 !important;
+}
+
+.modal-content .control {
+  position: relative;
+}
+
+.modal-content .input {
+  background: #0d0f14 !important;
+  border: 1px solid #252836 !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.9rem !important;
+  height: 46px !important;
+  padding-left: 40px !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+  box-shadow: none !important;
+}
+
+.modal-content .input::placeholder {
+  color: #5a6380 !important;
+}
+
+.modal-content .input:focus {
+  border-color: #a5ff0160 !important;
+  box-shadow: 0 0 0 3px #a5ff0115 !important;
+}
+
+.modal-content .icon.is-left {
+  color: #5a6380 !important;
+  transition: color 0.2s;
+  height: 46px !important;
+  width: 40px !important;
+}
+
+.modal-content .control:focus-within .icon.is-left {
+  color: #a5ff01 !important;
+}
+
+/* ── Botões de ação ──────────────────────────────────────── */
+.buttons-modal {
+  display: flex;
+  gap: 12px;
+  padding: 16px 28px 28px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.buttons-modal .button {
+  flex: 1;
+  height: 46px !important;
+  border-radius: 10px !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  border: none !important;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Botão salvar (is-primary) */
+.buttons-modal .button.is-primary {
+  background: linear-gradient(135deg, #a5ff01, #7acc00) !important;
+  color: #0d0f14 !important;
+}
+
+.buttons-modal .button.is-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px #a5ff0140 !important;
+}
+
+/* Botão cancelar (is-danger) */
+.buttons-modal .button.is-danger,
+.buttons-modal .button.cancel {
+  background: #1e2230 !important;
+  color: #8892a4 !important;
+  border: 1px solid #252836 !important;
+}
+
+.buttons-modal .button.is-danger:hover,
+.buttons-modal .button.cancel:hover {
+  background: #e0313115 !important;
+  color: #e03131 !important;
+  border-color: #e0313130 !important;
+  transform: translateY(-1px);
+}
+
+.buttons-modal .button:active {
+  transform: translateY(0) !important;
+}
+
+/* ── Responsivo Notebook ─────────────────────────────────── */
 @media (min-width: 769px) and (max-width: 1280px) {
   .modal-content {
     max-width: 440px;
-    padding: 24px;
   }
 
-  .message {
-    font-size: 1.7rem;
-  }
-}
-
-/* ── Mobile (≤ 768px) ──────────────────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .modal-content {
-    max-width: calc(100vw - 32px);
-    padding: 20px 16px;
-    margin: 0 16px;
-    border-radius: 8px;
+  .modal-header {
+    padding: 18px 24px 14px;
   }
 
-  .message {
-    font-size: 1.3rem;
-  }
-
-  .modal-close {
-    left: auto;
-    right: 0;
-    top: -16px;
+  .modal-content .card-content {
+    padding: 20px 24px 6px;
+    gap: 14px;
   }
 
   .buttons-modal {
+    padding: 14px 24px 24px;
+  }
+}
+
+/* ── Responsivo Mobile ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: calc(100vw - 32px);
+    border-radius: 16px;
+  }
+
+  .modal-header {
+    padding: 16px 20px 12px;
+  }
+
+  .modal-content .card-content {
+    padding: 16px 20px 4px;
     gap: 12px;
   }
 
-  /* Form dentro do modal de edição */
-  .modal-content .card-content {
-    padding: 12px 0;
-    width: 100%;
+  .buttons-modal {
+    padding: 12px 20px 20px;
+    gap: 10px;
+  }
+
+  .buttons-modal .button {
+    height: 44px !important;
+    font-size: 0.8rem !important;
   }
 }

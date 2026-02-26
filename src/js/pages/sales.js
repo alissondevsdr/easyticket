@@ -1,40 +1,48 @@
 import { showLoading, hideLoading } from "../services/loading.js";
-import { getClients } from "./listClient.js";
+import { getClients, loadingClients } from "./listClient.js";
 
 // ─── Estado local ─────────────────────────────────────────────────────────────
 let selectedPayment = null;
 
 // ─── Elementos do DOM ─────────────────────────────────────────────────────────
-const payments       = document.getElementById("payments");
-const valueInput     = document.getElementById("valueInput");
-const finalizeBtn    = document.querySelector(".btn-finalize");
-const metricRevenue  = document.getElementById("metricRevenue");
-const metricSales    = document.getElementById("metricSales");
-const metricAvg      = document.getElementById("metricAvg");
-const summaryValue   = document.getElementById("pdv-summary-value");
+const payments      = document.getElementById("payments");
+const valueInput    = document.getElementById("valueInput");
+const finalizeBtn   = document.querySelector(".btn-finalize");
+const metricRevenue = document.getElementById("metricRevenue");
+const metricSales   = document.getElementById("metricSales");
+const metricAvg     = document.getElementById("metricAvg");
+const summaryValue  = document.getElementById("pdv-summary-value");
 
 const paymentIds = ["cash", "credit", "debit", "pix"];
 
 // ─── Select2 ──────────────────────────────────────────────────────────────────
-function initSelect2() {
+async function initSelect2() {
   if ($("#clientSelect").data("select2")) {
     $("#clientSelect").select2("destroy");
   }
 
-  const clients = getClients();
+  // getClients() é async — precisa de await para receber o array real
+  let clients = await getClients();
+
+  // Fallback: se ainda não carregou, busca da API direto
+  if (!clients || clients.length === 0) {
+    await loadingClients();
+    clients = await getClients();
+  }
 
   const data = clients.map((c) => ({
-    id: c.id,
+    id:   c.id,
     text: `${c.client} — ${c.cpf}`,
   }));
 
   $("#clientSelect").select2({
-    placeholder: "Buscar cliente pelo nome ou CPF...",
-    allowClear: true,
-    width: "100%",
-    dropdownParent: $(".pdv"),
+    placeholder:    "Buscar cliente pelo nome ou CPF...",
+    allowClear:     true,
+    width:          "100%",
+    dropdownParent: $("#saleModal"),   // ← fora do .pdv para não ser cortado pelo overflow:hidden
     language: {
-      noResults: () => "Nenhum cliente encontrado",
+      noResults:    () => "Nenhum cliente encontrado",
+      searching:    () => "Buscando...",
     },
     data,
   });
@@ -44,8 +52,8 @@ function initSelect2() {
   });
 }
 
-document.addEventListener("saleModalOpened", () => {
-  initSelect2();
+document.addEventListener("saleModalOpened", async () => {
+  await initSelect2();
   loadMetrics();
 });
 
@@ -56,10 +64,9 @@ payments.addEventListener("click", function (event) {
   );
   if (!clickedId) return;
 
-  const clickedEl = document.getElementById(clickedId);
-  const wasActive = clickedEl.classList.contains("active");
+  const clickedEl  = document.getElementById(clickedId);
+  const wasActive  = clickedEl.classList.contains("active");
 
-  // Remove active de todos
   paymentIds.forEach((id) => document.getElementById(id).classList.remove("active"));
 
   if (!wasActive) {
@@ -70,7 +77,7 @@ payments.addEventListener("click", function (event) {
   }
 });
 
-// Remove seleção ao clicar fora
+// Remove seleção ao clicar fora dos cards de pagamento
 document.addEventListener("click", function (event) {
   if (!payments.contains(event.target)) {
     paymentIds.forEach((id) => document.getElementById(id)?.classList.remove("active"));
@@ -99,9 +106,9 @@ finalizeBtn?.addEventListener("click", async function () {
   const rawValue = valueInput.value.replace(/\D/g, "");
   const value    = rawValue ? (parseInt(rawValue) / 100).toFixed(2) : null;
 
-  if (!clientId)                   { showToast("Selecione um cliente.", "warning"); return; }
-  if (!value || parseFloat(value) <= 0) { showToast("Informe um valor válido.", "warning"); return; }
-  if (!selectedPayment)            { showToast("Selecione um método de pagamento.", "warning"); return; }
+  if (!clientId)                        { showToast("Selecione um cliente.", "warning");       return; }
+  if (!value || parseFloat(value) <= 0) { showToast("Informe um valor válido.", "warning");    return; }
+  if (!selectedPayment)                 { showToast("Selecione um método de pagamento.", "warning"); return; }
 
   const token = localStorage.getItem("authToken");
 
@@ -128,7 +135,7 @@ finalizeBtn?.addEventListener("click", async function () {
 function resetPDV() {
   $("#clientSelect").val(null).trigger("change");
   valueInput.value = "";
-  selectedPayment = null;
+  selectedPayment  = null;
   paymentIds.forEach((id) => document.getElementById(id)?.classList.remove("active"));
   updateSummary("");
 }
@@ -157,24 +164,14 @@ function formatCurrency(value) {
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function showToast(message, type = "success") {
-  let toast = document.getElementById("et-toast-el");
+  let toast = document.querySelector(".et-toast");
   if (!toast) {
     toast = document.createElement("div");
-    toast.id = "et-toast-el";
     toast.className = "et-toast";
     document.body.appendChild(toast);
   }
-
-  const icons = { success: "✓", warning: "⚠", error: "✕" };
-  toast.innerHTML = `<span>${icons[type] || "✓"}</span> ${message}`;
-  toast.className = `et-toast ${type}`;
-
-  requestAnimationFrame(() => {
-    toast.classList.add("show");
-  });
-
-  clearTimeout(toast._timeout);
-  toast._timeout = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3000);
+  toast.textContent = message;
+  toast.className   = `et-toast ${type}`;
+  requestAnimationFrame(() => toast.classList.add("show"));
+  setTimeout(() => toast.classList.remove("show"), 3000);
 }
