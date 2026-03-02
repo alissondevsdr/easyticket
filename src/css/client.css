@@ -193,21 +193,60 @@
 
 /* Larguras fixas para distribuição uniforme */
 .adjust-table thead th:nth-child(2),
-.adjust-table tbody td:nth-child(2) { width: 30%; }   /* Nome */
+.adjust-table tbody td:nth-child(2) { width: 28%; }   /* Nome */
 
 .adjust-table thead th:nth-child(3),
-.adjust-table tbody td:nth-child(3) { width: 22%; }   /* Telefone */
+.adjust-table tbody td:nth-child(3) { width: 18%; }   /* Telefone */
 
 .adjust-table thead th:nth-child(4),
-.adjust-table tbody td:nth-child(4) { width: 22%; }   /* CPF */
+.adjust-table tbody td:nth-child(4) { width: 18%; }   /* CPF */
 
 .adjust-table thead th:nth-child(5),
-.adjust-table tbody td:nth-child(5) { width: 120px; } /* Ações */
+.adjust-table tbody td:nth-child(5) { width: 14%; }   /* Tipo */
+
+.adjust-table thead th:nth-child(6),
+.adjust-table tbody td:nth-child(6) { width: 120px; } /* Ações */
 
 /* Coluna Nome — branco */
 .adjust-table tbody td:nth-child(2) {
   color: #fff !important;
   font-weight: 500 !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   BADGES DE TIPO
+════════════════════════════════════════════════════════════ */
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.type-badge i {
+  font-size: 0.75rem;
+}
+
+.type-geral {
+  background: #a5ff0120;
+  color: #a5ff01;
+  border: 1px solid #a5ff0140;
+}
+
+.type-vip {
+  background: #ff006920;
+  color: #ff0069;
+  border: 1px solid #ff006940;
+}
+
+.type-cortesia {
+  background: #00c8ff20;
+  color: #00c8ff;
+  border: 1px solid #00c8ff40;
 }
 
 /* ════════════════════════════════════════════════════════════

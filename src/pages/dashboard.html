@@ -303,6 +303,7 @@
               <th>Nome</th>
               <th>Telefone</th>
               <th>CPF</th>
+              <th>Tipo</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -378,10 +379,16 @@
             <span class="pdv-summary-label">Total da venda</span>
             <div class="pdv-summary-value" id="pdv-summary-value">R$ 0,00</div>
           </div>
-          <button class="btn-finalize" id="finalizeBtn">
-            <i class="fa-solid fa-bolt"></i>
-            Finalizar Venda
-          </button>
+          <div style="display: flex; gap: 10px; width: 100%;">
+            <button class="btn-finalize" id="finalizeBtn">
+              <i class="fa-solid fa-bolt"></i>
+              Finalizar Venda
+            </button>
+            <button class="btn-find-sales" id="findSalesBtn">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              Localizar
+            </button>
+          </div>
         </div>
       </div>
     </div><!-- /.modal-sales -->
@@ -528,6 +535,79 @@
 
       </div><!-- /.report-wrapper -->
     </div><!-- /.modal-report -->
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- LOCALIZAR VENDAS                                                   -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="modal-find-sales none" id="findSalesModal">
+      <div class="find-sales-header">
+        <h1>Localizar Vendas</h1>
+      </div>
+
+      <div class="find-sales-filters">
+        <div class="filter-group">
+          <label>Pesquisar</label>
+          <input type="text" id="salesSearchInput" placeholder="Nome do cliente, CPF...">
+        </div>
+
+        <div class="filter-group">
+          <label>Período</label>
+          <input type="date" id="salesDateStart" placeholder="Data início">
+          <input type="date" id="salesDateEnd" placeholder="Data fim">
+        </div>
+
+        <div class="filter-group">
+          <label>Forma de Pagamento</label>
+          <select id="salesPaymentFilter">
+            <option value="">Todas</option>
+            <option value="cash">Dinheiro</option>
+            <option value="pix">PIX</option>
+            <option value="credit">Crédito</option>
+            <option value="debit">Débito</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Situação</label>
+          <select id="salesStatusFilter">
+            <option value="">Todas</option>
+            <option value="FINALIZADA">Finalizada</option>
+            <option value="CANCELADA">Cancelada</option>
+          </select>
+        </div>
+
+        <button class="btn-filter-clear" id="filterClearBtn">Limpar filtros</button>
+      </div>
+
+      <div class="find-sales-table-wrap">
+        <table class="find-sales-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Cliente</th>
+              <th>CPF</th>
+              <th>Valor</th>
+              <th>Pagamento</th>
+              <th>Data</th>
+              <th>Situação</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="salesTableBody">
+            <tr>
+              <td colspan="8">
+                <div class="empty-state">
+                  <i class="fa-solid fa-search"></i>
+                  <p>Carregando vendas...</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button class="btn-close-find-sales" id="closeFindSalesBtn">Fechar</button>
+    </div><!-- /.modal-find-sales -->
 
   </div><!-- /.dashboard -->
 

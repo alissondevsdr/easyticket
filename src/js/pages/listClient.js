@@ -43,12 +43,21 @@ export function listClients(clients) {
 
   clients.forEach((c) => {
     const tr = document.createElement("tr")
+    
+    // Map tipo to display label e icon
+    const typeMap = {
+      geral: { label: 'Geral', icon: 'fa-users' },
+      vip: { label: 'VIP', icon: 'fa-star' },
+      cortesia: { label: 'Cortesia', icon: 'fa-ticket' }
+    }
+    const typeInfo = typeMap[c.type] || typeMap.geral
 
     tr.innerHTML = `
       <td>${c.id}</td>
       <td>${c.client}</td>
       <td>${c.phone}</td>
       <td>${c.cpf}</td>
+      <td><span class="type-badge type-${c.type || 'geral'}"><i class="fa-solid ${typeInfo.icon}"></i> ${typeInfo.label}</span></td>
       <td class="icons">
         <button class="icon-btn icon-history" title="Histórico">
           <i class="fa-solid fa-clock-rotate-left"></i>

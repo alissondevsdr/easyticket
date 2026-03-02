@@ -48,6 +48,17 @@ export async function alterClient(id) {
           <span class="icon is-small is-left"><i class="fas fa-address-card"></i></span>
         </p>
       </div>
+      <div class="field">
+        <p class="control">
+          <div class="select is-fullwidth">
+            <select id="typeInput" required>
+              <option value="geral" ${clientData.type === 'geral' ? 'selected' : ''}>Geral</option>
+              <option value="vip" ${clientData.type === 'vip' ? 'selected' : ''}>VIP</option>
+              <option value="cortesia" ${clientData.type === 'cortesia' ? 'selected' : ''}>Cortesia</option>
+            </select>
+          </div>
+        </p>
+      </div>
     </form>
 
     <div class="buttons-modal">
@@ -61,6 +72,7 @@ export async function alterClient(id) {
   const clientInput = document.getElementById('clientInput')
   const phoneInput  = document.getElementById('phoneInput')
   const cpfInput    = document.getElementById('cpfInput')
+  const typeInput   = document.getElementById('typeInput')
   const buttonAlter = document.getElementById('save')
 
   // Máscaras
@@ -91,7 +103,8 @@ export async function alterClient(id) {
       await axios.put(`http://localhost:3001/clients/${id}`, {
         client: clientInput.value,
         cpf: cpfInput.value,
-        phone: phoneInput.value
+        phone: phoneInput.value,
+        type: typeInput.value
       }, {
         headers: { Authorization: token }
       })
