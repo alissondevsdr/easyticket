@@ -248,3 +248,200 @@
     font-size: 0.8rem !important;
   }
 }
+
+/* ════════════════════════════════════════════════════════════
+   MODAL HISTÓRICO — modal largo, mesmo padrão visual
+════════════════════════════════════════════════════════════ */
+
+/* Sobrescreve largura máxima quando for o modal de histórico */
+.modal-content:has(.history-kpis),
+.modal-content:has(.history-table-wrap),
+.modal-content:has(.history-loading) {
+  max-width: 700px !important;
+}
+
+/* ── Loading state ───────────────────────────────────────── */
+.history-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 28px;
+  color: #5a6380;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+}
+
+.history-loading i { font-size: 1.2rem; color: #a5ff01; }
+
+/* ── KPIs do histórico ───────────────────────────────────── */
+.history-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 20px 28px 0;
+}
+
+.history-kpi {
+  background: #0d0f14;
+  border: 1px solid #252836;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.history-kpi::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #a5ff01, transparent);
+  opacity: 0.5;
+}
+
+.history-kpi-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: #a5ff0115;
+  border: 1px solid #a5ff0128;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #a5ff01;
+  flex-shrink: 0;
+}
+
+.history-kpi-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.history-kpi-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a6380;
+}
+
+.history-kpi-value {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.history-kpi-value.accent { color: #a5ff01; }
+
+/* ── Tabela de vendas ────────────────────────────────────── */
+.history-table-wrap {
+  margin: 16px 28px 0;
+  border: 1px solid #252836;
+  border-radius: 12px;
+  overflow: hidden;
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #252836 transparent;
+}
+
+.history-table-wrap::-webkit-scrollbar       { width: 4px; }
+.history-table-wrap::-webkit-scrollbar-track { background: transparent; }
+.history-table-wrap::-webkit-scrollbar-thumb { background: #252836; border-radius: 4px; }
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table thead tr {
+  background: #0d0f14;
+  border-bottom: 1px solid #252836;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.history-table thead th {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a6380;
+  padding: 12px 18px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.history-table tbody tr {
+  border-bottom: 1px solid #1e2230;
+  transition: background 0.15s;
+}
+
+.history-table tbody tr:last-child { border-bottom: none; }
+.history-table tbody tr:hover       { background: #a5ff0106; }
+
+.history-table tbody td {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.84rem;
+  color: #c8cdd8;
+  padding: 12px 18px;
+  vertical-align: middle;
+  white-space: nowrap;
+  background: transparent;
+  border: none;
+}
+
+.history-td-num   { color: #5a6380 !important; font-size: 0.75rem !important; }
+.history-td-value { color: #a5ff01 !important; font-weight: 700 !important; }
+
+/* ── Estado vazio ────────────────────────────────────────── */
+.history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 36px 20px;
+  color: #5a6380;
+  font-family: 'Poppins', sans-serif;
+}
+
+.history-empty i { font-size: 1.8rem; color: #252836; }
+.history-empty p { font-size: 0.84rem; margin: 0; }
+
+/* ── Rodapé ──────────────────────────────────────────────── */
+.history-footer {
+  padding: 16px 28px 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.history-footer .button.cancel {
+  min-width: 120px;
+}
+
+/* ── Responsivo ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .modal-content:has(.history-kpis),
+  .modal-content:has(.history-table-wrap) {
+    max-width: calc(100vw - 32px) !important;
+  }
+
+  .history-kpis        { grid-template-columns: 1fr 1fr; gap: 10px; padding: 16px 20px 0; }
+  .history-kpi:last-child { grid-column: span 2; }
+  .history-table-wrap  { margin: 12px 20px 0; max-height: 240px; }
+  .history-footer      { padding: 14px 20px 20px; }
+}

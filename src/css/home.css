@@ -287,3 +287,21 @@
   .home-shortcuts   { grid-template-columns: 1fr; }
   .home-kpi-value   { font-size: 1.4rem; }
 }
+
+/* ── Badge do mês nos KPIs ───────────────────────────────── */
+.home-kpi-month {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #5a6380;
+  margin-top: 2px;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+}
+
+.home-kpi-month i {
+  font-size: 0.65rem;
+  color: #a5ff0180;
+}

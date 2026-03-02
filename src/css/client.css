@@ -216,34 +216,44 @@
 .icons {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
-.icons .fa-pencil,
-.icons .fa-trash {
+.icon-btn {
   width: 30px;
   height: 30px;
   border-radius: 8px;
-  display: inline-flex;
+  border: 1px solid #252836;
+  background: #0d0f14;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, transform 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
   color: #5a6380;
-  background: #1e2230;
+  padding: 0;
+  flex-shrink: 0;
 }
 
-.icons .fa-pencil:hover {
-  color: #a5ff01;
+.icon-btn:hover { transform: translateY(-1px); }
+
+.icon-history:hover {
   background: #a5ff0115;
-  transform: translateY(-1px);
+  color: #a5ff01;
+  border-color: #a5ff0140;
 }
 
-.icons .fa-trash:hover {
-  color: #e03131;
+.icon-edit:hover {
+  background: #00c8ff15;
+  color: #00c8ff;
+  border-color: #00c8ff40;
+}
+
+.icon-delete:hover {
   background: #e0313115;
-  transform: translateY(-1px);
+  color: #e03131;
+  border-color: #e0313140;
 }
 
 /* ════════════════════════════════════════════════════════════

@@ -42,17 +42,47 @@
 
   <div class="dashboard">
 
-    <!-- ── Menu ──────────────────────────────────────────────────────────── -->
-    <div class="tabs is-toggle is-toggle-rounded is-centered">
-      <ul id="menu">
-        <li class="is-active"><a>Início</a></li>
-        <li><a>Cadastro</a></li>
-        <li><a>Clientes</a></li>
-        <li><a>Ingressos</a></li>
-        <li><a>Relatórios</a></li>
-        <li><a class="fa-solid fa-right-from-bracket size"></a></li>
-      </ul>
-    </div>
+    <!-- ── Sidebar ───────────────────────────────────────────────────────── -->
+    <nav class="sidebar" id="sidebar">
+
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <i class="fa-solid fa-ticket"></i>
+      </div>
+
+      <!-- Itens de navegação — div puro, sem ul/li do Bulma -->
+      <div class="sidebar-nav" id="menu">
+        <div class="sidebar-item is-active" data-label="Início">
+          <i class="fa-solid fa-house"></i>
+          <span class="sidebar-tooltip">Início</span>
+        </div>
+        <div class="sidebar-item" data-label="Cadastro">
+          <i class="fa-solid fa-user-plus"></i>
+          <span class="sidebar-tooltip">Cadastro</span>
+        </div>
+        <div class="sidebar-item" data-label="Clientes">
+          <i class="fa-solid fa-users"></i>
+          <span class="sidebar-tooltip">Clientes</span>
+        </div>
+        <div class="sidebar-item" data-label="Ingressos">
+          <i class="fa-solid fa-ticket"></i>
+          <span class="sidebar-tooltip">Ingressos</span>
+        </div>
+        <div class="sidebar-item" data-label="Relatórios">
+          <i class="fa-solid fa-chart-line"></i>
+          <span class="sidebar-tooltip">Relatórios</span>
+        </div>
+      </div>
+
+      <!-- Logout no rodapé -->
+      <div class="sidebar-footer">
+        <div class="sidebar-item sidebar-logout" id="sidebarLogout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="sidebar-tooltip">Sair</span>
+        </div>
+      </div>
+
+    </nav>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- INÍCIO / HOME                                                      -->
@@ -73,29 +103,33 @@
         </div>
       </div>
 
-      <!-- KPIs rápidos -->
-      <div class="home-kpi-row">
-        <div class="home-kpi">
-          <div class="home-kpi-icon"><i class="fa-solid fa-users"></i></div>
-          <span class="home-kpi-label">Clientes cadastrados</span>
-          <div class="home-kpi-value" id="homeKpiClients">0</div>
-        </div>
-        <div class="home-kpi">
-          <div class="home-kpi-icon"><i class="fa-solid fa-bolt"></i></div>
-          <span class="home-kpi-label">Vendas realizadas</span>
-          <div class="home-kpi-value" id="homeKpiSales">0</div>
-        </div>
-        <div class="home-kpi">
-          <div class="home-kpi-icon"><i class="fa-solid fa-dollar-sign"></i></div>
-          <span class="home-kpi-label">Faturamento total</span>
-          <div class="home-kpi-value" id="homeKpiRevenue">R$ 0,00</div>
-        </div>
-        <div class="home-kpi">
-          <div class="home-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
-          <span class="home-kpi-label">Ticket médio</span>
-          <div class="home-kpi-value" id="homeKpiAvg">R$ 0,00</div>
-        </div>
-      </div>
+<!-- KPIs rápidos -->
+<div class="home-kpi-row">
+  <div class="home-kpi">
+    <div class="home-kpi-icon"><i class="fa-solid fa-users"></i></div>
+    <span class="home-kpi-label">Clientes cadastrados</span>
+    <div class="home-kpi-value" id="homeKpiClients">0</div>
+    <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
+  </div>
+  <div class="home-kpi">
+    <div class="home-kpi-icon"><i class="fa-solid fa-bolt"></i></div>
+    <span class="home-kpi-label">Vendas realizadas</span>
+    <div class="home-kpi-value" id="homeKpiSales">0</div>
+    <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
+  </div>
+  <div class="home-kpi">
+    <div class="home-kpi-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+    <span class="home-kpi-label">Faturamento total</span>
+    <div class="home-kpi-value" id="homeKpiRevenue">R$ 0,00</div>
+    <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
+  </div>
+  <div class="home-kpi">
+    <div class="home-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+    <span class="home-kpi-label">Ticket médio</span>
+    <div class="home-kpi-value" id="homeKpiAvg">R$ 0,00</div>
+    <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
+  </div>
+</div>
 
       <!-- Atalhos -->
       <div class="home-shortcuts">
@@ -504,6 +538,7 @@
   <script type="module" src="../js/pages/createClient.js"></script>
   <script type="module" src="../js/utils/format.js"></script>
   <script type="module" src="../js/pages/listClient.js"></script>
+  <script type="module" src="../js/pages/clientHistory.js"></script>
   <script type="module" src="../js/utils/trigger.js"></script>
   <script type="module" src="../js/pages/alterClient.js"></script>
   <script type="module" src="../js/utils/search.js"></script>

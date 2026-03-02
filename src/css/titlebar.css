@@ -14,7 +14,7 @@
   align-items: center;
   justify-content: space-between;
   z-index: 9999;
-  -webkit-app-region: drag;   /* arrasta a janela */
+  -webkit-app-region: drag;
   user-select: none;
 }
 
@@ -44,7 +44,7 @@
 
 .et-tb-controls {
   display: flex;
-  -webkit-app-region: no-drag;  /* botões precisam de clique */
+  -webkit-app-region: no-drag;
 }
 
 .et-tb-controls button {
@@ -71,17 +71,25 @@
   color: #fff !important;
 }
 
-/* Empurra o conteúdo quando a titlebar está presente */
-body.has-electron-titlebar .tabs {
-  top: 36px !important;
+/* Sidebar desce abaixo da titlebar quando Electron */
+body.has-electron-titlebar .sidebar {
+  top: 36px;
+  height: calc(100vh - 36px);
 }
 
 body.has-electron-titlebar .dashboard {
-  padding-top: calc(80px + 36px);
+  padding-top: calc(24px + 36px);
 }
 
 @media (max-width: 768px) {
+  body.has-electron-titlebar .sidebar {
+    top: auto;
+    bottom: 0;
+    height: 64px;
+  }
+
   body.has-electron-titlebar .dashboard {
-    padding-top: calc(70px + 36px);
+    padding-top: calc(16px + 36px);
+    padding-bottom: 72px;
   }
 }

@@ -2,7 +2,7 @@ import { auth }   from "../services/auth.js"
 import { logout } from "../services/logout.js"
 import { loadHomeKpis } from "./home.js"
 
-const links       = document.querySelectorAll("#menu li")
+const items       = document.querySelectorAll(".sidebar-nav .sidebar-item")
 const homeModal   = document.getElementById("homeModal")
 const createModal = document.getElementById("createModal")
 const listModal   = document.getElementById("listModal")
@@ -16,43 +16,38 @@ function hideAll() {
   allModals.forEach(m => m?.classList.add("none"))
 }
 
-// Botão "+ Cadastrar" dentro da lista de clientes
-create?.addEventListener('click', function () {
-  links.forEach(l => l.classList.remove("is-active"))
-  links[1].classList.add("is-active")  // índice 1 = Cadastro
+function setActive(label) {
+  items.forEach(i => i.classList.remove("is-active"))
+  const target = Array.from(items).find(i => i.dataset.label === label)
+  target?.classList.add("is-active")
+}
+
+function activateModal(label) {
+  const token = localStorage.getItem("authToken")
+  auth(token)
   hideAll()
-  createModal.classList.remove("none")
-  document.dispatchEvent(new CustomEvent("createModalOpened"))
+  setActive(label)
+  if (label === 'Início')     { homeModal?.classList.remove("none");   loadHomeKpis(); }
+  if (label === 'Cadastro')   { createModal?.classList.remove("none"); document.dispatchEvent(new CustomEvent("createModalOpened")); }
+  if (label === 'Clientes')   { listModal?.classList.remove("none"); }
+  if (label === 'Ingressos')  { saleModal?.classList.remove("none");   document.dispatchEvent(new CustomEvent("saleModalOpened")); }
+  if (label === 'Relatórios') { reportModal?.classList.remove("none"); document.dispatchEvent(new CustomEvent("reportModalOpened")); }
+}
+
+// Clique nos itens da sidebar
+items.forEach(item => {
+  item.addEventListener("click", () => activateModal(item.dataset.label))
 })
 
-links.forEach(link => {
-  link.addEventListener("click", function (event) {
-    const token = localStorage.getItem("authToken")
-    auth(token)
-    event.preventDefault()
+// Botão "+ Cadastrar" dentro da lista de clientes
+create?.addEventListener('click', () => activateModal('Cadastro'))
 
-    links.forEach(l => l.classList.remove("is-active"))
-    this.classList.add("is-active")
+// Logout
+document.getElementById("sidebarLogout")?.addEventListener("click", () => logout())
 
-    const modal = this.innerText.trim()
-
-    hideAll()
-
-    if (modal === 'Início')     { homeModal.classList.remove("none");   loadHomeKpis(); }
-    if (modal === 'Cadastro')   { createModal.classList.remove("none"); document.dispatchEvent(new CustomEvent("createModalOpened")); }
-    if (modal === 'Clientes')   { listModal.classList.remove("none"); }
-    if (modal === 'Ingressos')  { saleModal.classList.remove("none");   document.dispatchEvent(new CustomEvent("saleModalOpened")); }
-    if (modal === 'Relatórios') { reportModal.classList.remove("none"); document.dispatchEvent(new CustomEvent("reportModalOpened")); }
-    if (modal === '')           logout()
-  })
-})
-
-// Atalhos da tela Início clicáveis
+// Atalhos da tela Início
 document.getElementById("homeModal")?.addEventListener("click", function(e) {
   const shortcut = e.target.closest(".home-shortcut")
   if (!shortcut) return
-
-  const target = shortcut.dataset.target
-  const matchLink = Array.from(links).find(l => l.innerText.trim() === target)
-  if (matchLink) matchLink.click()
+  activateModal(shortcut.dataset.target)
 })

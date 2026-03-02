@@ -2,7 +2,7 @@ import { showLoading, hideLoading } from "../services/loading.js";
 import { loadingClients, getClients } from "./listClient.js";
 import { maskPhone, maskCPF } from "../utils/format.js";
 
-const clientForm   = document.getElementById('clientForm');
+const clientForm = document.getElementById('clientForm');
 const createButton = document.getElementById('createButton');
 
 // ─── Tipo de cliente ──────────────────────────────────────────────────────────
@@ -18,8 +18,8 @@ typeGrid?.addEventListener('click', (e) => {
 });
 
 // ─── Preview do nome em tempo real ───────────────────────────────────────────
-const clientInput  = document.getElementById('client');
-const previewName  = document.getElementById('regPreviewName');
+const clientInput = document.getElementById('client');
+const previewName = document.getElementById('regPreviewName');
 
 clientInput?.addEventListener('input', () => {
   const val = clientInput.value.trim();
@@ -60,7 +60,7 @@ function validateField(input, hintId, isValid, errorMsg, okMsg) {
     return;
   }
   hint.textContent = isValid ? `✓ ${okMsg}` : errorMsg;
-  hint.className   = isValid ? 'reg-hint valid' : 'reg-hint invalid';
+  hint.className = isValid ? 'reg-hint valid' : 'reg-hint invalid';
 }
 
 // ─── Submit ───────────────────────────────────────────────────────────────────
@@ -69,8 +69,8 @@ clientForm?.addEventListener('submit', function (event) {
   showLoading(createButton);
 
   const client = clientInput.value.trim();
-  const cpf    = cpfInput.value.trim();
-  const phone  = phoneInput.value.trim();
+  const cpf = cpfInput.value.trim();
+  const phone = phoneInput.value.trim();
 
   handleClient(client, cpf, phone, selectedType);
 });
@@ -88,7 +88,7 @@ async function handleClient(client, cpf, phone, type) {
 
     console.log('Cliente cadastrado com sucesso!', response.data);
 
-    loadingClients();
+    await loadingClients();
     updateRegisterMetrics();
     reset();
     hideLoading(createButton);
@@ -118,35 +118,46 @@ async function handleClient(client, cpf, phone, type) {
 // ─── Reset do formulário ──────────────────────────────────────────────────────
 function reset() {
   clientInput.value = '';
-  cpfInput.value    = '';
-  phoneInput.value  = '';
+  cpfInput.value = '';
+  phoneInput.value = '';
   previewName.textContent = 'Aguardando nome...';
   previewName.classList.remove('filled');
   document.querySelectorAll('.reg-hint').forEach(h => {
     h.textContent = '';
-    h.className   = 'reg-hint';
+    h.className = 'reg-hint';
   });
 }
 
 // ─── Métricas do cadastro ─────────────────────────────────────────────────────
 export function updateRegisterMetrics() {
-  const clients = getClients();
+  const clients = getClients(); // síncrono — retorna o array local diretamente
 
   const metricTotal = document.getElementById('metricTotal');
   const metricToday = document.getElementById('metricToday');
-  const metricLast  = document.getElementById('metricLast');
+  const metricLast = document.getElementById('metricLast');
 
   if (metricTotal) metricTotal.textContent = clients.length;
 
-  // Última cadastrado (assume que o último da lista é o mais recente)
-  if (metricLast && clients.length > 0) {
-    const last = clients[clients.length - 1];
-    metricLast.textContent = last.client?.split(' ')[0] || '—';
+  // Último cadastrado (assume que o último da lista é o mais recente)
+  if (metricLast) {
+    metricLast.textContent = clients.length > 0
+      ? (clients[clients.length - 1].client?.split(' ')[0] || '—')
+      : '—';
   }
 
-  // Hoje: o backend não retorna data por enquanto, então deixamos o 0 até ter a info
-  if (metricToday) metricToday.textContent = metricToday.textContent || '0';
+  // Clientes cadastrados hoje — filtra por createdAt == data local de hoje
+  if (metricToday) {
+    const today = new Date().toLocaleDateString('pt-BR'); // formato: dd/mm/aaaa
+    const todayCount = clients.filter(c => {
+      if (!c.createdAt) return false;
+      return new Date(c.createdAt).toLocaleDateString('pt-BR') === today;
+    }).length;
+    metricToday.textContent = todayCount;
+  }
 }
 
 // Atualiza métricas ao abrir o painel de Cadastro
-document.addEventListener('createModalOpened', updateRegisterMetrics);
+document.addEventListener('createModalOpened', async () => {
+  await loadingClients();
+  updateRegisterMetrics();
+});

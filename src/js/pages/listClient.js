@@ -1,27 +1,26 @@
 import { auth } from "../services/auth.js"
 import { alterClient } from "./alterClient.js"
 import { deletClient } from "./deleteClient.js"
+import { showClientHistory } from "./clientHistory.js"
 
 let clients = []
 
-export async function getClients() {
+export function getClients() {
   return clients
 }
 
 export async function loadingClients() {
   const token = localStorage.getItem("authToken")
-
   auth(token)
 
   try {
     const response = await axios.get("http://localhost:3001/clients", {
       headers: { Authorization: token }
     })
-
     clients = response.data
     listClients(clients)
   } catch (erro) {
-    console.error("Erro ao buscar clientes:", erro.response?.data || erro);
+    console.error("Erro ao buscar clientes:", erro.response?.data || erro)
   }
 }
 
@@ -32,7 +31,7 @@ export function listClients(clients) {
   if (!clients || clients.length === 0) {
     list.innerHTML = `
       <tr>
-        <td colspan="5">
+        <td colspan="6">
           <div class="empty-state">
             <i class="fa-solid fa-users-slash"></i>
             <p>Nenhum cliente cadastrado</p>
@@ -51,15 +50,23 @@ export function listClients(clients) {
       <td>${c.phone}</td>
       <td>${c.cpf}</td>
       <td class="icons">
-        <i class="fa-solid fa-trash"></i>
-        <i class="fa-solid fa-pencil"></i>
+        <button class="icon-btn icon-history" title="Histórico">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </button>
+        <button class="icon-btn icon-edit" title="Editar">
+          <i class="fa-solid fa-pencil"></i>
+        </button>
+        <button class="icon-btn icon-delete" title="Excluir">
+          <i class="fa-solid fa-trash"></i>
+        </button>
       </td>
     `
 
     list.appendChild(tr)
 
-    tr.querySelector('.fa-trash').addEventListener('click', () => deletClient(c.id))
-    tr.querySelector('.fa-pencil').addEventListener('click', () => alterClient(c.id))
+    tr.querySelector('.icon-history').addEventListener('click', () => showClientHistory(c.id, c.client))
+    tr.querySelector('.icon-edit').addEventListener('click', () => alterClient(c.id))
+    tr.querySelector('.icon-delete').addEventListener('click', () => deletClient(c.id))
   })
 }
 
