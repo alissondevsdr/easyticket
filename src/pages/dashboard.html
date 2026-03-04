@@ -12,7 +12,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- App CSS -->
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/login.css">
   <link rel="stylesheet" href="../css/dashboard.css">
@@ -28,7 +27,6 @@
   <script src="https://kit.fontawesome.com/a1729d9d21.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 </head>
 
@@ -44,13 +42,9 @@
 
     <!-- ── Sidebar ───────────────────────────────────────────────────────── -->
     <nav class="sidebar" id="sidebar">
-
-      <!-- Logo -->
       <div class="sidebar-logo">
         <i class="fa-solid fa-ticket"></i>
       </div>
-
-      <!-- Itens de navegação — div puro, sem ul/li do Bulma -->
       <div class="sidebar-nav" id="menu">
         <div class="sidebar-item is-active" data-label="Início">
           <i class="fa-solid fa-house"></i>
@@ -73,23 +67,18 @@
           <span class="sidebar-tooltip">Relatórios</span>
         </div>
       </div>
-
-      <!-- Logout no rodapé -->
       <div class="sidebar-footer">
         <div class="sidebar-item sidebar-logout" id="sidebarLogout">
           <i class="fa-solid fa-right-from-bracket"></i>
           <span class="sidebar-tooltip">Sair</span>
         </div>
       </div>
-
     </nav>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- INÍCIO / HOME                                                      -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="modal-home" id="homeModal">
-
-      <!-- Hero -->
       <div class="home-hero">
         <div class="home-hero-text">
           <span class="home-hero-label">Painel de controle</span>
@@ -103,90 +92,73 @@
         </div>
       </div>
 
-<!-- KPIs rápidos -->
-<div class="home-kpi-row">
-  <div class="home-kpi">
-    <div class="home-kpi-icon"><i class="fa-solid fa-users"></i></div>
-    <span class="home-kpi-label">Clientes cadastrados</span>
-    <div class="home-kpi-value" id="homeKpiClients">0</div>
-    <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
-  </div>
-  <div class="home-kpi">
-    <div class="home-kpi-icon"><i class="fa-solid fa-bolt"></i></div>
-    <span class="home-kpi-label">Vendas realizadas</span>
-    <div class="home-kpi-value" id="homeKpiSales">0</div>
-    <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
-  </div>
-  <div class="home-kpi">
-    <div class="home-kpi-icon"><i class="fa-solid fa-dollar-sign"></i></div>
-    <span class="home-kpi-label">Faturamento total</span>
-    <div class="home-kpi-value" id="homeKpiRevenue">R$ 0,00</div>
-    <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
-  </div>
-  <div class="home-kpi">
-    <div class="home-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
-    <span class="home-kpi-label">Ticket médio</span>
-    <div class="home-kpi-value" id="homeKpiAvg">R$ 0,00</div>
-    <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
-  </div>
-</div>
+      <div class="home-kpi-row">
+        <div class="home-kpi">
+          <div class="home-kpi-icon"><i class="fa-solid fa-users"></i></div>
+          <span class="home-kpi-label">Clientes cadastrados</span>
+          <div class="home-kpi-value" id="homeKpiClients">0</div>
+          <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
+        </div>
+        <div class="home-kpi">
+          <div class="home-kpi-icon"><i class="fa-solid fa-bolt"></i></div>
+          <span class="home-kpi-label">Vendas realizadas</span>
+          <div class="home-kpi-value" id="homeKpiSales">0</div>
+          <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
+        </div>
+        <div class="home-kpi">
+          <div class="home-kpi-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+          <span class="home-kpi-label">Faturamento total</span>
+          <div class="home-kpi-value" id="homeKpiRevenue">R$ 0,00</div>
+          <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
+        </div>
+        <div class="home-kpi">
+          <div class="home-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+          <span class="home-kpi-label">Ticket médio</span>
+          <div class="home-kpi-value" id="homeKpiAvg">R$ 0,00</div>
+          <span class="home-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
+        </div>
+      </div>
 
-      <!-- Atalhos -->
       <div class="home-shortcuts">
-
         <div class="home-shortcut" data-target="Cadastro">
-          <div class="home-shortcut-icon">
-            <i class="fa-solid fa-user-plus"></i>
-          </div>
+          <div class="home-shortcut-icon"><i class="fa-solid fa-user-plus"></i></div>
           <div class="home-shortcut-info">
             <span class="home-shortcut-title">Cadastro</span>
             <span class="home-shortcut-desc">Registre novos participantes no evento</span>
           </div>
           <i class="fa-solid fa-chevron-right home-shortcut-arrow"></i>
         </div>
-
         <div class="home-shortcut" data-target="Clientes">
-          <div class="home-shortcut-icon">
-            <i class="fa-solid fa-users"></i>
-          </div>
+          <div class="home-shortcut-icon"><i class="fa-solid fa-users"></i></div>
           <div class="home-shortcut-info">
             <span class="home-shortcut-title">Clientes</span>
             <span class="home-shortcut-desc">Consulte e gerencie a base de participantes</span>
           </div>
           <i class="fa-solid fa-chevron-right home-shortcut-arrow"></i>
         </div>
-
         <div class="home-shortcut" data-target="Ingressos">
-          <div class="home-shortcut-icon">
-            <i class="fa-solid fa-ticket"></i>
-          </div>
+          <div class="home-shortcut-icon"><i class="fa-solid fa-ticket"></i></div>
           <div class="home-shortcut-info">
             <span class="home-shortcut-title">Ingressos</span>
             <span class="home-shortcut-desc">Ponto de venda — registre novas vendas</span>
           </div>
           <i class="fa-solid fa-chevron-right home-shortcut-arrow"></i>
         </div>
-
         <div class="home-shortcut" data-target="Relatórios">
-          <div class="home-shortcut-icon">
-            <i class="fa-solid fa-chart-line"></i>
-          </div>
+          <div class="home-shortcut-icon"><i class="fa-solid fa-chart-line"></i></div>
           <div class="home-shortcut-info">
             <span class="home-shortcut-title">Relatórios</span>
             <span class="home-shortcut-desc">Métricas, gráficos e análise de desempenho</span>
           </div>
           <i class="fa-solid fa-chevron-right home-shortcut-arrow"></i>
         </div>
-
-      </div><!-- /.home-shortcuts -->
-
+      </div>
     </div><!-- /.modal-home -->
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- CADASTRO                                                           -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="modal-client none" id="createModal">
-
       <div class="dashboard-register">
         <div class="register-metric">
           <span class="metric-label">Clientes hoje</span>
@@ -207,10 +179,8 @@
           <h1>Cadastro de Clientes</h1>
           <span class="register-badge">Novo</span>
         </div>
-
         <form id="clientForm">
           <div class="register-body">
-
             <div class="reg-field">
               <span class="reg-label">Tipo de cliente</span>
               <div class="reg-type-grid" id="clientTypeGrid">
@@ -228,9 +198,7 @@
                 </div>
               </div>
             </div>
-
             <div class="reg-divider"><span>Dados pessoais</span></div>
-
             <div class="register-row">
               <div class="reg-field">
                 <label class="reg-label" for="client">Nome completo</label>
@@ -249,7 +217,6 @@
                 <span class="reg-hint" id="hintPhone"></span>
               </div>
             </div>
-
             <div class="register-row full">
               <div class="reg-field">
                 <label class="reg-label" for="cpf">CPF</label>
@@ -260,9 +227,7 @@
                 <span class="reg-hint" id="hintCpf"></span>
               </div>
             </div>
-
-          </div><!-- /.register-body -->
-
+          </div>
           <div class="register-footer">
             <div class="reg-preview">
               <span class="reg-preview-label">Cadastrando</span>
@@ -275,14 +240,12 @@
           </div>
         </form>
       </div>
-
     </div><!-- /.modal-client -->
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- CLIENTES                                                           -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="modal-list-client none" id="listModal">
-
       <div class="toolbar">
         <div class="search-wrap">
           <input type="text" class="search-input" id="searchClient"
@@ -294,7 +257,6 @@
           Cadastrar
         </button>
       </div>
-
       <div class="adjust-table">
         <table id="tabelClient">
           <thead>
@@ -310,7 +272,6 @@
           <tbody id="list"></tbody>
         </table>
       </div>
-
     </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -334,9 +295,15 @@
       </div>
 
       <div class="pdv">
+
+        <!-- Header: título + badge de tipo do cliente selecionado -->
         <div class="pdv-header">
           <h1>Ponto de Venda</h1>
-          <span class="pdv-badge">PDV</span>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <!-- Badge do tipo do cliente — aparece quando um cliente é selecionado -->
+            <div id="clientTypeBadge" style="display:none"></div>
+            <span class="pdv-badge">PDV</span>
+          </div>
         </div>
 
         <div class="pdv-body">
@@ -374,22 +341,24 @@
           </div>
         </div>
 
+        <!-- Footer: total + Finalizar Venda + Ver Vendas lado a lado -->
         <div class="pdv-footer">
           <div class="pdv-summary">
             <span class="pdv-summary-label">Total da venda</span>
             <div class="pdv-summary-value" id="pdv-summary-value">R$ 0,00</div>
           </div>
-          <div style="display: flex; gap: 10px; width: 100%;">
+          <div style="display:flex;gap:10px;">
             <button class="btn-finalize" id="finalizeBtn">
               <i class="fa-solid fa-bolt"></i>
               Finalizar Venda
             </button>
             <button class="btn-find-sales" id="findSalesBtn">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              Localizar
+              <i class="fa-solid fa-list"></i>
+              Ver Vendas
             </button>
           </div>
         </div>
+
       </div>
     </div><!-- /.modal-sales -->
 
@@ -399,9 +368,7 @@
     <div class="modal-report none" id="reportModal">
       <div class="report-wrapper">
 
-        <!-- ── KPIs ─────────────────────────────────────────────────────── -->
         <div class="report-kpi-row">
-
           <div class="report-kpi">
             <div class="report-kpi-icon"><i class="fa-solid fa-dollar-sign"></i></div>
             <span class="report-kpi-label">Faturamento total</span>
@@ -411,7 +378,6 @@
               <span class="up">Acumulado</span>
             </span>
           </div>
-
           <div class="report-kpi">
             <div class="report-kpi-icon"><i class="fa-solid fa-bolt"></i></div>
             <span class="report-kpi-label">Total de vendas</span>
@@ -421,7 +387,6 @@
               ingressos emitidos
             </span>
           </div>
-
           <div class="report-kpi">
             <div class="report-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
             <span class="report-kpi-label">Ticket médio</span>
@@ -431,7 +396,6 @@
               por ingresso
             </span>
           </div>
-
           <div class="report-kpi">
             <div class="report-kpi-icon"><i class="fa-solid fa-users"></i></div>
             <span class="report-kpi-label">Clientes cadastrados</span>
@@ -441,13 +405,9 @@
               na base
             </span>
           </div>
+        </div>
 
-        </div><!-- /.report-kpi-row -->
-
-        <!-- ── Gráficos: linha + donut ───────────────────────────────────── -->
         <div class="report-charts-row">
-
-          <!-- Gráfico de linha -->
           <div class="report-card">
             <div class="report-card-header">
               <h2>Faturamento por dia</h2>
@@ -459,8 +419,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Donut de pagamentos -->
           <div class="report-card">
             <div class="report-card-header">
               <h2>Formas de pagamento</h2>
@@ -473,13 +431,9 @@
             </div>
             <div class="donut-legend" id="donutLegend"></div>
           </div>
+        </div>
 
-        </div><!-- /.report-charts-row -->
-
-        <!-- ── Linha inferior: tabela + barras ──────────────────────────── -->
         <div class="report-bottom-row">
-
-          <!-- Tabela de vendas recentes -->
           <div class="report-card">
             <div class="report-card-header">
               <h2>Vendas recentes</h2>
@@ -510,16 +464,12 @@
               </div>
             </div>
           </div>
-
-          <!-- Barras de tipo de cliente -->
           <div class="report-card">
             <div class="report-card-header">
               <h2>Tipo de clientes</h2>
               <span class="report-card-badge">Base</span>
             </div>
-            <div class="report-card-body" style="padding-bottom:0">
-              <!-- espaço vazio intencional para o padding do bar-list abaixo funcionar -->
-            </div>
+            <div class="report-card-body" style="padding-bottom:0"></div>
             <div class="bar-list" id="barList">
               <div class="bar-item">
                 <div class="bar-item-top">
@@ -530,84 +480,10 @@
               </div>
             </div>
           </div>
+        </div>
 
-        </div><!-- /.report-bottom-row -->
-
-      </div><!-- /.report-wrapper -->
+      </div>
     </div><!-- /.modal-report -->
-
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- LOCALIZAR VENDAS                                                   -->
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <div class="modal-find-sales none" id="findSalesModal">
-      <div class="find-sales-header">
-        <h1>Localizar Vendas</h1>
-      </div>
-
-      <div class="find-sales-filters">
-        <div class="filter-group">
-          <label>Pesquisar</label>
-          <input type="text" id="salesSearchInput" placeholder="Nome do cliente, CPF...">
-        </div>
-
-        <div class="filter-group">
-          <label>Período</label>
-          <input type="date" id="salesDateStart" placeholder="Data início">
-          <input type="date" id="salesDateEnd" placeholder="Data fim">
-        </div>
-
-        <div class="filter-group">
-          <label>Forma de Pagamento</label>
-          <select id="salesPaymentFilter">
-            <option value="">Todas</option>
-            <option value="cash">Dinheiro</option>
-            <option value="pix">PIX</option>
-            <option value="credit">Crédito</option>
-            <option value="debit">Débito</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label>Situação</label>
-          <select id="salesStatusFilter">
-            <option value="">Todas</option>
-            <option value="FINALIZADA">Finalizada</option>
-            <option value="CANCELADA">Cancelada</option>
-          </select>
-        </div>
-
-        <button class="btn-filter-clear" id="filterClearBtn">Limpar filtros</button>
-      </div>
-
-      <div class="find-sales-table-wrap">
-        <table class="find-sales-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Cliente</th>
-              <th>CPF</th>
-              <th>Valor</th>
-              <th>Pagamento</th>
-              <th>Data</th>
-              <th>Situação</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="salesTableBody">
-            <tr>
-              <td colspan="8">
-                <div class="empty-state">
-                  <i class="fa-solid fa-search"></i>
-                  <p>Carregando vendas...</p>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <button class="btn-close-find-sales" id="closeFindSalesBtn">Fechar</button>
-    </div><!-- /.modal-find-sales -->
 
   </div><!-- /.dashboard -->
 

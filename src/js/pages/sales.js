@@ -12,92 +12,91 @@ const metricRevenue = document.getElementById("metricRevenue");
 const metricSales   = document.getElementById("metricSales");
 const metricAvg     = document.getElementById("metricAvg");
 const summaryValue  = document.getElementById("pdv-summary-value");
+const paymentIds    = ["cash", "credit", "debit", "pix"];
 
-const paymentIds = ["cash", "credit", "debit", "pix"];
+// ─── Mapas ────────────────────────────────────────────────────────────────────
+const typeMap = {
+  geral:    { label: "Geral",    icon: "fa-users",  cls: "geral"    },
+  vip:      { label: "VIP",      icon: "fa-star",   cls: "vip"      },
+  cortesia: { label: "Cortesia", icon: "fa-ticket", cls: "cortesia" },
+};
+
+const payMap = {
+  cash:   { label: "Dinheiro", icon: "fa-money-bill-1", cls: "cash"   },
+  pix:    { label: "PIX",      icon: "fa-qrcode",       cls: "pix"    },
+  credit: { label: "Crédito",  icon: "fa-credit-card",  cls: "credit" },
+  debit:  { label: "Débito",   icon: "fa-credit-card",  cls: "debit"  },
+};
+
+// ─── Badge de tipo do cliente no header ───────────────────────────────────────
+function showClientTypeBadge(clientId) {
+  const badge = document.getElementById("clientTypeBadge");
+  if (!badge) return;
+  if (!clientId) { badge.innerHTML = ""; badge.style.display = "none"; return; }
+
+  const client = getClients().find(c => String(c.id) === String(clientId));
+  if (!client)  { badge.innerHTML = ""; badge.style.display = "none"; return; }
+
+  const t = typeMap[client.type] || typeMap.geral;
+  badge.style.display = "flex";
+  badge.innerHTML = `<span class="type-badge type-${t.cls}"><i class="fa-solid ${t.icon}"></i> ${t.label}</span>`;
+}
 
 // ─── Select2 ──────────────────────────────────────────────────────────────────
 async function initSelect2() {
-  if ($("#clientSelect").data("select2")) {
-    $("#clientSelect").select2("destroy");
-  }
+  if ($("#clientSelect").data("select2")) $("#clientSelect").select2("destroy");
 
-  // getClients() é async — precisa de await para receber o array real
   let clients = await getClients();
-
-  // Fallback: se ainda não carregou, busca da API direto
-  if (!clients || clients.length === 0) {
-    await loadingClients();
-    clients = await getClients();
-  }
-
-  const data = clients.map((c) => ({
-    id:   c.id,
-    text: `${c.client} — ${c.cpf}`,
-  }));
+  if (!clients || clients.length === 0) { await loadingClients(); clients = await getClients(); }
 
   $("#clientSelect").select2({
     placeholder:    "Buscar cliente pelo nome ou CPF...",
     allowClear:     true,
     width:          "100%",
-    dropdownParent: $("#saleModal"),   // ← fora do .pdv para não ser cortado pelo overflow:hidden
-    language: {
-      noResults:    () => "Nenhum cliente encontrado",
-      searching:    () => "Buscando...",
-    },
-    data,
+    dropdownParent: $("#saleModal"),
+    language: { noResults: () => "Nenhum cliente encontrado", searching: () => "Buscando..." },
+    data: clients.map(c => ({ id: c.id, text: `${c.client} — ${c.cpf}` })),
   });
 
-  $("#clientSelect").on("select2:clear", () => {
-    $("#clientSelect").val(null).trigger("change");
-  });
+  $("#clientSelect").on("select2:select",           e  => showClientTypeBadge(e.params.data.id));
+  $("#clientSelect").on("select2:clear select2:unselect", () => showClientTypeBadge(null));
 }
 
 document.addEventListener("saleModalOpened", async () => {
   await initSelect2();
   loadMetrics();
+  showClientTypeBadge(null);
 });
 
-// ─── Seleção de método de pagamento ──────────────────────────────────────────
+// ─── Seleção de pagamento ─────────────────────────────────────────────────────
 payments.addEventListener("click", function (event) {
-  const clickedId = paymentIds.find(
-    (id) => event.target.closest(`#${id}`) !== null
-  );
+  const clickedId = paymentIds.find(id => event.target.closest(`#${id}`) !== null);
   if (!clickedId) return;
-
-  const clickedEl  = document.getElementById(clickedId);
-  const wasActive  = clickedEl.classList.contains("active");
-
-  paymentIds.forEach((id) => document.getElementById(id).classList.remove("active"));
-
-  if (!wasActive) {
-    clickedEl.classList.add("active");
-    selectedPayment = clickedId;
-  } else {
-    selectedPayment = null;
-  }
+  const el = document.getElementById(clickedId);
+  const wasActive = el.classList.contains("active");
+  paymentIds.forEach(id => document.getElementById(id).classList.remove("active"));
+  if (!wasActive) { el.classList.add("active"); selectedPayment = clickedId; }
+  else selectedPayment = null;
 });
 
-// Remove seleção ao clicar fora dos cards de pagamento
 document.addEventListener("click", function (event) {
   if (!payments.contains(event.target)) {
-    paymentIds.forEach((id) => document.getElementById(id)?.classList.remove("active"));
+    paymentIds.forEach(id => document.getElementById(id)?.classList.remove("active"));
     selectedPayment = null;
   }
 });
 
-// ─── Máscara de valor monetário ───────────────────────────────────────────────
+// ─── Máscara de valor ─────────────────────────────────────────────────────────
 valueInput.addEventListener("input", function (e) {
   let raw = e.target.value.replace(/\D/g, "");
   if (!raw) { e.target.value = ""; updateSummary(""); return; }
-  raw = raw.replace(/(\d)(\d{2})$/, "$1,$2");
-  raw = raw.replace(/(?=(\d{3})+(?!\d))/g, ".");
+  raw = raw.replace(/(\d)(\d{2})$/, "$1,$2").replace(/(?=(\d{3})+(?!\d))/g, ".");
   e.target.value = "R$ " + raw;
   updateSummary(e.target.value);
 });
 
 function updateSummary(val) {
-  if (!summaryValue) return;
-  summaryValue.textContent = val || "R$ 0,00";
+  if (summaryValue) summaryValue.textContent = val || "R$ 0,00";
 }
 
 // ─── Finalizar venda ──────────────────────────────────────────────────────────
@@ -106,12 +105,11 @@ finalizeBtn?.addEventListener("click", async function () {
   const rawValue = valueInput.value.replace(/\D/g, "");
   const value    = rawValue ? (parseInt(rawValue) / 100).toFixed(2) : null;
 
-  if (!clientId)                        { showToast("Selecione um cliente.", "warning");       return; }
-  if (!value || parseFloat(value) <= 0) { showToast("Informe um valor válido.", "warning");    return; }
+  if (!clientId)                        { showToast("Selecione um cliente.", "warning");             return; }
+  if (!value || parseFloat(value) <= 0) { showToast("Informe um valor válido.", "warning");          return; }
   if (!selectedPayment)                 { showToast("Selecione um método de pagamento.", "warning"); return; }
 
   const token = localStorage.getItem("authToken");
-
   try {
     showLoading(finalizeBtn);
     await axios.post(
@@ -123,21 +121,253 @@ finalizeBtn?.addEventListener("click", async function () {
     resetPDV();
     loadMetrics();
   } catch (error) {
-    const msg = error.response?.data?.mensagem || "Erro ao registrar venda.";
-    showToast(msg, "error");
+    showToast(error.response?.data?.mensagem || "Erro ao registrar venda.", "error");
     console.error("Erro ao finalizar venda:", error);
   } finally {
     hideLoading(finalizeBtn);
   }
 });
 
-// ─── Resetar PDV ──────────────────────────────────────────────────────────────
+// ─── Botão "Ver Vendas" ───────────────────────────────────────────────────────
+document.getElementById("findSalesBtn")?.addEventListener("click", () => openSalesListModal());
+
+// ─── Modal lista de vendas ────────────────────────────────────────────────────
+async function openSalesListModal() {
+  const token                 = localStorage.getItem("authToken");
+  const dynamicModal          = document.getElementById("modal");
+  const modalContentContainer = document.getElementById("modalContentContainer");
+
+  // Aplica largura maior via inline style no modal-content
+  dynamicModal.classList.add("is-active");
+  modalContentContainer.style.maxWidth = "860px";
+
+  modalContentContainer.innerHTML = `
+    <div class="modal-header">
+      <div class="message">
+        <i class="fa-solid fa-receipt" style="font-size:.9rem;color:#a5ff01"></i>
+        Lista de Vendas
+      </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <div class="history-loading">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <span>Carregando vendas...</span>
+    </div>`;
+
+  const closeModal = () => {
+    dynamicModal.classList.remove("is-active");
+    modalContentContainer.style.maxWidth = "";
+  };
+
+  modalContentContainer.querySelector(".modal-close").addEventListener("click", closeModal);
+  document.querySelector(".modal-background").addEventListener("click", closeModal);
+
+  try {
+    const { data: sales } = await axios.get("http://localhost:3001/sales", {
+      headers: { Authorization: token },
+    });
+    renderSalesModal(sales, closeModal);
+  } catch (e) {
+    console.error("Erro ao carregar vendas:", e);
+    modalContentContainer.innerHTML = `
+      <div class="modal-header">
+        <div class="message">Lista de Vendas</div>
+        <button class="modal-close is-large" aria-label="close"></button>
+      </div>
+      <div class="history-loading">
+        <i class="fa-solid fa-triangle-exclamation" style="color:#e03131"></i>
+        <span>Erro ao carregar vendas</span>
+      </div>
+      <div class="history-footer"><button class="button cancel">Fechar</button></div>`;
+    modalContentContainer.querySelector(".modal-close").addEventListener("click", closeModal);
+    modalContentContainer.querySelector(".cancel").addEventListener("click", closeModal);
+    document.querySelector(".modal-background").addEventListener("click", closeModal);
+  }
+}
+
+function renderSalesModal(sales, closeModal) {
+  const modalContentContainer = document.getElementById("modalContentContainer");
+
+  const buildRows = list => {
+    if (!list.length) return `
+      <tr><td colspan="6">
+        <div class="history-empty">
+          <i class="fa-solid fa-receipt"></i>
+          <p>Nenhuma venda encontrada</p>
+        </div>
+      </td></tr>`;
+
+    return list.map((s, i) => {
+      const pm   = payMap[s.paymentMethod] || { label: s.paymentMethod, icon: "fa-circle", cls: "" };
+      const date = s.createdAt
+        ? new Date(s.createdAt).toLocaleDateString("pt-BR", {
+            day: "2-digit", month: "2-digit", year: "numeric",
+            hour: "2-digit", minute: "2-digit"
+          })
+        : "—";
+      const isCanceled = s.status === "CANCELADA";
+
+      return `
+        <tr style="${isCanceled ? "opacity:.5" : ""}">
+          <td class="history-td-num">#${String(i + 1).padStart(2, "0")}</td>
+          <td>${s.client?.client || "—"}</td>
+          <td>
+            <span class="pay-badge ${pm.cls}">
+              <i class="fa-solid ${pm.icon}"></i>${pm.label}
+            </span>
+          </td>
+          <td class="history-td-value">${fmtCurrency(s.value)}</td>
+          <td style="color:#5a6380;font-size:.82rem;white-space:nowrap">${date}</td>
+          <td>
+            ${isCanceled
+              ? `<span style="color:#e03131;font-size:.75rem;font-weight:700;font-family:'Poppins',sans-serif">CANCELADA</span>`
+              : `<button class="icon-btn icon-delete btn-cancel-sale" data-id="${s.id}" data-name="${s.client?.client || '—'}" data-value="${s.value}" title="Cancelar venda">
+                   <i class="fa-solid fa-ban"></i>
+                 </button>`
+            }
+          </td>
+        </tr>`;
+    }).join("");
+  };
+
+  modalContentContainer.innerHTML = `
+    <div class="modal-header">
+      <div class="message">
+        <i class="fa-solid fa-receipt" style="font-size:.9rem;color:#a5ff01"></i>
+        Lista de Vendas
+      </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <!-- Barra de busca -->
+    <div style="padding:20px 28px 0">
+      <div class="search-wrap">
+        <input type="text" id="searchSaleModal" class="search-input"
+          placeholder="Buscar por cliente ou forma de pagamento...">
+        <i class="search-icon fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Tabela -->
+    <div class="history-table-wrap" style="margin:16px 28px 0;max-height:420px">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Pagamento</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="salesModalBody">${buildRows(sales)}</tbody>
+      </table>
+    </div>
+
+    <div class="history-footer">
+      <button class="button cancel">Fechar</button>
+    </div>`;
+
+  // Fechar
+  modalContentContainer.querySelector(".modal-close").addEventListener("click", closeModal);
+  modalContentContainer.querySelector(".cancel").addEventListener("click", closeModal);
+  document.querySelector(".modal-background").addEventListener("click", closeModal);
+
+  // Busca em tempo real
+  document.getElementById("searchSaleModal").addEventListener("input", function () {
+    const q = this.value.trim().toLowerCase();
+    const filtered = !q ? sales : sales.filter(s => {
+      const name = (s.client?.client || "").toLowerCase();
+      const pm   = (payMap[s.paymentMethod]?.label || "").toLowerCase();
+      return name.includes(q) || pm.includes(q);
+    });
+    document.getElementById("salesModalBody").innerHTML = buildRows(filtered);
+    bindCancelButtons(filtered);
+  });
+
+  bindCancelButtons(sales);
+
+  // ─── Bind botões cancelar ───────────────────────────────────────────────────
+  function bindCancelButtons(list) {
+    document.querySelectorAll(".btn-cancel-sale").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id    = Number(btn.dataset.id);
+        const name  = btn.dataset.name;
+        const valor = fmtCurrency(btn.dataset.value);
+        confirmCancel(id, name, valor, list);
+      });
+    });
+  }
+
+  // ─── Confirmação de cancelamento ────────────────────────────────────────────
+  function confirmCancel(saleId, name, valor, list) {
+    const token = localStorage.getItem("authToken");
+
+    modalContentContainer.innerHTML = `
+      <div class="modal-header">
+        <div class="message">
+          <i class="fa-solid fa-triangle-exclamation" style="font-size:.9rem;color:#e03131"></i>
+          Cancelar venda
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+      </div>
+      <div class="card-content">
+        <p style="color:#c8cdd8;font-size:.9rem;font-family:'Poppins',sans-serif;margin:0 0 8px">
+          Deseja cancelar a venda de <strong style="color:#fff">${valor}</strong>
+          para <strong style="color:#fff">${name}</strong>?
+        </p>
+        <p style="color:#5a6380;font-size:.78rem;font-family:'Poppins',sans-serif;margin:0">
+          Esta ação não pode ser desfeita.
+        </p>
+      </div>
+      <div class="buttons-modal">
+        <button class="button is-danger-confirm" id="confirmCancelBtn">
+          <i class="fa-solid fa-ban" style="margin-right:6px"></i>
+          Sim, cancelar
+        </button>
+        <button class="button cancel" id="backToListBtn">Voltar</button>
+      </div>`;
+
+    modalContentContainer.querySelector(".modal-close").addEventListener("click", closeModal);
+    document.querySelector(".modal-background").addEventListener("click", closeModal);
+    document.getElementById("backToListBtn").addEventListener("click", () => renderSalesModal(sales, closeModal));
+
+    const confirmBtn = document.getElementById("confirmCancelBtn");
+    confirmBtn.addEventListener("click", async () => {
+      try {
+        showLoading(confirmBtn);
+        await axios.put(
+          `http://localhost:3001/sales/${saleId}/cancel`,
+          {},
+          { headers: { Authorization: token } }
+        );
+        // Atualiza o status localmente e re-renderiza sem fechar o modal
+        const updated = sales.map(s => s.id === saleId ? { ...s, status: "CANCELADA" } : s);
+        sales.length = 0;
+        updated.forEach(s => sales.push(s));
+        renderSalesModal(sales, closeModal);
+        loadMetrics();
+        showToast("Venda cancelada com sucesso!", "success");
+      } catch (err) {
+        console.error("Erro ao cancelar venda:", err);
+        showToast(err.response?.data?.mensagem || "Erro ao cancelar venda.", "error");
+        hideLoading(confirmBtn);
+        // Volta para a lista mesmo em caso de erro
+        renderSalesModal(sales, closeModal);
+      }
+    });
+  }
+}
+
+// ─── Reset PDV ────────────────────────────────────────────────────────────────
 function resetPDV() {
   $("#clientSelect").val(null).trigger("change");
   valueInput.value = "";
   selectedPayment  = null;
-  paymentIds.forEach((id) => document.getElementById(id)?.classList.remove("active"));
+  paymentIds.forEach(id => document.getElementById(id)?.classList.remove("active"));
   updateSummary("");
+  showClientTypeBadge(null);
 }
 
 // ─── Métricas ─────────────────────────────────────────────────────────────────
@@ -147,220 +377,27 @@ export async function loadMetrics() {
     const { data } = await axios.get("http://localhost:3001/sales/metrics", {
       headers: { Authorization: token },
     });
-    if (metricRevenue) metricRevenue.textContent = `R$ ${formatCurrency(data.totalRevenue)}`;
+    if (metricRevenue) metricRevenue.textContent = `R$ ${fmt(data.totalRevenue)}`;
     if (metricSales)   metricSales.textContent   = data.totalSales;
-    if (metricAvg)     metricAvg.textContent     = `R$ ${formatCurrency(data.avgTicket)}`;
+    if (metricAvg)     metricAvg.textContent     = `R$ ${fmt(data.avgTicket)}`;
   } catch (error) {
     console.error("Erro ao carregar métricas:", error);
   }
 }
 
-function formatCurrency(value) {
-  return Number(value)
-    .toFixed(2)
-    .replace(".", ",")
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+function fmt(v) {
+  return Number(v).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-// ─── Toast ────────────────────────────────────────────────────────────────────
+function fmtCurrency(val) {
+  return "R$ " + Number(val || 0).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
 function showToast(message, type = "success") {
   let toast = document.querySelector(".et-toast");
-  if (!toast) {
-    toast = document.createElement("div");
-    toast.className = "et-toast";
-    document.body.appendChild(toast);
-  }
+  if (!toast) { toast = document.createElement("div"); toast.className = "et-toast"; document.body.appendChild(toast); }
   toast.textContent = message;
   toast.className   = `et-toast ${type}`;
   requestAnimationFrame(() => toast.classList.add("show"));
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
-
-// ─── LOCALIZAR VENDAS ──────────────────────────────────────────────────────────
-const findSalesBtn = document.getElementById("findSalesBtn");
-const findSalesModal = document.getElementById("findSalesModal");
-const closeFindSalesBtn = document.getElementById("closeFindSalesBtn");
-const salesSearchInput = document.getElementById("salesSearchInput");
-const salesDateStart = document.getElementById("salesDateStart");
-const salesDateEnd = document.getElementById("salesDateEnd");
-const salesPaymentFilter = document.getElementById("salesPaymentFilter");
-const salesStatusFilter = document.getElementById("salesStatusFilter");
-const filterClearBtn = document.getElementById("filterClearBtn");
-const salesTableBody = document.getElementById("salesTableBody");
-
-let allSales = [];
-
-// Abrir modal de localizar vendas
-findSalesBtn?.addEventListener("click", async () => {
-  findSalesModal?.classList.remove("none");
-  await loadAllSales();
-  renderSalesTable();
-});
-
-// Fechar modal
-closeFindSalesBtn?.addEventListener("click", () => {
-  findSalesModal?.classList.add("none");
-});
-
-// Carregar todas as vendas
-async function loadAllSales() {
-  const token = localStorage.getItem("authToken");
-  try {
-    const { data } = await axios.get("http://localhost:3001/sales", {
-      headers: { Authorization: token }
-    });
-    allSales = data || [];
-  } catch (error) {
-    console.error("Erro ao carregar vendas:", error);
-    showToast("Erro ao carregar vendas.", "error");
-    allSales = [];
-  }
-}
-
-// Filtrar vendas
-function getFilteredSales() {
-  let filtered = [...allSales];
-  
-  // Filtro de pesquisa
-  const searchTerm = salesSearchInput?.value?.toLowerCase() || "";
-  if (searchTerm) {
-    filtered = filtered.filter(s => {
-      const clientName = s.client?.client?.toLowerCase() || "";
-      const clientCpf = s.client?.cpf?.toLowerCase() || "";
-      return clientName.includes(searchTerm) || clientCpf.includes(searchTerm);
-    });
-  }
-  
-  // Filtro de período
-  const dateStart = salesDateStart?.value;
-  const dateEnd = salesDateEnd?.value;
-  if (dateStart) {
-    const start = new Date(dateStart);
-    filtered = filtered.filter(s => new Date(s.createdAt) >= start);
-  }
-  if (dateEnd) {
-    const end = new Date(dateEnd);
-    end.setHours(23, 59, 59, 999);
-    filtered = filtered.filter(s => new Date(s.createdAt) <= end);
-  }
-  
-  // Filtro de pagamento
-  const paymentMethod = salesPaymentFilter?.value;
-  if (paymentMethod) {
-    filtered = filtered.filter(s => s.paymentMethod === paymentMethod);
-  }
-  
-  // Filtro de situação
-  const status = salesStatusFilter?.value;
-  if (status) {
-    filtered = filtered.filter(s => s.status === status);
-  }
-  
-  return filtered;
-}
-
-// Renderizar tabela de vendas
-function renderSalesTable() {
-  const filtered = getFilteredSales();
-  
-  if (filtered.length === 0) {
-    salesTableBody.innerHTML = `
-      <tr>
-        <td colspan="8">
-          <div class="empty-state">
-            <i class="fa-solid fa-search"></i>
-            <p>Nenhuma venda encontrada</p>
-          </div>
-        </td>
-      </tr>`;
-    return;
-  }
-
-  const paymentMap = {
-    cash: "Dinheiro",
-    pix: "PIX",
-    credit: "Crédito",
-    debit: "Débito"
-  };
-
-  const statusMap = {
-    "FINALIZADA": { label: "Finalizada", class: "status-finalized" },
-    "CANCELADA": { label: "Cancelada", class: "status-canceled" }
-  };
-
-  salesTableBody.innerHTML = filtered.map((sale, index) => {
-    const paymentLabel = paymentMap[sale.paymentMethod] || sale.paymentMethod;
-    const statusInfo = statusMap[sale.status] || { label: sale.status, class: "" };
-    const date = new Date(sale.createdAt).toLocaleDateString("pt-BR");
-    const time = new Date(sale.createdAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-
-    return `
-      <tr>
-        <td>#${String(index + 1).padStart(3, "0")}</td>
-        <td>${sale.client?.client || "—"}</td>
-        <td>${sale.client?.cpf || "—"}</td>
-        <td>R$ ${Number(sale.value).toFixed(2).replace(".", ",")}</td>
-        <td>${paymentLabel}</td>
-        <td>${date} ${time}</td>
-        <td><span class="status-badge ${statusInfo.class}">${statusInfo.label}</span></td>
-        <td>
-          ${sale.status === "FINALIZADA" ? `
-            <button class="btn-cancel-sale" data-sale-id="${sale.id}">
-              <i class="fa-solid fa-ban"></i>
-              Cancelar
-            </button>
-          ` : "—"}
-        </td>
-      </tr>`;
-  }).join("");
-
-  // Adicionar event listeners aos botões de cancelar
-  document.querySelectorAll(".btn-cancel-sale").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      const saleId = btn.dataset.saleId;
-      if (confirm("Tem certeza que deseja cancelar esta venda?")) {
-        await cancelSale(saleId, btn);
-      }
-    });
-  });
-}
-
-// Cancelar venda
-async function cancelSale(saleId, buttonElement) {
-  const token = localStorage.getItem("authToken");
-  try {
-    showLoading(buttonElement);
-    await axios.put(
-      `http://localhost:3001/sales/${saleId}/cancel`,
-      {},
-      { headers: { Authorization: token } }
-    );
-    hideLoading(buttonElement);
-    showToast("Venda cancelada com sucesso!", "success");
-    await loadAllSales();
-    renderSalesTable();
-    loadMetrics(); // Atualizar métricas do PDV
-  } catch (error) {
-    hideLoading(buttonElement);
-    const msg = error.response?.data?.mensagem || "Erro ao cancelar venda.";
-    showToast(msg, "error");
-    console.error("Erro ao cancelar venda:", error);
-  }
-}
-
-// Event listeners para filtros
-salesSearchInput?.addEventListener("input", renderSalesTable);
-salesDateStart?.addEventListener("change", renderSalesTable);
-salesDateEnd?.addEventListener("change", renderSalesTable);
-salesPaymentFilter?.addEventListener("change", renderSalesTable);
-salesStatusFilter?.addEventListener("change", renderSalesTable);
-
-filterClearBtn?.addEventListener("click", () => {
-  if (salesSearchInput) salesSearchInput.value = "";
-  if (salesDateStart) salesDateStart.value = "";
-  if (salesDateEnd) salesDateEnd.value = "";
-  if (salesPaymentFilter) salesPaymentFilter.value = "";
-  if (salesStatusFilter) salesStatusFilter.value = "";
-  renderSalesTable();
-});
-

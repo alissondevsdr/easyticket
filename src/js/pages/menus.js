@@ -2,15 +2,16 @@ import { auth }   from "../services/auth.js"
 import { logout } from "../services/logout.js"
 import { loadHomeKpis } from "./home.js"
 
-const items       = document.querySelectorAll(".sidebar-nav .sidebar-item")
-const homeModal   = document.getElementById("homeModal")
-const createModal = document.getElementById("createModal")
-const listModal   = document.getElementById("listModal")
-const saleModal   = document.getElementById("saleModal")
-const reportModal = document.getElementById("reportModal")
-const create      = document.getElementById('create')
+const items          = document.querySelectorAll(".sidebar-nav .sidebar-item")
+const homeModal      = document.getElementById("homeModal")
+const createModal    = document.getElementById("createModal")
+const listModal      = document.getElementById("listModal")
+const saleModal      = document.getElementById("saleModal")
+const salesListModal = document.getElementById("salesListModal")
+const reportModal    = document.getElementById("reportModal")
+const create         = document.getElementById('create')
 
-const allModals = [homeModal, createModal, listModal, saleModal, reportModal]
+const allModals = [homeModal, createModal, listModal, saleModal, salesListModal, reportModal]
 
 function hideAll() {
   allModals.forEach(m => m?.classList.add("none"))
@@ -22,7 +23,7 @@ function setActive(label) {
   target?.classList.add("is-active")
 }
 
-function activateModal(label) {
+export function activateModal(label) {
   const token = localStorage.getItem("authToken")
   auth(token)
   hideAll()
@@ -50,4 +51,11 @@ document.getElementById("homeModal")?.addEventListener("click", function(e) {
   const shortcut = e.target.closest(".home-shortcut")
   if (!shortcut) return
   activateModal(shortcut.dataset.target)
+})
+
+// Botão "Ver Vendas" no PDV — abre salesListModal sem alterar item ativo da sidebar
+document.getElementById("viewSales")?.addEventListener("click", () => {
+  hideAll()
+  salesListModal?.classList.remove("none")
+  document.dispatchEvent(new CustomEvent("salesListModalOpened"))
 })
