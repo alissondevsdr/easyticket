@@ -351,6 +351,66 @@
   color: #a5ff01;
 }
 
+/* ── Filtros do histórico ─────────────────────────────────── */
+.history-filter-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 16px 28px 20px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #1e2230;
+}
+
+.history-filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.history-filter-item.is-date {
+  flex: 0 0 auto;
+  min-width: unset;
+}
+
+.history-filter-item label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #5a6380;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.history-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.history-filter-bar .input,
+.history-filter-bar .select-status-filter,
+.history-filter-bar .date-input-filter {
+  height: 40px !important;
+  font-size: 0.82rem !important;
+}
+
+.history-filter-bar .control.has-icons-left .icon {
+  height: 40px !important;
+  width: 40px !important;
+}
+
+.history-filter-bar .control.has-icons-left .input {
+  padding-left: 40px !important;
+}
+
+.history-date-separator {
+  color: #5a6380;
+  font-size: 0.75rem;
+  margin-bottom: 10px;
+}
+
 /* ── Tabela de vendas ────────────────────────────────────── */
 .history-table-wrap {
   margin: 16px 28px 0;

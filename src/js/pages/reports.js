@@ -1,5 +1,6 @@
 // ─── reports.js ──────────────────────────────────────────────────────────────
 // Dashboard de métricas e gráficos — EasyTicket
+import { fmtCurrency, showToast } from "../utils/ui.js";
 
 
 // ─── Instâncias Chart.js ──────────────────────────────────────────────────────
@@ -17,14 +18,6 @@ const COLORS = {
   grid: "#1e2230",
   text: "#5a6380",
 };
-
-// ─── Utilitários ──────────────────────────────────────────────────────────────
-function fmtCurrency(val) {
-  return "R$ " + Number(val || 0)
-    .toFixed(2)
-    .replace(".", ",")
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
 
 function fmtShort(val) {
   const n = Number(val || 0);
@@ -206,6 +199,44 @@ function renderBars(types) {
   }).join("");
 }
 
+// ─── Ranking de eventos ───────────────────────────────────────────────────────
+function renderRanking(events) {
+  const wrap = document.getElementById("eventRankingBody");
+  if (!wrap) return;
+
+  if (!events || events.length === 0) {
+    wrap.innerHTML = `
+      <div class="report-empty">
+        <i class="fa-solid fa-trophy"></i>
+        <p>Nenhum dado disponível</p>
+      </div>`;
+    return;
+  }
+
+  const max = Math.max(...events.map(e => e.value), 1);
+
+  wrap.innerHTML = events.map((ev, i) => {
+    const pct = Math.round((ev.value / max) * 100);
+    const medalIcon = i === 0 ? '<i class="fa-solid fa-trophy" style="color:#ffd700"></i>' :
+      i === 1 ? '<i class="fa-solid fa-award" style="color:#c0c0c0"></i>' :
+        i === 2 ? '<i class="fa-solid fa-award" style="color:#cd7f32"></i>' :
+          `<span class="ranking-num">#${i + 1}</span>`;
+
+    return `
+      <div class="bar-item">
+        <div class="bar-item-top">
+          <span class="bar-item-label">
+            ${medalIcon} ${ev.name}
+          </span>
+          <span class="bar-item-value">${fmtCurrency(ev.value)}</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${pct}%"></div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
 // ─── Tabela de vendas recentes ────────────────────────────────────────────────
 function renderRecentSales(sales) {
   const tbody = document.getElementById("recentSalesBody");
@@ -221,7 +252,7 @@ function renderRecentSales(sales) {
   if (!sales || sales.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="4">
+        <td colspan="5">
           <div class="report-empty">
             <i class="fa-solid fa-chart-bar"></i>
             <p>Nenhuma venda registrada ainda</p>
@@ -234,10 +265,12 @@ function renderRecentSales(sales) {
   tbody.innerHTML = sales.slice(0, 8).map((s, i) => {
     const pm = payMap[s.paymentMethod] || { label: s.paymentMethod, icon: "fa-circle" };
     const name = s.client?.client || s.clientName || "—";
+    const eventName = s.event?.name || "—";
     return `
       <tr>
         <td>#${String(i + 1).padStart(2, "0")}</td>
         <td>${name}</td>
+        <td style="color:#5a6380;font-size:0.82rem">${eventName}</td>
         <td>
           <span class="pay-badge ${s.paymentMethod}">
             <i class="fa-solid ${pm.icon}"></i>${pm.label}
@@ -266,6 +299,7 @@ async function loadReportData() {
     setText("rptRevenue", fmtCurrency(metrics.totalRevenue));
     setText("rptSales", metrics.totalSales ?? "0");
     setText("rptAvg", fmtCurrency(metrics.avgTicket));
+    renderRanking(metrics.topEvents);
 
   } catch (e) {
     console.error("Erro ao carregar métricas:", e);
@@ -293,17 +327,18 @@ async function loadReportData() {
     let data = [];
 
     if (startDate && endDate) {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      const diffTime = Math.abs(end - start);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const [sY, sM, sD] = startDate.split('-').map(Number);
+      const [eY, eM, eD] = endDate.split('-').map(Number);
+      const start = new Date(sY, sM - 1, sD);
+      const end = new Date(eY, eM - 1, eD);
 
       const dayMap = {};
-      for (let i = 0; i <= diffDays; i++) {
-        const d = new Date(start);
-        d.setDate(d.getDate() + i);
-        const key = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+      let cursor = new Date(start);
+
+      while (cursor <= end) {
+        const key = cursor.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
         dayMap[key] = 0;
+        cursor.setDate(cursor.getDate() + 1);
       }
 
       sales.forEach(s => {
@@ -352,11 +387,15 @@ function initReportFilters() {
   if (!startInput || !endInput) return;
 
   const now = new Date();
-  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
-  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+  const firstDay = [now.getFullYear(), String(now.getMonth() + 1).padStart(2, '0'), "01"].join('-');
+  const today = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, '0'),
+    String(now.getDate()).padStart(2, '0')
+  ].join('-');
 
   if (!startInput.value) startInput.value = firstDay;
-  if (!endInput.value) endInput.value = lastDay;
+  if (!endInput.value) endInput.value = today;
 
   startInput.addEventListener("change", loadReportData);
   endInput.addEventListener("change", loadReportData);

@@ -338,6 +338,20 @@
   padding: 0 28px 24px;
 }
 
+/* Estilos para ranking */
+.ranking-num {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #5a6380;
+  width: 18px;
+  display: inline-block;
+}
+
+.ranking-list .bar-item-label i {
+  font-size: 0.9rem;
+  margin-right: 4px;
+}
+
 .bar-item {
   display: flex;
   flex-direction: column;

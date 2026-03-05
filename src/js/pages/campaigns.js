@@ -2,6 +2,7 @@
 //  CAMPANHAS WHATSAPP — campaigns.js
 //  Segue o padrão modular do projeto (ES modules)
 // ════════════════════════════════════════════════════════════
+import { showToast, escHtml } from "../utils/ui.js";
 const API_URL = "http://localhost:3001"
 
 // ── Estado interno ────────────────────────────────────────
@@ -29,6 +30,11 @@ export async function initCampaigns() {
   await loadCampaigns()
   await loadClientsForSelect()
   bindCampaignEvents()
+}
+
+export function stopCampaigns() {
+  stopWppPolling()
+  stopCampaignPolling()
 }
 
 // ════════════════════════════════════════════════════════════
@@ -693,15 +699,7 @@ function validateDelays() {
   }
 }
 
-// ── Utilitário ────────────────────────────────────────────
-function escHtml(str) {
-  if (!str) return ""
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-}
+// escHtml removido (usando ui.js)
 
 // ════════════════════════════════════════════════════════════
 //  WHATSAPP STATUS — Modal + Polling
@@ -925,19 +923,7 @@ async function deleteCampaign(id) {
   }
 }
 
-// ── Utilitários extras ─────────────────────────────────────
-function showToast(message, type = "success") {
-  let toast = document.querySelector(".et-toast")
-  if (!toast) {
-    toast = document.createElement("div")
-    toast.className = "et-toast"
-    document.body.appendChild(toast)
-  }
-  toast.textContent = message
-  toast.className = `et-toast ${type}`
-  requestAnimationFrame(() => toast.classList.add("show"))
-  setTimeout(() => toast.classList.remove("show"), 3000)
-}
+// Polling de campanhas removido se não houver mais envios
 
 // Vincula ao escopo global
 window.confirmDeleteCampaign = confirmDeleteCampaign

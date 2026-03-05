@@ -1,6 +1,7 @@
 import { showLoading, hideLoading } from "../services/loading.js";
 import { loadingClients, getClients } from "./listClient.js";
 import { maskPhone, maskCPF, validateCPF } from "../utils/format.js";
+import { showToast } from "../utils/ui.js";
 
 const clientForm = document.getElementById('clientForm');
 const createButton = document.getElementById('createButton');
@@ -114,25 +115,25 @@ clientForm?.addEventListener('submit', function (event) {
   const cpfExists = clients.some(c => c.cpf?.replace(/\D/g, '') === cleanCpf);
 
   if (!isNameValid) {
-    alert("Por favor, informe o nome completo (pelo menos Nome e Sobrenome).");
+    showToast("Por favor, informe o nome completo (pelo menos Nome e Sobrenome).", "warning");
     clientInput.focus();
     return;
   }
 
   if (!isPhoneValid) {
-    alert("O número de telefone informado está fora do padrão (deve ter 10 ou 11 dígitos).");
+    showToast("O número de telefone informado está fora do padrão (deve ter 10 ou 11 dígitos).", "warning");
     phoneInput.focus();
     return;
   }
 
   if (!isCpfValid) {
-    alert("O CPF informado é inválido.");
+    showToast("O CPF informado é inválido.", "warning");
     cpfInput.focus();
     return;
   }
 
   if (cpfExists) {
-    alert("Este CPF já está cadastrado em nossa base.");
+    showToast("Este CPF já está cadastrado em nossa base.", "warning");
     cpfInput.focus();
     return;
   }
@@ -175,13 +176,13 @@ async function handleClient(client, cpf, phone, type) {
     }, 3000);
 
     if (error.response?.status === 409) {
-      alert(error.response.data.erro || "CPF já cadastrado.");
+      showToast(error.response.data.erro || "CPF já cadastrado.", "error");
     } else if (error.response?.status === 401 || error.response?.status === 403) {
       console.error('Falha na autenticação. Por favor, faça login novamente.');
-      alert("Sessão expirada. Faça login novamente.");
+      showToast("Sessão expirada. Faça login novamente.", "error");
     } else {
       console.error('Erro ao cadastrar cliente:', error.response?.data || error.message);
-      alert("Erro ao cadastrar cliente. Tente novamente.");
+      showToast("Erro ao cadastrar cliente. Tente novamente.", "error");
     }
   }
 }
