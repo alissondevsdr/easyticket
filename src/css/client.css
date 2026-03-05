@@ -58,14 +58,18 @@
   transition: border-color 0.2s, box-shadow 0.2s !important;
 }
 
-.search-input::placeholder { color: #5a6380 !important; }
+.search-input::placeholder {
+  color: #5a6380 !important;
+}
 
 .search-input:focus {
   border-color: #a5ff0160 !important;
   box-shadow: 0 0 0 3px #a5ff0115 !important;
 }
 
-.search-wrap:focus-within .search-icon { color: #a5ff01; }
+.search-wrap:focus-within .search-icon {
+  color: #a5ff01;
+}
 
 .button-list {
   background: linear-gradient(135deg, #a5ff01, #7acc00) !important;
@@ -95,7 +99,9 @@
   box-shadow: 0 6px 24px #a5ff0140 !important;
 }
 
-.button-list:active { transform: translateY(0); }
+.button-list:active {
+  transform: translateY(0);
+}
 
 /* ════════════════════════════════════════════════════════════
    CONTAINER DA TABELA — altura automática, sem fixo
@@ -113,10 +119,22 @@
   scrollbar-color: #252836 transparent;
 }
 
-.adjust-table::-webkit-scrollbar       { width: 5px; }
-.adjust-table::-webkit-scrollbar-track { background: transparent; }
-.adjust-table::-webkit-scrollbar-thumb { background: #252836; border-radius: 4px; }
-.adjust-table::-webkit-scrollbar-thumb:hover { background: #a5ff0150; }
+.adjust-table::-webkit-scrollbar {
+  width: 5px;
+}
+
+.adjust-table::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.adjust-table::-webkit-scrollbar-thumb {
+  background: #252836;
+  border-radius: 4px;
+}
+
+.adjust-table::-webkit-scrollbar-thumb:hover {
+  background: #a5ff0150;
+}
 
 /* ════════════════════════════════════════════════════════════
    TABELA — neutraliza Bulma
@@ -163,8 +181,13 @@
   background: transparent !important;
 }
 
-.adjust-table tbody tr:last-child { border-bottom: none !important; }
-.adjust-table tbody tr:hover      { background: #a5ff0108 !important; }
+.adjust-table tbody tr:last-child {
+  border-bottom: none !important;
+}
+
+.adjust-table tbody tr:hover {
+  background: #a5ff0108 !important;
+}
 
 /* Todas as células td do corpo — espaçamento compacto */
 .adjust-table tbody td {
@@ -172,7 +195,8 @@
   font-size: 0.88rem !important;
   font-weight: 400 !important;
   color: #c8cdd8 !important;
-  padding: 11px 20px !important;   /* ← compacto, sem excesso vertical */
+  padding: 11px 20px !important;
+  /* ← compacto, sem excesso vertical */
   background: transparent !important;
   border: none !important;
   vertical-align: middle !important;
@@ -193,19 +217,39 @@
 
 /* Larguras fixas para distribuição uniforme */
 .adjust-table thead th:nth-child(2),
-.adjust-table tbody td:nth-child(2) { width: 28%; }   /* Nome */
+.adjust-table tbody td:nth-child(2) {
+  width: 28%;
+}
+
+/* Nome */
 
 .adjust-table thead th:nth-child(3),
-.adjust-table tbody td:nth-child(3) { width: 18%; }   /* Telefone */
+.adjust-table tbody td:nth-child(3) {
+  width: 18%;
+}
+
+/* Telefone */
 
 .adjust-table thead th:nth-child(4),
-.adjust-table tbody td:nth-child(4) { width: 18%; }   /* CPF */
+.adjust-table tbody td:nth-child(4) {
+  width: 18%;
+}
+
+/* CPF */
 
 .adjust-table thead th:nth-child(5),
-.adjust-table tbody td:nth-child(5) { width: 14%; }   /* Tipo */
+.adjust-table tbody td:nth-child(5) {
+  width: 14%;
+}
+
+/* Tipo */
 
 .adjust-table thead th:nth-child(6),
-.adjust-table tbody td:nth-child(6) { width: 120px; } /* Ações */
+.adjust-table tbody td:nth-child(6) {
+  width: 120px;
+}
+
+/* Ações */
 
 /* Coluna Nome — branco */
 .adjust-table tbody td:nth-child(2) {
@@ -275,7 +319,9 @@
   flex-shrink: 0;
 }
 
-.icon-btn:hover { transform: translateY(-1px); }
+.icon-btn:hover {
+  transform: translateY(-1px);
+}
 
 .icon-history:hover {
   background: #a5ff0115;
@@ -293,6 +339,16 @@
   background: #e0313115;
   color: #e03131;
   border-color: #e0313140;
+}
+
+.icon-btn.disabled {
+  opacity: 0.3 !important;
+  cursor: default !important;
+  pointer-events: none !important;
+  transform: none !important;
+  background: #0d0f14 !important;
+  color: #5a6380 !important;
+  border-color: #252836 !important;
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -316,16 +372,26 @@
    RESPONSIVO
 ════════════════════════════════════════════════════════════ */
 @media (min-width: 769px) and (max-width: 1280px) {
-  .modal-list-client { padding: 16px 16px 32px; gap: 14px; }
+  .modal-list-client {
+    padding: 16px 16px 32px;
+    gap: 14px;
+  }
 
   .adjust-table thead th,
-  .adjust-table tbody td { padding: 10px 14px !important; }
+  .adjust-table tbody td {
+    padding: 10px 14px !important;
+  }
 }
 
 @media (max-width: 768px) {
-  .modal-list-client { padding: 16px 12px 32px; gap: 12px; }
+  .modal-list-client {
+    padding: 16px 12px 32px;
+    gap: 12px;
+  }
 
-  .toolbar { gap: 8px; }
+  .toolbar {
+    gap: 8px;
+  }
 
   .button-list {
     font-size: 0.78rem !important;
@@ -337,13 +403,19 @@
     border-radius: 12px;
   }
 
-  .adjust-table table { min-width: 480px; }
+  .adjust-table table {
+    min-width: 480px;
+  }
 
   .adjust-table thead th,
-  .adjust-table tbody td { padding: 9px 12px !important; }
+  .adjust-table tbody td {
+    padding: 9px 12px !important;
+  }
 
   .adjust-table thead th:nth-child(3),
   .adjust-table tbody td:nth-child(3),
   .adjust-table thead th:nth-child(4),
-  .adjust-table tbody td:nth-child(4) { display: none; }
+  .adjust-table tbody td:nth-child(4) {
+    display: none;
+  }
 }

@@ -4,12 +4,12 @@ import { showLoading, hideLoading } from "../services/loading.js";
 export async function deletClient(id) {
   const token = localStorage.getItem("authToken")
 
-  const dynamicModal          = document.getElementById('modal')
+  const dynamicModal = document.getElementById('modal')
   const modalContentContainer = document.getElementById('modalContentContainer')
 
   dynamicModal.classList.add("is-active")
 
-  if (id === 0) {
+  if (id === 0 || id === 1) {
     modalContentContainer.innerHTML = `
       <div class="modal-header">
         <div class="message">Ação não permitida</div>

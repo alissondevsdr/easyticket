@@ -43,7 +43,7 @@ export function listClients(clients) {
 
   clients.forEach((c) => {
     const tr = document.createElement("tr")
-    
+
     // Map tipo to display label e icon
     const typeMap = {
       geral: { label: 'Geral', icon: 'fa-users' },
@@ -51,6 +51,9 @@ export function listClients(clients) {
       cortesia: { label: 'Cortesia', icon: 'fa-ticket' }
     }
     const typeInfo = typeMap[c.type] || typeMap.geral
+
+    // Bloqueia editar/excluir para o Cliente Padrão (ID 1)
+    const isPadrão = c.id === 1;
 
     tr.innerHTML = `
       <td>${c.id}</td>
@@ -62,10 +65,10 @@ export function listClients(clients) {
         <button class="icon-btn icon-history" title="Histórico">
           <i class="fa-solid fa-clock-rotate-left"></i>
         </button>
-        <button class="icon-btn icon-edit" title="Editar">
+        <button class="icon-btn icon-edit ${isPadrão ? 'disabled' : ''}" title="Editar" ${isPadrão ? 'disabled' : ''}>
           <i class="fa-solid fa-pencil"></i>
         </button>
-        <button class="icon-btn icon-delete" title="Excluir">
+        <button class="icon-btn icon-delete ${isPadrão ? 'disabled' : ''}" title="Excluir" ${isPadrão ? 'disabled' : ''}>
           <i class="fa-solid fa-trash"></i>
         </button>
       </td>
@@ -74,8 +77,10 @@ export function listClients(clients) {
     list.appendChild(tr)
 
     tr.querySelector('.icon-history').addEventListener('click', () => showClientHistory(c.id, c.client))
-    tr.querySelector('.icon-edit').addEventListener('click', () => alterClient(c.id))
-    tr.querySelector('.icon-delete').addEventListener('click', () => deletClient(c.id))
+    if (!isPadrão) {
+      tr.querySelector('.icon-edit').addEventListener('click', () => alterClient(c.id))
+      tr.querySelector('.icon-delete').addEventListener('click', () => deletClient(c.id))
+    }
   })
 }
 

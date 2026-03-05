@@ -47,13 +47,17 @@
 .register-metric::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 2px;
   background: linear-gradient(90deg, #a5ff01, transparent);
   opacity: 0.6;
 }
 
-.register-metric:hover { border-color: #a5ff0140; }
+.register-metric:hover {
+  border-color: #a5ff0140;
+}
 
 .register-metric .metric-label {
   font-size: 0.7rem;
@@ -195,14 +199,18 @@
   outline: none;
 }
 
-.reg-input-wrap input::placeholder { color: #5a6380; }
+.reg-input-wrap input::placeholder {
+  color: #5a6380;
+}
 
 .reg-input-wrap input:focus {
   border-color: #a5ff0160;
   box-shadow: 0 0 0 3px #a5ff0115;
 }
 
-.reg-input-wrap:focus-within .reg-icon { color: #a5ff01; }
+.reg-input-wrap:focus-within .reg-icon {
+  color: #a5ff01;
+}
 
 /* Hint de validação sob o campo */
 .reg-hint {
@@ -212,8 +220,14 @@
   min-height: 14px;
   transition: color 0.2s;
 }
-.reg-hint.valid   { color: #a5ff01; }
-.reg-hint.invalid { color: #e03131; }
+
+.reg-hint.valid {
+  color: #a5ff01;
+}
+
+.reg-hint.invalid {
+  color: #e03131;
+}
 
 /* ── Divisor ─────────────────────────────────────────────── */
 .reg-divider {
@@ -273,12 +287,27 @@
 }
 
 .reg-type-item:hover {
-  border-color: #a5ff0150;
   transform: translateY(-2px);
+}
+
+.reg-type-item[data-type="geral"]:hover {
+  border-color: #a5ff0150;
   box-shadow: 0 4px 20px #a5ff0115;
 }
 
-.reg-type-item:hover::after { opacity: 1; }
+.reg-type-item[data-type="vip"]:hover {
+  border-color: #ff006950;
+  box-shadow: 0 4px 20px #ff006915;
+}
+
+.reg-type-item[data-type="cortesia"]:hover {
+  border-color: #00c8ff50;
+  box-shadow: 0 4px 20px #00c8ff15;
+}
+
+.reg-type-item:hover::after {
+  opacity: 1;
+}
 
 .reg-type-item .type-icon {
   font-size: 1.4rem;
@@ -295,17 +324,48 @@
   transition: color 0.18s;
 }
 
-.reg-type-item.active {
+.reg-type-item.active[data-type="geral"] {
   background: #a5ff0112;
   border-color: #a5ff01;
   box-shadow: 0 0 20px #a5ff0120, inset 0 0 20px #a5ff0108;
 }
 
-.reg-type-item.active::after { opacity: 1; }
-.reg-type-item.active .type-icon,
-.reg-type-item.active .type-label,
-.reg-type-item:hover .type-icon,
-.reg-type-item:hover .type-label { color: #a5ff01; }
+.reg-type-item.active[data-type="vip"] {
+  background: #ff006912;
+  border-color: #ff0069;
+  box-shadow: 0 0 20px #ff006920, inset 0 0 20px #ff006908;
+}
+
+.reg-type-item.active[data-type="cortesia"] {
+  background: #00c8ff12;
+  border-color: #00c8ff;
+  box-shadow: 0 0 20px #00c8ff20, inset 0 0 20px #00c8ff08;
+}
+
+.reg-type-item.active::after {
+  opacity: 1;
+}
+
+.reg-type-item.active[data-type="geral"] .type-icon,
+.reg-type-item.active[data-type="geral"] .type-label,
+.reg-type-item[data-type="geral"]:hover .type-icon,
+.reg-type-item[data-type="geral"]:hover .type-label {
+  color: #a5ff01;
+}
+
+.reg-type-item.active[data-type="vip"] .type-icon,
+.reg-type-item.active[data-type="vip"] .type-label,
+.reg-type-item[data-type="vip"]:hover .type-icon,
+.reg-type-item[data-type="vip"]:hover .type-label {
+  color: #ff0069;
+}
+
+.reg-type-item.active[data-type="cortesia"] .type-icon,
+.reg-type-item.active[data-type="cortesia"] .type-label,
+.reg-type-item[data-type="cortesia"]:hover .type-icon,
+.reg-type-item[data-type="cortesia"]:hover .type-label {
+  color: #00c8ff;
+}
 
 /* ════════════════════════════════════════════════════════════
    FOOTER — preview do nome + botão
@@ -348,7 +408,9 @@
   transition: color 0.2s, font-size 0.2s;
 }
 
-.reg-preview-name.filled { color: #fff; }
+.reg-preview-name.filled {
+  color: #fff;
+}
 
 /* ── Botão cadastrar ─────────────────────────────────────── */
 .btn-register {
@@ -378,8 +440,13 @@
   box-shadow: 0 8px 30px #a5ff0150 !important;
 }
 
-.btn-register:active  { transform: translateY(0) !important; }
-.btn-register.is-loading { opacity: 0.7 !important; }
+.btn-register:active {
+  transform: translateY(0) !important;
+}
+
+.btn-register.is-loading {
+  opacity: 0.7 !important;
+}
 
 .btn-register.is-danger {
   background: linear-gradient(135deg, #e03131, #c92a2a) !important;
@@ -388,31 +455,76 @@
 }
 
 /* ── Globals mantidos ────────────────────────────────────── */
-.size   { font-size: 1.25rem; }
+.size {
+  font-size: 1.25rem;
+}
 
 /* ════════════════════════════════════════════════════════════
    RESPONSIVO
 ════════════════════════════════════════════════════════════ */
 @media (min-width: 769px) and (max-width: 1280px) {
-  .register-card      { max-width: 720px; }
-  .dashboard-register { max-width: 720px; }
-  .register-header    { padding: 20px 26px 16px; }
-  .register-body      { padding: 22px 26px; gap: 20px; }
-  .register-footer    { padding: 18px 26px 24px; }
-  .welcome            { font-size: 3rem; }
+  .register-card {
+    max-width: 720px;
+  }
+
+  .dashboard-register {
+    max-width: 720px;
+  }
+
+  .register-header {
+    padding: 20px 26px 16px;
+  }
+
+  .register-body {
+    padding: 22px 26px;
+    gap: 20px;
+  }
+
+  .register-footer {
+    padding: 18px 26px 24px;
+  }
+
+  .welcome {
+    font-size: 3rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .modal-client    { padding: 16px 12px 32px; gap: 16px; }
-  .register-header { padding: 16px 18px; }
-  .register-body   { padding: 18px 18px; gap: 18px; }
+  .modal-client {
+    padding: 16px 12px 32px;
+    gap: 16px;
+  }
+
+  .register-header {
+    padding: 16px 18px;
+  }
+
+  .register-body {
+    padding: 18px 18px;
+    gap: 18px;
+  }
+
   .register-footer {
     flex-direction: column;
     align-items: stretch;
     padding: 16px 18px 20px;
   }
-  .btn-register    { width: 100% !important; justify-content: center !important; }
-  .register-row    { grid-template-columns: 1fr; }
-  .register-metric { min-width: 120px; }
-  .welcome         { font-size: 2rem; padding: 0 16px; }
+
+  .btn-register {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .register-row {
+    grid-template-columns: 1fr;
+  }
+
+  .register-metric {
+    min-width: 120px;
+  }
+
+  .welcome {
+    font-size: 2rem;
+    padding: 0 16px;
+  }
 }

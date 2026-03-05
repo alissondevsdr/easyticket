@@ -10,7 +10,8 @@
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/login.css">
@@ -22,6 +23,7 @@
   <link rel="stylesheet" href="../css/dashboard-report.css">
   <link rel="stylesheet" href="../css/titlebar.css">
   <link rel="stylesheet" href="../css/home.css">
+  <link rel="stylesheet" href="../css/campaigns.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/a1729d9d21.js" crossorigin="anonymous"></script>
@@ -65,6 +67,11 @@
         <div class="sidebar-item" data-label="Relatórios">
           <i class="fa-solid fa-chart-line"></i>
           <span class="sidebar-tooltip">Relatórios</span>
+        </div>
+        <!-- ── NOVO: Campanhas WhatsApp ──────────────────────────────────── -->
+        <div class="sidebar-item" data-label="Campanhas">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span class="sidebar-tooltip">Campanhas WhatsApp</span>
         </div>
       </div>
       <div class="sidebar-footer">
@@ -149,6 +156,14 @@
           <div class="home-shortcut-info">
             <span class="home-shortcut-title">Relatórios</span>
             <span class="home-shortcut-desc">Métricas, gráficos e análise de desempenho</span>
+          </div>
+          <i class="fa-solid fa-chevron-right home-shortcut-arrow"></i>
+        </div>
+        <div class="home-shortcut" data-target="Campanhas">
+          <div class="home-shortcut-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <div class="home-shortcut-info">
+            <span class="home-shortcut-title">Campanhas WhatsApp</span>
+            <span class="home-shortcut-desc">Dispare mensagens para seus clientes</span>
           </div>
           <i class="fa-solid fa-chevron-right home-shortcut-arrow"></i>
         </div>
@@ -248,8 +263,7 @@
     <div class="modal-list-client none" id="listModal">
       <div class="toolbar">
         <div class="search-wrap">
-          <input type="text" class="search-input" id="searchClient"
-            placeholder="Buscar por nome, CPF ou telefone...">
+          <input type="text" class="search-input" id="searchClient" placeholder="Buscar por nome, CPF ou telefone...">
           <i class="search-icon fas fa-magnifying-glass"></i>
         </div>
         <button class="button-list" id="create">
@@ -283,24 +297,25 @@
         <div class="item-dashboard">
           <span>Faturamento</span>
           <div class="value" id="metricRevenue">R$ 0,00</div>
+          <span class="metric-month sales-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
         </div>
         <div class="item-dashboard">
           <span>Vendas</span>
           <div class="value" id="metricSales">0</div>
+          <span class="metric-month sales-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
         </div>
         <div class="item-dashboard">
           <span>Ticket Médio</span>
           <div class="value" id="metricAvg">R$ 0,00</div>
+          <span class="metric-month sales-kpi-month"><i class="fa-regular fa-calendar"></i> —</span>
         </div>
       </div>
 
       <div class="pdv">
 
-        <!-- Header: título + badge de tipo do cliente selecionado -->
         <div class="pdv-header">
           <h1>Ponto de Venda</h1>
           <div style="display:flex;align-items:center;gap:10px;">
-            <!-- Badge do tipo do cliente — aparece quando um cliente é selecionado -->
             <div id="clientTypeBadge" style="display:none"></div>
             <span class="pdv-badge">PDV</span>
           </div>
@@ -341,7 +356,6 @@
           </div>
         </div>
 
-        <!-- Footer: total + Finalizar Venda + Ver Vendas lado a lado -->
         <div class="pdv-footer">
           <div class="pdv-summary">
             <span class="pdv-summary-label">Total da venda</span>
@@ -367,6 +381,24 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="modal-report none" id="reportModal">
       <div class="report-wrapper">
+
+        <!-- Barra de Filtros -->
+        <div class="report-filter-bar">
+          <div class="report-filter-title">
+            <i class="fa-solid fa-calendar-days"></i>
+            Período do Relatório
+          </div>
+          <div class="report-filter-controls">
+            <div class="report-date-group">
+              <label>Início</label>
+              <input type="date" id="rptDateStart" class="report-date-input">
+            </div>
+            <div class="report-date-group">
+              <label>Fim</label>
+              <input type="date" id="rptDateEnd" class="report-date-input">
+            </div>
+          </div>
+        </div>
 
         <div class="report-kpi-row">
           <div class="report-kpi">
@@ -476,7 +508,9 @@
                   <span class="bar-item-label"><i class="fa-solid fa-users"></i>Geral</span>
                   <span class="bar-item-value">—</span>
                 </div>
-                <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+                <div class="bar-track">
+                  <div class="bar-fill" style="width:0%"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -485,7 +519,311 @@
       </div>
     </div><!-- /.modal-report -->
 
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- CAMPANHAS WHATSAPP                                                 -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="modal-campaigns none" id="campaignsModal">
+
+      <!-- Cabeçalho -->
+      <div class="campaigns-header">
+        <div class="campaigns-title-block">
+          <h1 class="campaigns-title">
+            <i class="fa-brands fa-whatsapp"></i>
+            Campanhas WhatsApp
+          </h1>
+          <span class="campaigns-subtitle">Crie e gerencie disparos de mensagens para seus clientes</span>
+        </div>
+        <div class="campaigns-header-actions">
+          <button class="btn-whatsapp-status" id="btnWhatsappConnect">
+            <span class="wpp-status-dot" id="wppStatusDot"></span>
+            <i class="fa-brands fa-whatsapp"></i>
+            <span id="wppStatusLabel">Conectar WhatsApp</span>
+          </button>
+          <button class="btn-new-campaign" id="btnNewCampaign">
+            <i class="fa-solid fa-plus"></i>
+            Criar Campanha
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabela de campanhas -->
+      <div class="campaigns-table-wrap">
+        <table class="campaigns-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Status</th>
+              <th>Data de Criação</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="campaignsTableBody">
+            <tr>
+              <td colspan="4">
+                <div class="campaigns-empty">
+                  <i class="fa-brands fa-whatsapp"></i>
+                  <p>Nenhuma campanha criada ainda</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /.modal-campaigns -->
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- DRAWER — Criar / Editar Campanha                                   -->
+    <!-- (fora do .dashboard para overlay full-screen)                     -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+
   </div><!-- /.dashboard -->
+
+  <!-- Drawer de campanha FORA do .dashboard para overlay correto -->
+  <div class="campaign-overlay" id="campaignOverlay">
+    <div class="campaign-drawer">
+
+      <!-- Header -->
+      <div class="campaign-drawer-header">
+        <div class="campaign-drawer-title">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span id="drawerTitle">Nova Campanha</span>
+        </div>
+        <button class="campaign-drawer-close" id="btnCloseDrawer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Body com scroll -->
+      <div class="campaign-drawer-body">
+
+        <!-- Nome da campanha -->
+        <div class="camp-field">
+          <label class="camp-label" for="campName">Nome da Campanha</label>
+          <input class="camp-input" type="text" id="campName" placeholder="Ex: Promo Carnaval 2025" autocomplete="off">
+          <span class="camp-validation-msg" id="campNameValidation"></span>
+        </div>
+
+        <!-- Mensagem -->
+        <div class="camp-field">
+          <label class="camp-label" for="campMessage">Mensagem</label>
+          <textarea class="camp-textarea" id="campMessage"
+            placeholder="Olá {nome}, temos uma novidade especial para você..."></textarea>
+          <div class="camp-vars-hint">
+            <span>Clique para inserir variável:</span>
+            <span class="camp-var-tag" data-var="{nome}">{nome}</span>
+            <span class="camp-var-tag" data-var="{telefone}">{telefone}</span>
+            <span class="camp-var-tag" data-var="{empresa}">{empresa}</span>
+          </div>
+          <span class="camp-validation-msg" id="campMessageValidation"></span>
+        </div>
+
+        <!-- Upload de imagem -->
+        <div class="camp-field">
+          <label class="camp-label">Imagem (opcional)</label>
+          <div class="camp-image-upload">
+            <div class="camp-dropzone" id="campDropzone">
+              <input type="file" id="campImageInput" accept="image/*">
+              <div class="camp-dropzone-icon"><i class="fa-solid fa-image"></i></div>
+              <p>Arraste uma imagem ou <span>clique para selecionar</span></p>
+            </div>
+            <div class="camp-image-preview" id="campImagePreview">
+              <img src="" alt="Preview" id="campImageEl">
+              <button class="camp-image-remove" id="campImageRemove" title="Remover imagem">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seleção de clientes -->
+        <div class="camp-field">
+          <label class="camp-label">Destinatários</label>
+          <div class="camp-clients-section">
+            <div class="camp-clients-toolbar">
+              <input class="camp-search" type="text" id="campSearchClients"
+                placeholder="Buscar por nome ou telefone...">
+              <label class="camp-select-all">
+                <input type="checkbox" id="campSelectAll">
+                Todos
+              </label>
+              <span class="camp-clients-counter" id="campClientCounter">0 selecionados</span>
+            </div>
+            <div class="camp-clients-list" id="campClientsList">
+              <div style="text-align:center;padding:24px;color:#5a6380;font-size:0.82rem;">
+                Carregando clientes...
+              </div>
+            </div>
+            <span class="camp-validation-msg" id="campClientsValidation"></span>
+          </div>
+        </div>
+
+        <!-- Configurações de envio -->
+        <div class="camp-divider camp-settings-toggle" id="campSettingsToggle">
+          <span>Configurações de Envio <i class="fa-solid fa-chevron-down"></i></span>
+        </div>
+
+        <div class="camp-settings-grid" id="campSettingsContent">
+
+          <!-- Delay mínimo -->
+          <div class="camp-field">
+            <label class="camp-label">Delay mínimo (seg)</label>
+            <div class="camp-number-wrap">
+              <button class="camp-number-btn" id="campDelayMinMinus">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+              <input class="camp-number-input" type="number" id="campDelayMin" value="5" min="1">
+              <button class="camp-number-btn" id="campDelayMinPlus">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Delay máximo -->
+          <div class="camp-field">
+            <label class="camp-label">Delay máximo (seg)</label>
+            <div class="camp-number-wrap">
+              <button class="camp-number-btn" id="campDelayMaxMinus">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+              <input class="camp-number-input" type="number" id="campDelayMax" value="15" min="1">
+              <button class="camp-number-btn" id="campDelayMaxPlus">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+            <span class="camp-validation-msg" id="campDelayValidation"></span>
+          </div>
+
+          <!-- Limite por sessão -->
+          <div class="camp-field">
+            <label class="camp-label">
+              Limite por sessão
+              <span style="color:#5a6380;font-weight:400;text-transform:none;letter-spacing:0">(0 = ilimitado)</span>
+            </label>
+            <div class="camp-number-wrap">
+              <button class="camp-number-btn" id="campLimitMinus">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+              <input class="camp-number-input" type="number" id="campLimit" value="0" min="0">
+              <button class="camp-number-btn" id="campLimitPlus">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Ordem aleatória -->
+          <div class="camp-field">
+            <label class="camp-label">&nbsp;</label>
+            <label class="camp-checkbox-row">
+              <input type="checkbox" id="campRandom">
+              <div class="camp-checkbox-label">
+                Envio em ordem aleatória
+                <small>Embaralha a lista de destinatários</small>
+              </div>
+            </label>
+          </div>
+
+        </div><!-- /.camp-settings-grid -->
+
+      </div><!-- /.campaign-drawer-body -->
+
+      <!-- Footer -->
+      <div class="campaign-drawer-footer">
+        <div class="camp-footer-left" id="campFooterStatus"></div>
+        <div class="camp-footer-right">
+          <button class="btn-camp-cancel" id="btnCancelCampaign">Cancelar</button>
+          <button class="btn-camp-save" id="btnSaveCampaign">
+            <i class="fa-solid fa-floppy-disk"></i>
+            Salvar Rascunho
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /.campaign-drawer -->
+  </div><!-- /.campaign-overlay -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- MODAL DE LOGS DA CAMPANHA                                          -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <div class="campaign-logs-overlay" id="logsOverlay">
+    <div class="campaign-logs-modal">
+
+      <div class="logs-modal-header">
+        <div class="logs-modal-title">
+          <i class="fa-solid fa-list"></i>
+          <span id="logsModalTitle">Logs da Campanha</span>
+        </div>
+        <button class="logs-modal-close" id="btnCloseLogs">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Filtros de status -->
+      <div class="logs-filters">
+        <button class="logs-filter-btn active" data-filter="TODOS">Todos</button>
+        <button class="logs-filter-btn" data-filter="ENVIADO">
+          <i class="fa-solid fa-check"></i> Enviado
+        </button>
+        <button class="logs-filter-btn" data-filter="FALHOU">
+          <i class="fa-solid fa-xmark"></i> Falhou
+        </button>
+        <button class="logs-filter-btn" data-filter="PENDENTE">
+          <i class="fa-solid fa-clock"></i> Pendente
+        </button>
+      </div>
+
+      <!-- Tabela de logs -->
+      <div class="logs-table-wrap">
+        <table class="logs-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Data / Hora</th>
+              <th>Status</th>
+              <th>Mensagem de erro</th>
+            </tr>
+          </thead>
+          <tbody id="logsTableBody">
+            <tr>
+              <td colspan="4" style="text-align:center;padding:40px;color:#5a6380;font-size:0.85rem;">
+                Selecione uma campanha para ver os logs
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="logs-modal-footer">
+        <button class="btn-logs-close" id="btnLogsFooterClose">Fechar</button>
+      </div>
+
+    </div><!-- /.campaign-logs-modal -->
+  </div><!-- /.campaign-logs-overlay -->
+
+  <!-- ═══ MODAL WHATSAPP STATUS / QR CODE ═══ -->
+  <div class="campaign-overlay wpp-modal-overlay" id="wppModalOverlay">
+    <div class="wpp-modal">
+      <div class="wpp-modal-header">
+        <div class="wpp-modal-title">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span>Conexão WhatsApp</span>
+        </div>
+        <button class="campaign-drawer-close" id="btnCloseWppModal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="wpp-modal-body" id="wppModalBody">
+        <!-- Preenchido dinamicamente pelo JS -->
+        <div class="wpp-loading">
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+          <p>Iniciando WhatsApp...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Scripts -->
   <script type="module" src="../js/utils/titlebar.js"></script>
@@ -502,4 +840,5 @@
   <script type="module" src="../js/pages/reports.js"></script>
 
 </body>
+
 </html>

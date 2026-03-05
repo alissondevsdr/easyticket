@@ -5,27 +5,27 @@ import { getClients, loadingClients } from "./listClient.js";
 let selectedPayment = null;
 
 // ─── Elementos do DOM ─────────────────────────────────────────────────────────
-const payments      = document.getElementById("payments");
-const valueInput    = document.getElementById("valueInput");
-const finalizeBtn   = document.querySelector(".btn-finalize");
+const payments = document.getElementById("payments");
+const valueInput = document.getElementById("valueInput");
+const finalizeBtn = document.querySelector(".btn-finalize");
 const metricRevenue = document.getElementById("metricRevenue");
-const metricSales   = document.getElementById("metricSales");
-const metricAvg     = document.getElementById("metricAvg");
-const summaryValue  = document.getElementById("pdv-summary-value");
-const paymentIds    = ["cash", "credit", "debit", "pix"];
+const metricSales = document.getElementById("metricSales");
+const metricAvg = document.getElementById("metricAvg");
+const summaryValue = document.getElementById("pdv-summary-value");
+const paymentIds = ["cash", "credit", "debit", "pix"];
 
 // ─── Mapas ────────────────────────────────────────────────────────────────────
 const typeMap = {
-  geral:    { label: "Geral",    icon: "fa-users",  cls: "geral"    },
-  vip:      { label: "VIP",      icon: "fa-star",   cls: "vip"      },
+  geral: { label: "Geral", icon: "fa-users", cls: "geral" },
+  vip: { label: "VIP", icon: "fa-star", cls: "vip" },
   cortesia: { label: "Cortesia", icon: "fa-ticket", cls: "cortesia" },
 };
 
 const payMap = {
-  cash:   { label: "Dinheiro", icon: "fa-money-bill-1", cls: "cash"   },
-  pix:    { label: "PIX",      icon: "fa-qrcode",       cls: "pix"    },
-  credit: { label: "Crédito",  icon: "fa-credit-card",  cls: "credit" },
-  debit:  { label: "Débito",   icon: "fa-credit-card",  cls: "debit"  },
+  cash: { label: "Dinheiro", icon: "fa-money-bill-1", cls: "cash" },
+  pix: { label: "PIX", icon: "fa-qrcode", cls: "pix" },
+  credit: { label: "Crédito", icon: "fa-credit-card", cls: "credit" },
+  debit: { label: "Débito", icon: "fa-credit-card", cls: "debit" },
 };
 
 // ─── Badge de tipo do cliente no header ───────────────────────────────────────
@@ -35,7 +35,7 @@ function showClientTypeBadge(clientId) {
   if (!clientId) { badge.innerHTML = ""; badge.style.display = "none"; return; }
 
   const client = getClients().find(c => String(c.id) === String(clientId));
-  if (!client)  { badge.innerHTML = ""; badge.style.display = "none"; return; }
+  if (!client) { badge.innerHTML = ""; badge.style.display = "none"; return; }
 
   const t = typeMap[client.type] || typeMap.geral;
   badge.style.display = "flex";
@@ -50,15 +50,15 @@ async function initSelect2() {
   if (!clients || clients.length === 0) { await loadingClients(); clients = await getClients(); }
 
   $("#clientSelect").select2({
-    placeholder:    "Buscar cliente pelo nome ou CPF...",
-    allowClear:     true,
-    width:          "100%",
+    placeholder: "Buscar cliente pelo nome ou CPF...",
+    allowClear: true,
+    width: "100%",
     dropdownParent: $("#saleModal"),
     language: { noResults: () => "Nenhum cliente encontrado", searching: () => "Buscando..." },
     data: clients.map(c => ({ id: c.id, text: `${c.client} — ${c.cpf}` })),
   });
 
-  $("#clientSelect").on("select2:select",           e  => showClientTypeBadge(e.params.data.id));
+  $("#clientSelect").on("select2:select", e => showClientTypeBadge(e.params.data.id));
   $("#clientSelect").on("select2:clear select2:unselect", () => showClientTypeBadge(null));
 }
 
@@ -90,9 +90,13 @@ document.addEventListener("click", function (event) {
 valueInput.addEventListener("input", function (e) {
   let raw = e.target.value.replace(/\D/g, "");
   if (!raw) { e.target.value = ""; updateSummary(""); return; }
-  raw = raw.replace(/(\d)(\d{2})$/, "$1,$2").replace(/(?=(\d{3})+(?!\d))/g, ".");
-  e.target.value = "R$ " + raw;
-  updateSummary(e.target.value);
+
+  // Formata como milhar (Ex: 1.000)
+  let formatted = raw.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  e.target.value = "R$ " + formatted;
+
+  // No resumo visual, mostramos sempre com ,00 para indicar que é valor inteiro
+  updateSummary(e.target.value + ",00");
 });
 
 function updateSummary(val) {
@@ -103,11 +107,11 @@ function updateSummary(val) {
 finalizeBtn?.addEventListener("click", async function () {
   const clientId = $("#clientSelect").val();
   const rawValue = valueInput.value.replace(/\D/g, "");
-  const value    = rawValue ? (parseInt(rawValue) / 100).toFixed(2) : null;
+  const value = rawValue ? parseInt(rawValue).toFixed(2) : null;
 
-  if (!clientId)                        { showToast("Selecione um cliente.", "warning");             return; }
-  if (!value || parseFloat(value) <= 0) { showToast("Informe um valor válido.", "warning");          return; }
-  if (!selectedPayment)                 { showToast("Selecione um método de pagamento.", "warning"); return; }
+  if (!clientId) { showToast("Selecione um cliente.", "warning"); return; }
+  if (!value || parseFloat(value) <= 0) { showToast("Informe um valor válido.", "warning"); return; }
+  if (!selectedPayment) { showToast("Selecione um método de pagamento.", "warning"); return; }
 
   const token = localStorage.getItem("authToken");
   try {
@@ -133,13 +137,13 @@ document.getElementById("findSalesBtn")?.addEventListener("click", () => openSal
 
 // ─── Modal lista de vendas ────────────────────────────────────────────────────
 async function openSalesListModal() {
-  const token                 = localStorage.getItem("authToken");
-  const dynamicModal          = document.getElementById("modal");
+  const token = localStorage.getItem("authToken");
+  const dynamicModal = document.getElementById("modal");
   const modalContentContainer = document.getElementById("modalContentContainer");
 
   // Aplica largura maior via inline style no modal-content
   dynamicModal.classList.add("is-active");
-  modalContentContainer.style.maxWidth = "860px";
+  modalContentContainer.style.maxWidth = "1200px";
 
   modalContentContainer.innerHTML = `
     <div class="modal-header">
@@ -198,17 +202,17 @@ function renderSalesModal(sales, closeModal) {
       </td></tr>`;
 
     return list.map((s, i) => {
-      const pm   = payMap[s.paymentMethod] || { label: s.paymentMethod, icon: "fa-circle", cls: "" };
+      const pm = payMap[s.paymentMethod] || { label: s.paymentMethod, icon: "fa-circle", cls: "" };
       const date = s.createdAt
         ? new Date(s.createdAt).toLocaleDateString("pt-BR", {
-            day: "2-digit", month: "2-digit", year: "numeric",
-            hour: "2-digit", minute: "2-digit"
-          })
+          day: "2-digit", month: "2-digit", year: "numeric",
+          hour: "2-digit", minute: "2-digit"
+        })
         : "—";
       const isCanceled = s.status === "CANCELADA";
 
       return `
-        <tr style="${isCanceled ? "opacity:.5" : ""}">
+        <tr style="${isCanceled ? "opacity:.6" : ""}">
           <td class="history-td-num">#${String(i + 1).padStart(2, "0")}</td>
           <td>${s.client?.client || "—"}</td>
           <td>
@@ -216,18 +220,43 @@ function renderSalesModal(sales, closeModal) {
               <i class="fa-solid ${pm.icon}"></i>${pm.label}
             </span>
           </td>
+          <td>
+            <span class="status-badge ${isCanceled ? 'cancelada' : 'ativa'}">
+               ${isCanceled ? 'CANCELADA' : 'ATIVA'}
+            </span>
+          </td>
           <td class="history-td-value">${fmtCurrency(s.value)}</td>
           <td style="color:#5a6380;font-size:.82rem;white-space:nowrap">${date}</td>
           <td>
-            ${isCanceled
-              ? `<span style="color:#e03131;font-size:.75rem;font-weight:700;font-family:'Poppins',sans-serif">CANCELADA</span>`
-              : `<button class="icon-btn icon-delete btn-cancel-sale" data-id="${s.id}" data-name="${s.client?.client || '—'}" data-value="${s.value}" title="Cancelar venda">
-                   <i class="fa-solid fa-ban"></i>
-                 </button>`
-            }
+            <button class="icon-btn icon-delete btn-cancel-sale ${isCanceled ? 'disabled' : ''}" 
+              data-id="${s.id}" 
+              data-name="${s.client?.client || '—'}" 
+              data-value="${s.value}" 
+              title="${isCanceled ? 'Venda já cancelada' : 'Cancelar venda'}"
+              ${isCanceled ? 'disabled' : ''}>
+              <i class="fa-solid fa-ban"></i>
+            </button>
           </td>
         </tr>`;
     }).join("");
+  };
+
+  const calculateTotals = (list) => {
+    // Quantidade total de registros filtrados
+    const qty = list.length;
+    // Soma apenas das vendas ATIVAS
+    const val = list.reduce((acc, s) => {
+      return acc + (s.status !== "CANCELADA" ? Number(s.value || 0) : 0);
+    }, 0);
+    return { qty, val };
+  };
+
+  const updateTotalsDisplay = (list) => {
+    const totals = calculateTotals(list);
+    const qtyEl = document.getElementById("salesTotalQty");
+    const valEl = document.getElementById("salesTotalVal");
+    if (qtyEl) qtyEl.textContent = totals.qty;
+    if (valEl) valEl.textContent = fmtCurrency(totals.val);
   };
 
   modalContentContainer.innerHTML = `
@@ -239,61 +268,120 @@ function renderSalesModal(sales, closeModal) {
       <button class="modal-close is-large" aria-label="close"></button>
     </div>
 
-    <!-- Barra de busca -->
-    <div style="padding:20px 28px 0">
-      <div class="search-wrap">
+    <!-- Barra de busca e Filtro -->
+    <div style="padding:20px 28px 0; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+      <div class="search-wrap" style="flex: 1; min-width: 250px;">
         <input type="text" id="searchSaleModal" class="search-input"
           placeholder="Buscar por cliente ou forma de pagamento...">
         <i class="search-icon fas fa-magnifying-glass"></i>
       </div>
+
+      <div class="date-range-wrap" style="display: flex; gap: 8px; align-items: center;">
+        <input type="date" id="dateStartFilter" class="date-input-filter">
+        <span style="color: #5a6380; font-size: 0.75rem;">até</span>
+        <input type="date" id="dateEndFilter" class="date-input-filter">
+      </div>
+
+      <div class="select-wrapper">
+        <select id="statusFilter" class="select-status-filter">
+          <option value="TODOS">Todas Situações</option>
+          <option value="ATIVA">Ativas</option>
+          <option value="CANCELADA">Canceladas</option>
+        </select>
+      </div>
     </div>
 
     <!-- Tabela -->
-    <div class="history-table-wrap" style="margin:16px 28px 0;max-height:420px">
+    <div class="history-table-wrap" style="margin:16px 28px 0; max-height:420px">
       <table class="history-table">
         <thead>
           <tr>
-            <th>#</th>
+            <th style="width:50px">#</th>
             <th>Cliente</th>
-            <th>Pagamento</th>
-            <th>Valor</th>
-            <th>Data</th>
-            <th>Ação</th>
+            <th style="width:140px">Pagamento</th>
+            <th style="width:120px">Situação</th>
+            <th style="width:120px">Valor</th>
+            <th style="width:160px">Data</th>
+            <th style="width:60px;text-align:center">Ação</th>
           </tr>
         </thead>
-        <tbody id="salesModalBody">${buildRows(sales)}</tbody>
+        <tbody id="salesModalBody"></tbody>
       </table>
+    </div>
+
+    <!-- Barra de Totais Integrada -->
+    <div class="sales-totals-bar">
+      <div class="total-item">
+        <span class="label">QTD. VENDAS</span>
+        <span class="value" id="salesTotalQty">0</span>
+      </div>
+      <div class="total-item highlight">
+        <span class="label">VALOR TOTAL (ATIVAS)</span>
+        <span class="value" id="salesTotalVal">R$ 0,00</span>
+      </div>
     </div>
 
     <div class="history-footer">
       <button class="button cancel">Fechar</button>
     </div>`;
 
+  // Define data de hoje nos inputs
+  const hoje = new Date().toISOString().split('T')[0];
+  document.getElementById("dateStartFilter").value = hoje;
+  document.getElementById("dateEndFilter").value = hoje;
+
   // Fechar
   modalContentContainer.querySelector(".modal-close").addEventListener("click", closeModal);
   modalContentContainer.querySelector(".cancel").addEventListener("click", closeModal);
   document.querySelector(".modal-background").addEventListener("click", closeModal);
 
-  // Busca em tempo real
-  document.getElementById("searchSaleModal").addEventListener("input", function () {
-    const q = this.value.trim().toLowerCase();
-    const filtered = !q ? sales : sales.filter(s => {
-      const name = (s.client?.client || "").toLowerCase();
-      const pm   = (payMap[s.paymentMethod]?.label || "").toLowerCase();
-      return name.includes(q) || pm.includes(q);
-    });
-    document.getElementById("salesModalBody").innerHTML = buildRows(filtered);
-    bindCancelButtons(filtered);
-  });
+  // Busca e Filtro em tempo real
+  const handleFilter = () => {
+    const q = document.getElementById("searchSaleModal").value.trim().toLowerCase();
+    const status = document.getElementById("statusFilter").value;
+    const start = document.getElementById("dateStartFilter").value;
+    const end = document.getElementById("dateEndFilter").value;
 
-  bindCancelButtons(sales);
+    const filtered = sales.filter(s => {
+      // Filtro de texto
+      const name = (s.client?.client || "").toLowerCase();
+      const pm = (payMap[s.paymentMethod]?.label || "").toLowerCase();
+      const matchesSearch = name.includes(q) || pm.includes(q);
+
+      // Filtro de status
+      const sStatus = s.status === "CANCELADA" ? "CANCELADA" : "ATIVA";
+      const matchesStatus = status === "TODOS" || sStatus === status;
+
+      // Filtro de datas
+      let matchesDate = true;
+      if (s.createdAt) {
+        const saleDate = new Date(s.createdAt).toISOString().split('T')[0];
+        if (start && saleDate < start) matchesDate = false;
+        if (end && saleDate > end) matchesDate = false;
+      }
+
+      return matchesSearch && matchesStatus && matchesDate;
+    });
+
+    document.getElementById("salesModalBody").innerHTML = buildRows(filtered);
+    updateTotalsDisplay(filtered);
+    bindCancelButtons(filtered);
+  };
+
+  document.getElementById("searchSaleModal").addEventListener("input", handleFilter);
+  document.getElementById("statusFilter").addEventListener("change", handleFilter);
+  document.getElementById("dateStartFilter").addEventListener("change", handleFilter);
+  document.getElementById("dateEndFilter").addEventListener("change", handleFilter);
+
+  // Aplica filtro inicial (hoje)
+  handleFilter();
 
   // ─── Bind botões cancelar ───────────────────────────────────────────────────
   function bindCancelButtons(list) {
     document.querySelectorAll(".btn-cancel-sale").forEach(btn => {
       btn.addEventListener("click", () => {
-        const id    = Number(btn.dataset.id);
-        const name  = btn.dataset.name;
+        const id = Number(btn.dataset.id);
+        const name = btn.dataset.name;
         const valor = fmtCurrency(btn.dataset.value);
         confirmCancel(id, name, valor, list);
       });
@@ -364,7 +452,7 @@ function renderSalesModal(sales, closeModal) {
 function resetPDV() {
   $("#clientSelect").val(null).trigger("change");
   valueInput.value = "";
-  selectedPayment  = null;
+  selectedPayment = null;
   paymentIds.forEach(id => document.getElementById(id)?.classList.remove("active"));
   updateSummary("");
   showClientTypeBadge(null);
@@ -373,13 +461,20 @@ function resetPDV() {
 // ─── Métricas ─────────────────────────────────────────────────────────────────
 export async function loadMetrics() {
   const token = localStorage.getItem("authToken");
+
+  // Preenche o rótulo do mês (ex: Março de 2026)
+  const monthLabel = new Date().toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+  document.querySelectorAll(".sales-kpi-month").forEach(el => {
+    el.innerHTML = `<i class="fa-regular fa-calendar"></i> ${monthLabel}`;
+  });
+
   try {
     const { data } = await axios.get("http://localhost:3001/sales/metrics", {
       headers: { Authorization: token },
     });
     if (metricRevenue) metricRevenue.textContent = `R$ ${fmt(data.totalRevenue)}`;
-    if (metricSales)   metricSales.textContent   = data.totalSales;
-    if (metricAvg)     metricAvg.textContent     = `R$ ${fmt(data.avgTicket)}`;
+    if (metricSales) metricSales.textContent = data.totalSales;
+    if (metricAvg) metricAvg.textContent = `R$ ${fmt(data.avgTicket)}`;
   } catch (error) {
     console.error("Erro ao carregar métricas:", error);
   }
@@ -397,7 +492,7 @@ function showToast(message, type = "success") {
   let toast = document.querySelector(".et-toast");
   if (!toast) { toast = document.createElement("div"); toast.className = "et-toast"; document.body.appendChild(toast); }
   toast.textContent = message;
-  toast.className   = `et-toast ${type}`;
+  toast.className = `et-toast ${type}`;
   requestAnimationFrame(() => toast.classList.add("show"));
   setTimeout(() => toast.classList.remove("show"), 3000);
 }

@@ -1,22 +1,21 @@
 // ─── reports.js ──────────────────────────────────────────────────────────────
 // Dashboard de métricas e gráficos — EasyTicket
 
-import { getClients } from "./listClient.js";
 
 // ─── Instâncias Chart.js ──────────────────────────────────────────────────────
-let chartLine   = null;
-let chartDonut  = null;
+let chartLine = null;
+let chartDonut = null;
 
 // ─── Paleta de cores (alinhada ao design system) ──────────────────────────────
 const COLORS = {
-  accent:  "#a5ff01",
+  accent: "#a5ff01",
   accentD: "#7acc00",
-  pix:     "#00c8ff",
-  credit:  "#bf5aff",
-  debit:   "#f59f00",
-  cash:    "#a5ff01",
-  grid:    "#1e2230",
-  text:    "#5a6380",
+  pix: "#00c8ff",
+  credit: "#bf5aff",
+  debit: "#f59f00",
+  cash: "#a5ff01",
+  grid: "#1e2230",
+  text: "#5a6380",
 };
 
 // ─── Utilitários ──────────────────────────────────────────────────────────────
@@ -41,17 +40,17 @@ function setText(id, value) {
 // ─── Configuração global Chart.js ─────────────────────────────────────────────
 function applyChartDefaults() {
   if (!window.Chart) return;
-  Chart.defaults.color          = COLORS.text;
-  Chart.defaults.font.family    = "Poppins, sans-serif";
-  Chart.defaults.font.size      = 11;
+  Chart.defaults.color = COLORS.text;
+  Chart.defaults.font.family = "Poppins, sans-serif";
+  Chart.defaults.font.size = 11;
   Chart.defaults.plugins.legend.display = false;
   Chart.defaults.plugins.tooltip.backgroundColor = "#0d0f14";
-  Chart.defaults.plugins.tooltip.borderColor     = "#252836";
-  Chart.defaults.plugins.tooltip.borderWidth     = 1;
-  Chart.defaults.plugins.tooltip.titleColor      = "#fff";
-  Chart.defaults.plugins.tooltip.bodyColor       = "#8892a4";
-  Chart.defaults.plugins.tooltip.padding         = 10;
-  Chart.defaults.plugins.tooltip.cornerRadius    = 8;
+  Chart.defaults.plugins.tooltip.borderColor = "#252836";
+  Chart.defaults.plugins.tooltip.borderWidth = 1;
+  Chart.defaults.plugins.tooltip.titleColor = "#fff";
+  Chart.defaults.plugins.tooltip.bodyColor = "#8892a4";
+  Chart.defaults.plugins.tooltip.padding = 10;
+  Chart.defaults.plugins.tooltip.cornerRadius = 8;
 }
 
 // ─── Gráfico de linha — vendas por dia ────────────────────────────────────────
@@ -71,29 +70,29 @@ function renderLineChart(labels, data) {
       labels,
       datasets: [{
         data,
-        borderColor:       COLORS.accent,
-        backgroundColor:   gradient,
-        borderWidth:       2.5,
+        borderColor: COLORS.accent,
+        backgroundColor: gradient,
+        borderWidth: 2.5,
         pointBackgroundColor: COLORS.accent,
-        pointBorderColor:  "#0d0f14",
-        pointBorderWidth:  2,
-        pointRadius:       4,
-        pointHoverRadius:  6,
-        tension:           0.4,
-        fill:              true,
+        pointBorderColor: "#0d0f14",
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        tension: 0.4,
+        fill: true,
       }],
     },
     options: {
-      responsive:          true,
+      responsive: true,
       maintainAspectRatio: false,
       interaction: { mode: "index", intersect: false },
       scales: {
         x: {
-          grid:  { color: COLORS.grid, drawBorder: false },
+          grid: { color: COLORS.grid, drawBorder: false },
           ticks: { color: COLORS.text, maxTicksLimit: 7 },
         },
         y: {
-          grid:  { color: COLORS.grid, drawBorder: false },
+          grid: { color: COLORS.grid, drawBorder: false },
           ticks: {
             color: COLORS.text,
             callback: (v) => fmtShort(v),
@@ -120,14 +119,14 @@ function renderDonutChart(payments) {
   if (chartDonut) chartDonut.destroy();
 
   const labels = ["Dinheiro", "PIX", "Crédito", "Débito"];
-  const data   = [
-    payments.cash   || 0,
-    payments.pix    || 0,
+  const data = [
+    payments.cash || 0,
+    payments.pix || 0,
     payments.credit || 0,
-    payments.debit  || 0,
+    payments.debit || 0,
   ];
   const colors = [COLORS.cash, COLORS.pix, COLORS.credit, COLORS.debit];
-  const total  = data.reduce((a, b) => a + b, 0);
+  const total = data.reduce((a, b) => a + b, 0);
 
   chartDonut = new Chart(ctx, {
     type: "doughnut",
@@ -135,17 +134,17 @@ function renderDonutChart(payments) {
       labels,
       datasets: [{
         data,
-        backgroundColor:   colors.map(c => c + "cc"),
-        borderColor:       colors,
-        borderWidth:       2,
-        hoverBorderWidth:  3,
-        hoverOffset:       6,
+        backgroundColor: colors.map(c => c + "cc"),
+        borderColor: colors,
+        borderWidth: 2,
+        hoverBorderWidth: 3,
+        hoverOffset: 6,
       }],
     },
     options: {
-      responsive:          true,
+      responsive: true,
       maintainAspectRatio: false,
-      cutout:              "72%",
+      cutout: "72%",
       plugins: {
         tooltip: {
           callbacks: {
@@ -182,8 +181,8 @@ function renderBars(types) {
   if (!wrap) return;
 
   const items = [
-    { key: "geral",    label: "Geral",    icon: "fa-users"  },
-    { key: "vip",      label: "VIP",      icon: "fa-star"   },
+    { key: "geral", label: "Geral", icon: "fa-users" },
+    { key: "vip", label: "VIP", icon: "fa-star" },
     { key: "cortesia", label: "Cortesia", icon: "fa-ticket" },
   ];
 
@@ -213,10 +212,10 @@ function renderRecentSales(sales) {
   if (!tbody) return;
 
   const payMap = {
-    cash:   { label: "Dinheiro", icon: "fa-money-bill-1" },
-    pix:    { label: "PIX",      icon: "fa-qrcode"       },
-    credit: { label: "Crédito",  icon: "fa-credit-card"  },
-    debit:  { label: "Débito",   icon: "fa-credit-card"  },
+    cash: { label: "Dinheiro", icon: "fa-money-bill-1" },
+    pix: { label: "PIX", icon: "fa-qrcode" },
+    credit: { label: "Crédito", icon: "fa-credit-card" },
+    debit: { label: "Débito", icon: "fa-credit-card" },
   };
 
   if (!sales || sales.length === 0) {
@@ -233,7 +232,7 @@ function renderRecentSales(sales) {
   }
 
   tbody.innerHTML = sales.slice(0, 8).map((s, i) => {
-    const pm   = payMap[s.paymentMethod] || { label: s.paymentMethod, icon: "fa-circle" };
+    const pm = payMap[s.paymentMethod] || { label: s.paymentMethod, icon: "fa-circle" };
     const name = s.client?.client || s.clientName || "—";
     return `
       <tr>
@@ -254,62 +253,87 @@ async function loadReportData() {
   const token = localStorage.getItem("authToken");
   const headers = { Authorization: token };
 
+  const startDate = document.getElementById("rptDateStart")?.value;
+  const endDate = document.getElementById("rptDateEnd")?.value;
+  const params = { startDate, endDate };
+
   try {
-    // ── KPIs principais (usa endpoint existente de métricas) ──────────────────
+    // ── KPIs principais ──────────────────────
     const { data: metrics } = await axios.get(
-      "http://localhost:3001/sales/metrics", { headers }
+      "http://localhost:3001/sales/metrics", { headers, params }
     );
 
-    setText("rptRevenue",  fmtCurrency(metrics.totalRevenue));
-    setText("rptSales",    metrics.totalSales   ?? "0");
-    setText("rptAvg",      fmtCurrency(metrics.avgTicket));
-    setText("rptClients",  getClients().length);
+    setText("rptRevenue", fmtCurrency(metrics.totalRevenue));
+    setText("rptSales", metrics.totalSales ?? "0");
+    setText("rptAvg", fmtCurrency(metrics.avgTicket));
 
   } catch (e) {
     console.error("Erro ao carregar métricas:", e);
   }
 
   try {
-    // ── Vendas recentes + breakdown por método ────────────────────────────────
+    // ── Vendas + breakdown por método ────────
     const { data: sales } = await axios.get(
-      "http://localhost:3001/sales", { headers }
+      "http://localhost:3001/sales", { headers, params }
     );
 
     renderRecentSales(sales);
 
     // Agrega pagamentos
     const payments = { cash: 0, pix: 0, credit: 0, debit: 0 };
-    sales.forEach(s => { if (s.paymentMethod in payments) payments[s.paymentMethod]++; });
+    sales.forEach(s => {
+      if (s.status !== "CANCELADA" && s.paymentMethod in payments) {
+        payments[s.paymentMethod]++;
+      }
+    });
     renderDonutChart(payments);
 
-    // Vendas por dia (últimos 7 dias)
-    const today   = new Date();
-    const dayMap  = {};
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(d.getDate() - i);
-      const key = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
-      dayMap[key] = 0;
+    // Vendas por dia (baseado no range selecionado)
+    let labels = [];
+    let data = [];
+
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const diffTime = Math.abs(end - start);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      const dayMap = {};
+      for (let i = 0; i <= diffDays; i++) {
+        const d = new Date(start);
+        d.setDate(d.getDate() + i);
+        const key = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+        dayMap[key] = 0;
+      }
+
+      sales.forEach(s => {
+        if (s.status !== "CANCELADA") {
+          const d = new Date(s.createdAt);
+          const key = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+          if (key in dayMap) dayMap[key] += Number(s.value || 0);
+        }
+      });
+
+      labels = Object.keys(dayMap);
+      data = Object.values(dayMap);
     }
-    sales.forEach(s => {
-      const d = new Date(s.createdAt || s.date || Date.now());
-      const key = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
-      if (key in dayMap) dayMap[key] += Number(s.value || 0);
-    });
-    renderLineChart(Object.keys(dayMap), Object.values(dayMap));
+
+    renderLineChart(labels, data);
 
   } catch (e) {
     console.error("Erro ao carregar vendas:", e);
     renderRecentSales([]);
     renderDonutChart({ cash: 0, pix: 0, credit: 0, debit: 0 });
-    renderLineChart(["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"], [0,0,0,0,0,0,0]);
   }
 
   try {
-    // ── Tipo de clientes cadastrados ──────────────────────────────────────────
+    // ── Clientes cadastrados no período ──────
     const { data: clients } = await axios.get(
-      "http://localhost:3001/clients", { headers }
+      "http://localhost:3001/clients", { headers, params }
     );
+
+    setText("rptClients", clients.length);
+
     const types = { geral: 0, vip: 0, cortesia: 0 };
     clients.forEach(c => { if (c.type in types) types[c.type]++; else types.geral++; });
     renderBars(types);
@@ -320,8 +344,27 @@ async function loadReportData() {
   }
 }
 
+// ─── Inicialização de datas ───────────────────────────────────────────────────
+function initReportFilters() {
+  const startInput = document.getElementById("rptDateStart");
+  const endInput = document.getElementById("rptDateEnd");
+
+  if (!startInput || !endInput) return;
+
+  const now = new Date();
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+
+  if (!startInput.value) startInput.value = firstDay;
+  if (!endInput.value) endInput.value = lastDay;
+
+  startInput.addEventListener("change", loadReportData);
+  endInput.addEventListener("change", loadReportData);
+}
+
 // ─── Init ao abrir a aba ──────────────────────────────────────────────────────
 document.addEventListener("reportModalOpened", () => {
   applyChartDefaults();
+  initReportFilters();
   loadReportData();
 });
