@@ -10,8 +10,7 @@
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/login.css">
@@ -25,6 +24,7 @@
   <link rel="stylesheet" href="../css/home.css">
   <link rel="stylesheet" href="../css/campaigns.css">
   <link rel="stylesheet" href="../css/events.css">
+  <link rel="stylesheet" href="../css/config.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/a1729d9d21.js" crossorigin="anonymous"></script>
@@ -35,7 +35,9 @@
 
 <body>
 
-  <!-- Modal global (confirmação / edição) -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- MODAL GLOBAL (confirmação / edição)                                -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
   <div class="modal" id="modal">
     <div class="modal-background"></div>
     <div class="modal-content" id="modalContentContainer"></div>
@@ -43,11 +45,14 @@
 
   <div class="dashboard">
 
-    <!-- ── Sidebar ───────────────────────────────────────────────────────── -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- SIDEBAR                                                            -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
     <nav class="sidebar" id="sidebar">
       <div class="sidebar-logo">
         <i class="fa-solid fa-ticket"></i>
       </div>
+
       <div class="sidebar-nav" id="menu">
         <div class="sidebar-item is-active" data-label="Início">
           <i class="fa-solid fa-house"></i>
@@ -73,13 +78,21 @@
           <i class="fa-brands fa-whatsapp"></i>
           <span class="sidebar-tooltip">Campanhas WhatsApp</span>
         </div>
-        <!-- ── NOVO: Eventos ─────────────────────────────────────────────── -->
         <div class="sidebar-item" data-label="Eventos">
           <i class="fa-solid fa-calendar-days"></i>
           <span class="sidebar-tooltip">Eventos</span>
         </div>
+        <div class="sidebar-item" data-label="Configurações">
+          <i class="fa-solid fa-gear"></i>
+          <span class="sidebar-tooltip">Configurações</span>
+        </div>
       </div>
+
       <div class="sidebar-footer">
+        <div class="sidebar-item" id="btnTrocarModo" title="Trocar modo">
+          <i class="fa-solid fa-arrows-rotate"></i>
+          <span class="sidebar-tooltip">Trocar Modo</span>
+        </div>
         <div class="sidebar-item sidebar-logout" id="sidebarLogout">
           <i class="fa-solid fa-right-from-bracket"></i>
           <span class="sidebar-tooltip">Sair</span>
@@ -326,7 +339,6 @@
 
       <div class="pdv">
 
-        <!-- ── NOVO: Seletor de Evento ──────────────────────────────────── -->
         <div class="pdv-event-row">
           <div class="pdv-event-icon">
             <i class="fa-solid fa-calendar-days"></i>
@@ -417,70 +429,57 @@
           <div class="report-filter-controls">
             <div class="report-date-group">
               <label>Início</label>
-              <input type="date" id="rptDateStart" class="report-date-input">
+              <input type="date" id="reportDateStart" class="report-date-input">
             </div>
             <div class="report-date-group">
               <label>Fim</label>
-              <input type="date" id="rptDateEnd" class="report-date-input">
+              <input type="date" id="reportDateEnd" class="report-date-input">
             </div>
+            <button class="report-btn-filter" id="reportBtnFilter">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              Filtrar
+            </button>
           </div>
         </div>
 
         <div class="report-kpi-row">
           <div class="report-kpi">
-            <div class="report-kpi-icon"><i class="fa-solid fa-dollar-sign"></i></div>
-            <span class="report-kpi-label">Faturamento total</span>
-            <div class="report-kpi-value" id="rptRevenue">R$ 0,00</div>
-            <span class="report-kpi-sub">
-              <i class="fa-solid fa-chart-line up"></i>
-              <span class="up">Acumulado</span>
-            </span>
+            <div class="report-kpi-icon revenue"><i class="fa-solid fa-dollar-sign"></i></div>
+            <div class="report-kpi-info">
+              <span class="report-kpi-label">Faturamento</span>
+              <div class="report-kpi-value" id="reportRevenue">R$ 0,00</div>
+            </div>
           </div>
           <div class="report-kpi">
-            <div class="report-kpi-icon"><i class="fa-solid fa-bolt"></i></div>
-            <span class="report-kpi-label">Total de vendas</span>
-            <div class="report-kpi-value" id="rptSales">0</div>
-            <span class="report-kpi-sub">
-              <i class="fa-solid fa-ticket"></i>
-              ingressos emitidos
-            </span>
+            <div class="report-kpi-icon sales"><i class="fa-solid fa-bolt"></i></div>
+            <div class="report-kpi-info">
+              <span class="report-kpi-label">Vendas</span>
+              <div class="report-kpi-value" id="reportSales">0</div>
+            </div>
           </div>
           <div class="report-kpi">
-            <div class="report-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
-            <span class="report-kpi-label">Ticket médio</span>
-            <div class="report-kpi-value" id="rptAvg">R$ 0,00</div>
-            <span class="report-kpi-sub">
-              <i class="fa-solid fa-divide"></i>
-              por ingresso
-            </span>
-          </div>
-          <div class="report-kpi">
-            <div class="report-kpi-icon"><i class="fa-solid fa-users"></i></div>
-            <span class="report-kpi-label">Clientes cadastrados</span>
-            <div class="report-kpi-value" id="rptClients">0</div>
-            <span class="report-kpi-sub">
-              <i class="fa-solid fa-database"></i>
-              na base
-            </span>
+            <div class="report-kpi-icon avg"><i class="fa-solid fa-arrow-trend-up"></i></div>
+            <div class="report-kpi-info">
+              <span class="report-kpi-label">Ticket Médio</span>
+              <div class="report-kpi-value" id="reportAvg">R$ 0,00</div>
+            </div>
           </div>
         </div>
 
         <div class="report-charts-row">
           <div class="report-card">
             <div class="report-card-header">
-              <h2>Faturamento por dia</h2>
-              <span class="report-card-badge">7 dias</span>
+              <h2>Vendas por dia</h2>
+              <span class="report-card-badge">Período</span>
             </div>
             <div class="report-card-body">
-              <div class="chart-line-wrap">
-                <canvas id="chartLine"></canvas>
-              </div>
+              <canvas id="chartLine"></canvas>
             </div>
           </div>
           <div class="report-card">
             <div class="report-card-header">
               <h2>Formas de pagamento</h2>
-              <span class="report-card-badge">Total</span>
+              <span class="report-card-badge">Distribuição</span>
             </div>
             <div class="report-card-body">
               <div class="chart-donut-wrap">
@@ -511,7 +510,7 @@
                   </thead>
                   <tbody id="recentSalesBody">
                     <tr>
-                      <td colspan="4">
+                      <td colspan="5">
                         <div class="report-empty">
                           <i class="fa-solid fa-chart-bar"></i>
                           <p>Carregando...</p>
@@ -612,6 +611,176 @@
       </div>
 
     </div><!-- /.modal-campaigns -->
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- CAMPANHAS — Drawer lateral (criação/edição)                        -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="campaign-overlay" id="campaignOverlay">
+      <div class="campaign-drawer" id="campaignDrawer">
+
+        <div class="campaign-drawer-header">
+          <div class="campaign-drawer-title">
+            <i class="fa-solid fa-bullhorn"></i>
+            <span id="drawerTitle">Nova Campanha</span>
+          </div>
+          <button class="campaign-drawer-close" id="btnCloseDrawer">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="campaign-drawer-body">
+
+          <div class="camp-field">
+            <label class="camp-label">Nome da Campanha</label>
+            <input type="text" id="campName" class="camp-input" placeholder="Ex: Promoção de Verão">
+            <div class="camp-validation-msg" id="campNameValidation"></div>
+          </div>
+
+          <div class="camp-field">
+            <label class="camp-label">Mensagem do WhatsApp</label>
+            <textarea id="campMessage" class="camp-textarea"
+              placeholder="Olá {nome}, temos uma oferta para você!"></textarea>
+            <div class="camp-vars-hint">
+              <span>Inserir:</span>
+              <span class="camp-var-tag" data-var="{nome}">{nome}</span>
+              <span class="camp-var-tag" data-var="{primeiro_nome}">{primeiro_nome}</span>
+            </div>
+            <div class="camp-validation-msg" id="campMessageValidation"></div>
+          </div>
+
+          <div class="camp-field">
+            <label class="camp-label">Imagem da Campanha (Opcional)</label>
+            <div class="camp-image-upload">
+              <div class="camp-dropzone" id="campDropzone">
+                <i class="fa-solid fa-cloud-arrow-up camp-dropzone-icon"></i>
+                <p>Arraste uma imagem ou <span>clique aqui</span></p>
+                <input type="file" id="campImageInput" accept="image/*">
+              </div>
+              <div class="camp-image-preview" id="campImagePreview">
+                <img src="" alt="Preview" id="campImageEl">
+                <button class="camp-image-remove" id="campImageRemove" title="Remover imagem">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="camp-divider">Destinatários</div>
+
+          <div class="camp-field">
+            <label class="camp-label">Selecionar Clientes</label>
+            <div class="camp-clients-search">
+              <input type="text" id="campSearchClients" class="camp-search"
+                placeholder="Buscar cliente por nome ou celular...">
+              <label class="camp-select-all">
+                <input type="checkbox" id="campSelectAll"> Todos
+              </label>
+            </div>
+            <div class="camp-clients-list" id="campClientsList"></div>
+            <div class="camp-clients-counter" id="campClientCounter">0 selecionados</div>
+            <div class="camp-validation-msg" id="campClientsValidation"></div>
+          </div>
+
+          <div class="camp-divider">Configurações de Envio</div>
+
+          <div class="camp-field">
+            <div class="camp-settings-toggle" id="campSettingsToggle">
+              <span><i class="fa-solid fa-sliders"></i> Configurações Avançadas</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="camp-settings-grid" id="campSettingsContent">
+              <div class="camp-field">
+                <label class="camp-label">Delay Mínimo (seg)</label>
+                <div class="camp-number-wrap">
+                  <button class="camp-number-btn" id="campDelayMinMinus"><i class="fa-solid fa-minus"></i></button>
+                  <input type="number" id="campDelayMin" class="camp-number-input" value="5">
+                  <button class="camp-number-btn" id="campDelayMinPlus"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+              <div class="camp-field">
+                <label class="camp-label">Delay Máximo (seg)</label>
+                <div class="camp-number-wrap">
+                  <button class="camp-number-btn" id="campDelayMaxMinus"><i class="fa-solid fa-minus"></i></button>
+                  <input type="number" id="campDelayMax" class="camp-number-input" value="15">
+                  <button class="camp-number-btn" id="campDelayMaxPlus"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="campaign-drawer-footer">
+          <div class="camp-footer-left" id="campFooterStatus"></div>
+          <div class="camp-footer-right">
+            <button class="btn-camp-cancel" id="btnCancelCampaign">Cancelar</button>
+            <button class="btn-camp-save" id="btnSaveCampaign">
+              <i class="fa-solid fa-floppy-disk"></i>
+              Salvar Campanha
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─── WhatsApp Modal overlay ──────────────────────────────────────── -->
+    <div class="campaign-overlay wpp-modal-overlay" id="wppModalOverlay">
+      <div class="wpp-modal">
+        <div class="wpp-modal-header">
+          <div class="wpp-modal-title">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span>Conectar WhatsApp</span>
+          </div>
+          <button class="wpp-modal-close" id="btnCloseWppModal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="wpp-modal-body" id="wppModalBody">
+          <div class="wpp-modal-loading">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <span>Carregando...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Modal de Logs ───────────────────────────────────────────────── -->
+    <div class="campaign-logs-overlay" id="logsOverlay">
+      <div class="campaign-logs-modal">
+        <div class="logs-modal-header">
+          <div class="logs-modal-title">
+            <i class="fa-solid fa-list-ul"></i>
+            <span id="logsModalTitle">Logs da Campanha</span>
+          </div>
+          <button class="logs-modal-close" id="btnCloseLogs">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="logs-filters">
+          <button class="logs-filter-btn active" data-filter="TODOS">Todas</button>
+          <button class="logs-filter-btn" data-filter="ENVIADO">Enviadas</button>
+          <button class="logs-filter-btn" data-filter="FALHOU">Falhas</button>
+          <button class="logs-filter-btn" data-filter="PENDENTE">Pendentes</button>
+        </div>
+        <div class="logs-table-wrap">
+          <table class="logs-table">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Data/Hora</th>
+                <th>Status</th>
+                <th>Detalhe</th>
+              </tr>
+            </thead>
+            <tbody id="logsTableBody"></tbody>
+          </table>
+        </div>
+        <div class="logs-modal-footer">
+          <button class="btn-logs-close" id="btnCloseLogsFooter">Fechar</button>
+        </div>
+      </div>
+    </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- EVENTOS                                                            -->
@@ -721,239 +890,101 @@
 
     </div><!-- /.modal-events -->
 
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- CONFIGURAÇÕES                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="modal-config none" id="configModal">
 
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <!-- CAMPANHAS — Drawer lateral (criação/edição)                       -->
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <!-- CAMPANHAS — Drawer lateral (criação/edição)                       -->
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <div class="campaign-overlay" id="campaignOverlay">
-      <div class="campaign-drawer" id="campaignDrawer">
+      <div class="config-header">
+        <div class="config-title-block">
+          <h1 class="config-title">
+            <i class="fa-solid fa-gear"></i>
+            Configurações
+          </h1>
+          <p class="config-subtitle">Gerencie senha ADM e preferências do sistema</p>
+        </div>
+      </div>
 
-        <div class="campaign-drawer-header">
-          <div class="campaign-drawer-title">
-            <i class="fa-solid fa-bullhorn"></i>
-            <span id="drawerTitle">Nova Campanha</span>
+      <!-- ── Seção: Senha ADM ────────────────────────────────────────────── -->
+      <div class="config-section">
+
+        <div class="config-section-header">
+          <div class="config-section-icon blue">
+            <i class="fa-solid fa-shield-halved"></i>
           </div>
-          <button class="campaign-drawer-close" id="btnCloseDrawer">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
+          <div class="config-section-title-wrap">
+            <p class="config-section-title">Senha de Administrador</p>
+            <p class="config-section-desc">Controla o acesso ao Painel ADM na tela de seleção de modo</p>
+          </div>
         </div>
 
-        <div class="campaign-drawer-body">
+        <div class="config-section-body">
 
-          <!-- Nome -->
-          <div class="camp-field">
-            <label class="camp-label">Nome da Campanha</label>
-            <input type="text" id="campName" class="camp-input" placeholder="Ex: Promoção de Verão">
-            <div class="camp-validation-msg" id="campNameValidation"></div>
+          <div class="config-hint">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>
+              A senha ADM é solicitada ao tentar acessar o <strong>Painel ADM</strong> na tela de
+              seleção de modo. Se nenhuma senha for configurada, o acesso ficará livre.
+            </span>
           </div>
 
-          <!-- Mensagem -->
-          <div class="camp-field">
-            <label class="camp-label">Mensagem do WhatsApp</label>
-            <textarea id="campMessage" class="camp-textarea"
-              placeholder="Olá {nome}, temos uma oferta para você!"></textarea>
-
-            <div class="camp-vars-hint">
-              <span>Inserir:</span>
-              <span class="camp-var-tag" data-var="{nome}">{nome}</span>
-              <span class="camp-var-tag" data-var="{primeiro_nome}">{primeiro_nome}</span>
-            </div>
-            <div class="camp-validation-msg" id="campMessageValidation"></div>
-          </div>
-
-          <!-- Imagem -->
-          <div class="camp-field">
-            <label class="camp-label">Imagem da Campanha (Opcional)</label>
-
-            <div class="camp-image-upload">
-              <div class="camp-dropzone" id="campDropzone">
-                <i class="fa-solid fa-cloud-arrow-up camp-dropzone-icon"></i>
-                <p>Arraste uma imagem ou <span>clique aqui</span></p>
-                <input type="file" id="campImageInput" accept="image/*">
+          <div class="config-fields-grid">
+            <div class="config-field">
+              <label class="config-label">Nova Senha</label>
+              <div class="config-input-wrap">
+                <i class="fa-solid fa-lock config-input-icon"></i>
+                <input class="config-input" type="password" id="configNewPass"
+                  placeholder="Digite a nova senha" autocomplete="new-password" />
+                <button class="config-toggle-pass" data-toggle-pass="configNewPass" type="button">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
               </div>
-
-              <div class="camp-image-preview" id="campImagePreview">
-                <img src="" alt="Preview" id="campImageEl">
-                <button class="camp-image-remove" id="campImageRemove" title="Remover imagem">
-                  <i class="fa-solid fa-trash"></i>
+            </div>
+            <div class="config-field">
+              <label class="config-label">Confirmar Senha</label>
+              <div class="config-input-wrap">
+                <i class="fa-solid fa-lock config-input-icon"></i>
+                <input class="config-input" type="password" id="configConfirmPass"
+                  placeholder="Confirme a nova senha" autocomplete="new-password" />
+                <button class="config-toggle-pass" data-toggle-pass="configConfirmPass" type="button">
+                  <i class="fa-solid fa-eye"></i>
                 </button>
               </div>
             </div>
           </div>
 
-          <div class="camp-divider">Configurações de Envio</div>
-
-          <!-- Toggle Configurações -->
-          <div class="camp-field">
-            <div class="camp-settings-toggle" id="campSettingsToggle">
-              <span><i class="fa-solid fa-sliders"></i> Configurações Avançadas</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </div>
-
-            <div class="camp-settings-grid" id="campSettingsContent">
-
-              <div class="camp-field">
-                <label class="camp-label">Delay Mínimo (seg)</label>
-                <div class="camp-number-wrap">
-                  <button class="camp-number-btn" id="campDelayMinMinus"><i class="fa-solid fa-minus"></i></button>
-                  <input type="number" id="campDelayMin" class="camp-number-input" value="5">
-                  <button class="camp-number-btn" id="campDelayMinPlus"><i class="fa-solid fa-plus"></i></button>
-                </div>
-              </div>
-
-              <div class="camp-field">
-                <label class="camp-label">Delay Máximo (seg)</label>
-                <div class="camp-number-wrap">
-                  <button class="camp-number-btn" id="campDelayMaxMinus"><i class="fa-solid fa-minus"></i></button>
-                  <input type="number" id="campDelayMax" class="camp-number-input" value="15">
-                  <button class="camp-number-btn" id="campDelayMaxPlus"><i class="fa-solid fa-plus"></i></button>
-                </div>
-              </div>
-
-              <div class="camp-field">
-                <label class="camp-label">Limite de envios</label>
-                <div class="camp-number-wrap">
-                  <button class="camp-number-btn" id="campLimitMinus"><i class="fa-solid fa-minus"></i></button>
-                  <input type="number" id="campLimit" class="camp-number-input" value="0">
-                  <button class="camp-number-btn" id="campLimitPlus"><i class="fa-solid fa-plus"></i></button>
-                </div>
-                <small style="font-size: 0.65rem; color: #5a6380;">(0 = sem limite)</small>
-              </div>
-
-              <div class="camp-field" style="justify-content: center;">
-                <label class="camp-checkbox-row">
-                  <input type="checkbox" id="campRandom">
-                  <div class="camp-checkbox-label">
-                    Ordem Aleatória
-                    <small>Embaralha a ordem dos clientes</small>
-                  </div>
-                </label>
-              </div>
-
-              <div class="camp-validation-msg" id="campDelayValidation" style="grid-column: 1/-1"></div>
-
-            </div>
-          </div>
-
-          <div class="camp-divider">Destinatários</div>
-
-          <!-- Clientes -->
-          <div class="camp-clients-section">
-            <div class="camp-clients-toolbar">
-              <input type="text" id="campSearchClients" class="camp-search"
-                placeholder="Buscar cliente por nome ou celular...">
-              <label class="camp-select-all">
-                <input type="checkbox" id="campSelectAll"> Todos
-              </label>
-            </div>
-
-            <div class="camp-clients-list" id="campClientsList">
-              <!-- Lista renderizada via JS -->
-            </div>
-
-            <div class="camp-clients-counter" id="campClientCounter">
-              0 selecionados
-            </div>
-            <div class="camp-validation-msg" id="campClientsValidation"></div>
-          </div>
-
         </div>
 
-        <div class="campaign-drawer-footer">
-          <div class="camp-footer-left" id="campFooterStatus"></div>
-          <div class="camp-footer-right">
-            <button class="btn-camp-cancel" id="btnCancelCampaign">Cancelar</button>
-            <button class="btn-camp-save" id="btnSaveCampaign">
+        <div class="config-section-footer">
+          <div class="config-section-footer-left">
+            <span id="configPassStatus" class="config-status-badge not-set">
+              <i class="fa-solid fa-circle-exclamation"></i> Sem senha definida
+            </span>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="config-btn danger" id="btnRemoveAdmPass">
+              <i class="fa-solid fa-trash"></i>
+              Remover Senha
+            </button>
+            <button class="config-btn primary" id="btnSaveAdmPass">
               <i class="fa-solid fa-floppy-disk"></i>
-              Salvar Campanha
+              Salvar Senha
             </button>
           </div>
         </div>
 
-      </div>
-    </div>
+      </div><!-- /.config-section -->
 
-    <!-- Modal de Logs -->
-    <div class="campaign-logs-overlay" id="logsOverlay">
-      <div class="campaign-logs-modal">
-        <div class="logs-modal-header">
-          <div class="logs-modal-title">
-            <i class="fa-solid fa-list-ul"></i>
-            <span id="logsModalTitle">Logs da Campanha</span>
-          </div>
-          <button class="logs-modal-close" id="btnCloseLogs">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-
-        <div class="logs-filters">
-          <button class="logs-filter-btn active" data-filter="TODOS">Todas</button>
-          <button class="logs-filter-btn" data-filter="ENVIADO">Enviadas</button>
-          <button class="logs-filter-btn" data-filter="FALHOU">Falhas</button>
-          <button class="logs-filter-btn" data-filter="PENDENTE">Pendentes</button>
-        </div>
-
-        <div class="logs-table-wrap">
-          <table class="logs-table">
-            <thead>
-              <tr>
-                <th>Cliente</th>
-                <th>Data / Hora</th>
-                <th>Status</th>
-                <th>Mensagem</th>
-              </tr>
-            </thead>
-            <tbody id="logsTableBody">
-              <!-- Logs renderizados via JS -->
-            </tbody>
-          </table>
-        </div>
-
-        <div class="logs-modal-footer">
-          <button class="btn-logs-close" id="btnLogsFooterClose">Fechar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal WhatsApp Status / QR Code -->
-    <div class="campaign-overlay wpp-modal-overlay" id="wppModalOverlay">
-      <div class="wpp-modal">
-        <div class="wpp-modal-header">
-          <div class="wpp-modal-title">
-            <i class="fa-brands fa-whatsapp"></i>
-            <span>Conexão WhatsApp</span>
-          </div>
-          <button class="campaign-drawer-close" id="btnCloseWppModal">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <div class="wpp-modal-body" id="wppModalBody">
-          <div class="wpp-loading">
-            <i class="fa-solid fa-circle-notch fa-spin"></i>
-            <p>Iniciando WhatsApp...</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    </div><!-- /.modal-config -->
 
   </div><!-- /.dashboard -->
 
-  <!-- Scripts -->
   <script type="module" src="../js/utils/titlebar.js"></script>
-  <script type="module" src="../js/pages/home.js"></script>
   <script type="module" src="../js/pages/menus.js"></script>
-  <script type="module" src="../js/pages/createClient.js"></script>
-  <script type="module" src="../js/utils/format.js"></script>
+  <script type="module" src="../js/pages/register.js"></script>
   <script type="module" src="../js/pages/listClient.js"></script>
-  <script type="module" src="../js/pages/clientHistory.js"></script>
-  <script type="module" src="../js/utils/trigger.js"></script>
-  <script type="module" src="../js/pages/alterClient.js"></script>
-  <script type="module" src="../js/utils/search.js"></script>
   <script type="module" src="../js/pages/sales.js"></script>
-  <script type="module" src="../js/pages/reports.js"></script>
+  <script type="module" src="../js/pages/report.js"></script>
 
 </body>
 

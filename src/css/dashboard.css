@@ -1,5 +1,6 @@
 /* ════════════════════════════════════════════════════════════
    DASHBOARD — Layout com sidebar lateral
+   Inclui: sidebar, modo PDV/ADM chip, responsivo
 ════════════════════════════════════════════════════════════ */
 
 :root {
@@ -49,9 +50,36 @@
   justify-content: center;
   font-size: 1.1rem;
   color: #a5ff01;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   flex-shrink: 0;
   box-shadow: 0 0 20px #a5ff0120;
+}
+
+/* ── Chip indicador de modo (PDV / ADM) ─────────────────── */
+.sidebar-mode-chip {
+  width: 44px;
+  height: 26px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  cursor: default;
+  transition: background 0.18s;
+}
+
+.sidebar-mode-chip.pdv {
+  background: #a5ff0115;
+  border: 1px solid #a5ff0130;
+  color: #a5ff01;
+}
+
+.sidebar-mode-chip.adm {
+  background: #3b82f615;
+  border: 1px solid #3b82f630;
+  color: #3b82f6;
 }
 
 /* ── Nav container ───────────────────────────────────────── */
@@ -102,6 +130,20 @@
   border-color: #e0313130;
 }
 
+/* Trocar Modo */
+#btnTrocarModo {
+  background: transparent;
+  color: #5a6380;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+#btnTrocarModo:hover {
+  background: #a5ff0110;
+  color: #a5ff01;
+  border-color: #a5ff0130;
+}
+
 /* ── Tooltip ─────────────────────────────────────────────── */
 .sidebar-tooltip {
   position: absolute;
@@ -143,7 +185,9 @@
 .sidebar-footer {
   width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   padding-top: 12px;
   border-top: 1px solid #1e2230;
   margin-top: 8px;
@@ -187,6 +231,7 @@ body.has-electron-titlebar .dashboard {
   }
 
   .sidebar-logo { display: none; }
+  .sidebar-mode-chip { display: none; }
 
   .sidebar-nav {
     flex-direction: row;
@@ -202,6 +247,8 @@ body.has-electron-titlebar .dashboard {
     padding-top: 0;
     margin-top: 0;
     width: auto;
+    flex-direction: row;
+    gap: 0;
   }
 
   body.has-electron-titlebar .sidebar {

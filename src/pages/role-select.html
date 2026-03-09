@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a1729d9d21.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/role-select.css">
+  <title>EasyTicket — Modo de Acesso</title>
+</head>
+
+<body>
+  <div class="rs-bg">
+
+    <!-- Partículas de fundo decorativas -->
+    <div class="rs-particles">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+
+    <div class="rs-container">
+
+      <!-- Logo -->
+      <div class="rs-logo">
+        <img src="../../assets/easyticket2.png" alt="EasyTicket">
+        <p class="rs-subtitle">Selecione o modo de acesso para continuar</p>
+      </div>
+
+      <!-- Cards de seleção -->
+      <div class="rs-cards">
+
+        <!-- Card PDV -->
+        <div class="rs-card pdv" id="cardPDV" role="button" tabindex="0">
+          <div class="rs-card-glow pdv"></div>
+          <div class="rs-card-icon pdv">
+            <i class="fa-solid fa-cash-register"></i>
+          </div>
+          <div class="rs-card-content">
+            <h2 class="rs-card-title">PDV</h2>
+            <p class="rs-card-desc">Ponto de Venda</p>
+            <ul class="rs-card-features">
+              <li><i class="fa-solid fa-check"></i> Venda de ingressos</li>
+              <li><i class="fa-solid fa-check"></i> Cadastro de clientes</li>
+              <li><i class="fa-solid fa-check"></i> Lista de clientes</li>
+              <li><i class="fa-solid fa-check"></i> Eventos ativos</li>
+            </ul>
+          </div>
+          <button class="rs-card-btn pdv">
+            <span>Acessar PDV</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- Divisor -->
+        <div class="rs-divider">
+          <span>ou</span>
+        </div>
+
+        <!-- Card ADM -->
+        <div class="rs-card adm" id="cardADM" role="button" tabindex="0">
+          <div class="rs-card-glow adm"></div>
+          <div class="rs-card-icon adm">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div class="rs-card-content">
+            <h2 class="rs-card-title">Painel ADM</h2>
+            <p class="rs-card-desc">Administração Completa</p>
+            <ul class="rs-card-features">
+              <li><i class="fa-solid fa-check"></i> Acesso total ao sistema</li>
+              <li><i class="fa-solid fa-check"></i> Relatórios e métricas</li>
+              <li><i class="fa-solid fa-check"></i> Campanhas WhatsApp</li>
+              <li><i class="fa-solid fa-check"></i> Configurações</li>
+            </ul>
+          </div>
+          <button class="rs-card-btn adm">
+            <span>Acessar ADM</span>
+            <i class="fa-solid fa-lock"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Logout -->
+      <button class="rs-logout" id="logoutBtn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Sair da conta
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- MODAL DE SENHA ADM                                                  -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <div class="adm-overlay" id="admOverlay">
+    <div class="adm-modal">
+
+      <div class="adm-modal-header">
+        <div class="adm-modal-title">
+          <div class="adm-modal-icon">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <span>Acesso Restrito</span>
+        </div>
+        <button class="adm-modal-close" id="admModalClose">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="adm-modal-body">
+        <p class="adm-modal-hint" id="admModalHint">
+          Digite a senha de administrador para acessar o painel completo.
+        </p>
+        <div class="adm-password-wrap" id="admPasswordWrap">
+          <div class="adm-password-field">
+            <i class="fa-solid fa-key adm-field-icon"></i>
+            <input type="password" id="admPasswordInput" placeholder="Senha ADM" autocomplete="off" />
+            <button class="adm-toggle-pass" id="admTogglePass" type="button">
+              <i class="fa-solid fa-eye" id="admEyeIcon"></i>
+            </button>
+          </div>
+          <p class="adm-error" id="admError">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            Senha incorreta. Tente novamente.
+          </p>
+        </div>
+      </div>
+
+      <div class="adm-modal-footer">
+        <button class="adm-btn-cancel" id="admCancelBtn">Cancelar</button>
+        <button class="adm-btn-confirm" id="admConfirmBtn">
+          <i class="fa-solid fa-shield-halved"></i>
+          Entrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="../js/pages/role-select.js"></script>
+</body>
+
+</html>

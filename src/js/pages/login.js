@@ -1,3 +1,4 @@
+// src/js/pages/login.js
 import { showLoading, hideLoading } from "../services/loading.js";
 
 const loginForm = document.getElementById("loginForm");
@@ -24,15 +25,18 @@ async function handleLogin(email, password) {
     localStorage.setItem('authToken', token)
     console.log("Token armazenado:", token)
 
+    // Limpa modo anterior ao fazer novo login
+    sessionStorage.removeItem('dashMode')
+
     // Detecta se está rodando no Electron ou no browser
     const isElectron = typeof window.electronAPI !== 'undefined';
 
     if (isElectron) {
       // No Electron: caminho absoluto a partir da raiz do projeto
-      window.location.href = './src/pages/dashboard.html';
+      window.location.href = './src/pages/role-select.html';
     } else {
       // No browser normal
-      window.location.href = '../src/pages/dashboard.html';
+      window.location.href = '../src/pages/role-select.html';
     }
 
     hideLoading(loginButton)

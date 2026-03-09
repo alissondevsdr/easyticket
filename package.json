@@ -5,7 +5,7 @@
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
-    "dev": "concurrently \"node ../easyticket-back/server.js\" \"electron .\"",
+    "prebuild": "cd backend && npm run build",
     "build": "electron-builder --win",
     "build:all": "electron-builder --win --mac --linux"
   },
@@ -20,6 +20,7 @@
   "build": {
     "appId": "com.easyticket.app",
     "productName": "EasyTicket",
+    "asar": true,
     "directories": {
       "output": "dist"
     },
@@ -29,20 +30,52 @@
       "assets/**/*",
       "index.html"
     ],
+    "extraResources": [
+      {
+        "from": "backend/dist",
+        "to": "backend",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "backend/node_modules/@prisma",
+        "to": "backend/node_modules/@prisma",
+        "filter": ["**/*", "!**/*.md"]
+      },
+      {
+        "from": "backend/node_modules/prisma",
+        "to": "backend/node_modules/prisma",
+        "filter": ["**/*", "!**/*.md"]
+      },
+      {
+        "from": "backend/node_modules/bcryptjs",
+        "to": "backend/node_modules/bcryptjs",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "backend/node_modules/whatsapp-web.js",
+        "to": "backend/node_modules/whatsapp-web.js",
+        "filter": ["**/*", "!**/*.md"]
+      },
+      {
+        "from": "backend/node_modules/puppeteer-core",
+        "to": "backend/node_modules/puppeteer-core",
+        "filter": ["**/*", "!**/*.md"]
+      },
+      {
+        "from": "backend/node_modules/qrcode",
+        "to": "backend/node_modules/qrcode",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "backend/prisma",
+        "to": "backend/prisma",
+        "filter": ["**/*"]
+      }
+    ],
     "win": {
       "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        }
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
       ],
       "icon": "assets/ico.ico",
       "requestedExecutionLevel": "asInvoker"
@@ -53,11 +86,10 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "EasyTicket",
-      "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico",
-      "installerHeaderIcon": "assets/icon.ico",
-      "deleteAppDataOnUninstall": false,
-      "license": null
+      "installerIcon": "assets/ico.ico",
+      "uninstallerIcon": "assets/ico.ico",
+      "installerHeaderIcon": "assets/ico.ico",
+      "deleteAppDataOnUninstall": false
     },
     "portable": {
       "artifactName": "EasyTicket-Portable-${version}.exe"

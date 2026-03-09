@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  client    String
+  cpf       String   @unique
+  phone     String?
+  type      String   @default("geral")
+  sales     Sale[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  location    String?
+  date        DateTime?
+  capacity    Int?
+  status      String    @default("ATIVO")
+  sales       Sale[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Sale {
+  id            Int      @id @default(autoincrement())
+  value         Float
+  paymentMethod String
+  status        String   @default("FINALIZADA")
+  clientId      Int
+  client        Client   @relation(fields: [clientId], references: [id])
+  eventId       Int?
+  event         Event?   @relation(fields: [eventId], references: [id])
+  createdAt     DateTime @default(now())
+}
+
+model Campaign {
+  id           Int           @id @default(autoincrement())
+  name         String
+  message      String
+  image        String?
+  delayMin     Int           @default(5)
+  delayMax     Int           @default(15)
+  limit        Int           @default(0)
+  randomOrder  Boolean       @default(false)
+  status       String        @default("RASCUNHO")
+  clientIds    String
+  sent         Int           @default(0)
+  totalClients Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  logs         CampaignLog[]
+}
+
+model CampaignLog {
+  id           Int       @id @default(autoincrement())
+  campaignId   Int
+  campaign     Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  clientId     Int
+  clientName   String?
+  status       String    @default("PENDENTE")
+  errorMessage String?
+  sentAt       DateTime?
+  createdAt    DateTime  @default(now())
+}

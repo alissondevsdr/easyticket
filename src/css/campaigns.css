@@ -1485,7 +1485,17 @@ body.has-electron-titlebar .campaign-logs-overlay {
 
 /* ── Modal WhatsApp ────────────────────────────────────── */
 .wpp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
   z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
 }
 
 .wpp-modal-overlay.is-open {

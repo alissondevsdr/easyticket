@@ -1,0 +1,389 @@
+/* ════════════════════════════════════════════════════════════
+   CONFIGURAÇÕES — config.css
+   Menu de configurações do sistema (senha ADM, mensagens, etc.)
+════════════════════════════════════════════════════════════ */
+
+/* ── Container principal ─────────────────────────────────── */
+.modal-config {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  padding: 24px 24px 48px;
+  box-sizing: border-box;
+  min-height: calc(100vh - 140px);
+}
+
+/* ── Cabeçalho ───────────────────────────────────────────── */
+.config-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 860px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.config-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.config-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.config-title i {
+  color: #a5ff01;
+  font-size: 1.3rem;
+}
+
+.config-subtitle {
+  font-size: 0.8rem;
+  color: #5a6380;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* ── Seção de configuração ───────────────────────────────── */
+.config-section {
+  width: 100%;
+  max-width: 860px;
+  background: linear-gradient(160deg, #1a1d27 0%, #14161e 100%);
+  border: 1px solid #252836;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.config-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #a5ff01 0%, transparent 60%);
+}
+
+.config-section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px;
+  border-bottom: 1px solid #1e2230;
+}
+
+.config-section-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #a5ff0115;
+  border: 1px solid #a5ff0130;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a5ff01;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.config-section-icon.blue {
+  background: #3b82f615;
+  border-color: #3b82f630;
+  color: #3b82f6;
+}
+
+.config-section-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.config-section-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.config-section-desc {
+  font-size: 0.75rem;
+  color: #5a6380;
+  margin: 0;
+}
+
+.config-section-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ── Campo de formulário ─────────────────────────────────── */
+.config-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.config-label {
+  font-size: 0.77rem;
+  font-weight: 600;
+  color: #8892a4;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.config-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.config-input-icon {
+  position: absolute;
+  left: 14px;
+  color: #5a6380;
+  font-size: 0.82rem;
+  pointer-events: none;
+}
+
+.config-input {
+  width: 100%;
+  height: 44px;
+  background: #0d0f14;
+  border: 1px solid #252836;
+  border-radius: 10px;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  padding: 0 44px 0 38px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+
+.config-input:focus {
+  border-color: #a5ff0150;
+  box-shadow: 0 0 0 3px #a5ff0110;
+}
+
+.config-input::placeholder {
+  color: #3a4055;
+}
+
+.config-input.no-icon {
+  padding-left: 14px;
+}
+
+.config-toggle-pass {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #5a6380;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  transition: color 0.15s;
+}
+
+.config-toggle-pass:hover {
+  color: #a5ff01;
+}
+
+/* ── Grid de 2 campos ────────────────────────────────────── */
+.config-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ── Info / hint ─────────────────────────────────────────── */
+.config-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #a5ff0108;
+  border: 1px solid #a5ff0118;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.78rem;
+  color: #8892a4;
+  line-height: 1.5;
+}
+
+.config-hint i {
+  color: #a5ff01;
+  margin-top: 1px;
+  flex-shrink: 0;
+  font-size: 0.82rem;
+}
+
+.config-hint.warn {
+  background: #ffa50010;
+  border-color: #ffa50025;
+}
+
+.config-hint.warn i {
+  color: #ffa500;
+}
+
+/* ── Badge de status ─────────────────────────────────────── */
+.config-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.config-status-badge.set {
+  background: #a5ff0118;
+  border: 1px solid #a5ff0130;
+  color: #a5ff01;
+}
+
+.config-status-badge.not-set {
+  background: #ffa50015;
+  border: 1px solid #ffa50030;
+  color: #ffa500;
+}
+
+/* ── Footer da seção ─────────────────────────────────────── */
+.config-section-footer {
+  padding: 16px 24px 20px;
+  border-top: 1px solid #1e2230;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.config-section-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── Botões ──────────────────────────────────────────────── */
+.config-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.config-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.config-btn.primary {
+  background: linear-gradient(135deg, #a5ff01, #8bc34a);
+  color: #0d0f14;
+  border: none;
+  box-shadow: 0 4px 16px #a5ff0120;
+}
+
+.config-btn.secondary {
+  background: transparent;
+  color: #5a6380;
+  border: 1px solid #252836;
+}
+
+.config-btn.secondary:hover {
+  background: #1e2230;
+  color: #fff;
+}
+
+.config-btn.danger {
+  background: transparent;
+  color: #e03131;
+  border: 1px solid #e0313130;
+}
+
+.config-btn.danger:hover {
+  background: #e0313115;
+  border-color: #e0313150;
+}
+
+/* ── Toast de feedback ───────────────────────────────────── */
+.config-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #1a1d27;
+  border: 1px solid #252836;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 32px #00000060;
+  opacity: 0;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 9999;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.config-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.config-toast.success i { color: #a5ff01; }
+.config-toast.error i   { color: #e03131; }
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVO
+════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .modal-config {
+    padding: 16px 12px 36px;
+    gap: 20px;
+  }
+
+  .config-fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .config-section-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+  .modal-config {
+    padding: 18px 18px 36px;
+  }
+}
